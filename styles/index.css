@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+
+body {
+  /* @apply p-12; */
+}
+
+.flo-wrapper {
+  @apply p-3;
+  color: #0b3948;
+}
+
+.flo-wrapper {
+  @apply p-6;
+}
+
+.flo-alert {
+  @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative;
+}
+
+.flo-text-warn {
+  @apply font-semibold text-orange-500;
+}

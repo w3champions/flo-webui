@@ -1,0 +1,72 @@
+import grpc from "grpc";
+import { promisify } from "util";
+import { FloLobbyClient } from "../generated/lobby_grpc_pb";
+import {
+  GetPlayerByTokenRequest,
+  UpdateAndGetPlayerRequest,
+  UpdateAndGetPlayerReply,
+  GetPlayerReply,
+} from "../generated/lobby_pb";
+import { FloError, FloErrorCode } from "../helpers/error";
+import * as player from "../generated/player_pb";
+import * as game from "../generated/game_pb";
+
+export { player, game };
+
+const { FLO_SERVICE, FLO_SERVICE_SECRET } = process.env;
+
+const Client = new FloLobbyClient(
+  FLO_SERVICE,
+  grpc.credentials.createInsecure()
+);
+
+const AuthMetadata = new grpc.Metadata();
+AuthMetadata.add("x-flo-secret", FLO_SERVICE_SECRET);
+
+type GrpcCall<TRequest, TReply> = (
+  req: TRequest,
+  meta?: grpc.Metadata
+) => Promise<TReply>;
+
+function wrap<TRequest, TReply>(
+  f: GrpcCall<TRequest, TReply>
+): GrpcCall<TRequest, TReply> {
+  return async (req: TRequest, meta: grpc.Metadata) => {
+    try {
+      if (meta) {
+        const merge = new grpc.Metadata();
+        for (const [k, v] of Object.entries(meta.getMap())) {
+          merge.add(k, v);
+        }
+        for (const [k, v] of Object.entries(AuthMetadata.getMap())) {
+          merge.add(k, v);
+        }
+        return await f(req, meta);
+      } else {
+        return await f(req, AuthMetadata);
+      }
+    } catch (e) {
+      const error = new FloError(e.message, FloErrorCode.FloService);
+      error.data = {
+        code: e.code,
+      };
+      throw error;
+    }
+  };
+}
+
+export { GetPlayerByTokenRequest, GetPlayerReply };
+
+export const getPlayerByToken = wrap(
+  promisify<GrpcCall<GetPlayerByTokenRequest, GetPlayerReply>>(
+    Client.getPlayerByToken.bind(Client)
+  )
+);
+
+export { UpdateAndGetPlayerRequest, UpdateAndGetPlayerReply };
+
+export const updateAndGetPlayer = wrap(
+  promisify<GrpcCall<UpdateAndGetPlayerRequest, UpdateAndGetPlayerReply>>(
+    Client.updateAndGetPlayer.bind(Client)
+  )
+);
