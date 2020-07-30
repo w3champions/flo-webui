@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@now/node";
-import { handleError } from "../../helpers/error";
+import { withErrorHandler } from "../../helpers/error";
 import {
   getPlayerByToken,
   GetPlayerByTokenRequest,
@@ -15,7 +15,7 @@ interface Body {
   token: string;
 }
 
-export default handleError(async function getPlayerInfoByToken(
+export default withErrorHandler(async function getPlayerInfoByToken(
   req: NowRequest,
   res: NowResponse
 ) {

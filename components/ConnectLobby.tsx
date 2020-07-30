@@ -29,7 +29,7 @@ export default function ConnectLobby() {
         <>
           <p>
             Connected. Your status is{" "}
-            <span className="text-blue-600 font-semibold">
+            <span className="flo-text-info font-semibold">
               {playerSession.status}
             </span>
             .

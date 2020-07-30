@@ -31,7 +31,7 @@ export default function ConnectWs() {
     clientInfo && clientInfo.war3_info.located ? (
       <p>
         Warcraft III located, version{" "}
-        <span className="text-blue-600 font-semibold">
+        <span className="flo-text-info font-semibold">
           {clientInfo.war3_info.version}
         </span>
         .
@@ -76,14 +76,14 @@ export default function ConnectWs() {
         </Callout>
       )}
       {status === WsStatus.Connecting && <Spinner />}
-      {clientInfo && status === WsStatus.Connected && (
+      {clientInfo && status === WsStatus.Connected ? (
         <>
           <p>
             Connected.
             <br />
-            Flo running on port{" "}
-            <span className="text-blue-600 font-semibold">{port}</span>, version{" "}
-            <span className="text-blue-600 font-semibold">
+            Running on local port{" "}
+            <span className="flo-text-info font-semibold">{port}</span>, version{" "}
+            <span className="flo-text-info font-semibold">
               {clientInfo.version}
             </span>
             .
@@ -91,6 +91,8 @@ export default function ConnectWs() {
           {gameLocated}
           {detectGamePath}
         </>
+      ) : (
+        <p>Download and run Flo.</p>
       )}
     </div>
   );

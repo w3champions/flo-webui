@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { FloError, FloErrorCode } from "./error";
+import Store from "../redux/store";
 
 const ServiceApiClient = axios.create({});
 
@@ -19,6 +20,16 @@ export function getServerApiClient() {
 const ApiClientInstance = axios.create({});
 
 ApiClientInstance.interceptors.response.use((res) => res, errorInterceptor);
+ApiClientInstance.interceptors.request.use((config) => {
+  let token = Store.getState().auth.authToken;
+  if (token) {
+    config.headers = {
+      ...config.headers,
+      authorization: `Bearer ${token}`,
+    };
+  }
+  return config;
+});
 
 function errorInterceptor(error: AxiosError) {
   const data = error.response && error.response.data;

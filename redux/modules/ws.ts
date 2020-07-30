@@ -11,13 +11,20 @@ import {
   ClientInfoMessage,
   WsMessage,
   WsMessageTypeId,
-  War3InfoError,
   ErrorMessage,
   PlayerSessionMessage,
   ConnectMessage,
   DisconnectMessage,
+  ListMapsMessage,
+  GetMapDetailMessage,
 } from "../../types/ws";
 import React, { useContext } from "react";
+import {
+  setMapListLoaded,
+  setMapDetailLoaded,
+  setMapListLoadError,
+  setMapLoadDetailLoadError,
+} from "./map";
 
 const WsContext = React.createContext(null as Ws);
 
@@ -226,6 +233,18 @@ function dispatchMessage(dispatch: AppDispatch, msg: WsMessage) {
           message: (msg as DisconnectMessage).reason,
         })
       );
+    }
+    case WsMessageTypeId.ListMaps: {
+      return dispatch(setMapListLoaded((msg as ListMapsMessage).data));
+    }
+    case WsMessageTypeId.ListMapsError: {
+      return dispatch(setMapListLoadError(msg as SerializedError));
+    }
+    case WsMessageTypeId.GetMapDetail: {
+      return dispatch(setMapDetailLoaded(msg as GetMapDetailMessage));
+    }
+    case WsMessageTypeId.GetMapDetailError: {
+      return dispatch(setMapLoadDetailLoadError(msg as SerializedError));
     }
   }
 }

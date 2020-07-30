@@ -9,7 +9,6 @@ import * as lobby_pb from "./lobby_pb";
 import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wrappers_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
-import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as player_pb from "./player_pb";
 import * as game_pb from "./game_pb";
 
@@ -24,6 +23,8 @@ interface IFloLobbyService extends grpc.ServiceDefinition<grpc.UntypedServiceImp
     leaveGame: IFloLobbyService_ILeaveGame;
     updateGameSlotSettings: IFloLobbyService_IUpdateGameSlotSettings;
     cancelGame: IFloLobbyService_ICancelGame;
+    importMapChecksums: IFloLobbyService_IImportMapChecksums;
+    searchMapChecksum: IFloLobbyService_ISearchMapChecksum;
 }
 
 interface IFloLobbyService_IGetPlayer extends grpc.MethodDefinition<lobby_pb.GetPlayerRequest, lobby_pb.GetPlayerReply> {
@@ -116,6 +117,24 @@ interface IFloLobbyService_ICancelGame extends grpc.MethodDefinition<lobby_pb.Ca
     responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
+interface IFloLobbyService_IImportMapChecksums extends grpc.MethodDefinition<lobby_pb.ImportMapChecksumsRequest, lobby_pb.ImportMapChecksumsReply> {
+    path: string; // "/lobby.FloLobby/ImportMapChecksums"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<lobby_pb.ImportMapChecksumsRequest>;
+    requestDeserialize: grpc.deserialize<lobby_pb.ImportMapChecksumsRequest>;
+    responseSerialize: grpc.serialize<lobby_pb.ImportMapChecksumsReply>;
+    responseDeserialize: grpc.deserialize<lobby_pb.ImportMapChecksumsReply>;
+}
+interface IFloLobbyService_ISearchMapChecksum extends grpc.MethodDefinition<lobby_pb.SearchMapChecksumRequest, lobby_pb.SearchMapChecksumReply> {
+    path: string; // "/lobby.FloLobby/SearchMapChecksum"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<lobby_pb.SearchMapChecksumRequest>;
+    requestDeserialize: grpc.deserialize<lobby_pb.SearchMapChecksumRequest>;
+    responseSerialize: grpc.serialize<lobby_pb.SearchMapChecksumReply>;
+    responseDeserialize: grpc.deserialize<lobby_pb.SearchMapChecksumReply>;
+}
 
 export const FloLobbyService: IFloLobbyService;
 
@@ -130,6 +149,8 @@ export interface IFloLobbyServer {
     leaveGame: grpc.handleUnaryCall<lobby_pb.LeaveGameRequest, google_protobuf_empty_pb.Empty>;
     updateGameSlotSettings: grpc.handleUnaryCall<lobby_pb.UpdateGameSlotSettingsRequest, lobby_pb.UpdateGameSlotSettingsReply>;
     cancelGame: grpc.handleUnaryCall<lobby_pb.CancelGameRequest, google_protobuf_empty_pb.Empty>;
+    importMapChecksums: grpc.handleUnaryCall<lobby_pb.ImportMapChecksumsRequest, lobby_pb.ImportMapChecksumsReply>;
+    searchMapChecksum: grpc.handleUnaryCall<lobby_pb.SearchMapChecksumRequest, lobby_pb.SearchMapChecksumReply>;
 }
 
 export interface IFloLobbyClient {
@@ -163,6 +184,12 @@ export interface IFloLobbyClient {
     cancelGame(request: lobby_pb.CancelGameRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    importMapChecksums(request: lobby_pb.ImportMapChecksumsRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.ImportMapChecksumsReply) => void): grpc.ClientUnaryCall;
+    importMapChecksums(request: lobby_pb.ImportMapChecksumsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.ImportMapChecksumsReply) => void): grpc.ClientUnaryCall;
+    importMapChecksums(request: lobby_pb.ImportMapChecksumsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.ImportMapChecksumsReply) => void): grpc.ClientUnaryCall;
+    searchMapChecksum(request: lobby_pb.SearchMapChecksumRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.SearchMapChecksumReply) => void): grpc.ClientUnaryCall;
+    searchMapChecksum(request: lobby_pb.SearchMapChecksumRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.SearchMapChecksumReply) => void): grpc.ClientUnaryCall;
+    searchMapChecksum(request: lobby_pb.SearchMapChecksumRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.SearchMapChecksumReply) => void): grpc.ClientUnaryCall;
 }
 
 export class FloLobbyClient extends grpc.Client implements IFloLobbyClient {
@@ -197,4 +224,10 @@ export class FloLobbyClient extends grpc.Client implements IFloLobbyClient {
     public cancelGame(request: lobby_pb.CancelGameRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public importMapChecksums(request: lobby_pb.ImportMapChecksumsRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.ImportMapChecksumsReply) => void): grpc.ClientUnaryCall;
+    public importMapChecksums(request: lobby_pb.ImportMapChecksumsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.ImportMapChecksumsReply) => void): grpc.ClientUnaryCall;
+    public importMapChecksums(request: lobby_pb.ImportMapChecksumsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.ImportMapChecksumsReply) => void): grpc.ClientUnaryCall;
+    public searchMapChecksum(request: lobby_pb.SearchMapChecksumRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.SearchMapChecksumReply) => void): grpc.ClientUnaryCall;
+    public searchMapChecksum(request: lobby_pb.SearchMapChecksumRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.SearchMapChecksumReply) => void): grpc.ClientUnaryCall;
+    public searchMapChecksum(request: lobby_pb.SearchMapChecksumRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.SearchMapChecksumReply) => void): grpc.ClientUnaryCall;
 }

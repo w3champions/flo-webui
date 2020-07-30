@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@now/node";
-import { handleError } from "../../helpers/error";
+import { withErrorHandler } from "../../helpers/error";
 import { sign } from "../../helpers/jwt";
 import joi from "@hapi/joi";
 import { FloLobbyClient } from "../../generated/lobby_grpc_pb";
@@ -12,7 +12,7 @@ const client = new FloLobbyClient(
   grpc.credentials.createInsecure()
 );
 
-export default handleError(async function listGames(
+export default withErrorHandler(async function listGames(
   req: NowRequest,
   res: NowResponse
 ) {

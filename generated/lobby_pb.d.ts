@@ -8,7 +8,6 @@ import * as jspb from "google-protobuf";
 import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wrappers_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
-import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as player_pb from "./player_pb";
 import * as game_pb from "./game_pb";
 
@@ -517,6 +516,95 @@ export namespace Node {
         ipAddr: string,
         createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    }
+}
+
+export class ImportMapChecksumsRequest extends jspb.Message { 
+    clearItemsList(): void;
+    getItemsList(): Array<game_pb.MapChecksumImportItem>;
+    setItemsList(value: Array<game_pb.MapChecksumImportItem>): ImportMapChecksumsRequest;
+    addItems(value?: game_pb.MapChecksumImportItem, index?: number): game_pb.MapChecksumImportItem;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ImportMapChecksumsRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: ImportMapChecksumsRequest): ImportMapChecksumsRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ImportMapChecksumsRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ImportMapChecksumsRequest;
+    static deserializeBinaryFromReader(message: ImportMapChecksumsRequest, reader: jspb.BinaryReader): ImportMapChecksumsRequest;
+}
+
+export namespace ImportMapChecksumsRequest {
+    export type AsObject = {
+        itemsList: Array<game_pb.MapChecksumImportItem.AsObject>,
+    }
+}
+
+export class ImportMapChecksumsReply extends jspb.Message { 
+    getUpdated(): number;
+    setUpdated(value: number): ImportMapChecksumsReply;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ImportMapChecksumsReply.AsObject;
+    static toObject(includeInstance: boolean, msg: ImportMapChecksumsReply): ImportMapChecksumsReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ImportMapChecksumsReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ImportMapChecksumsReply;
+    static deserializeBinaryFromReader(message: ImportMapChecksumsReply, reader: jspb.BinaryReader): ImportMapChecksumsReply;
+}
+
+export namespace ImportMapChecksumsReply {
+    export type AsObject = {
+        updated: number,
+    }
+}
+
+export class SearchMapChecksumRequest extends jspb.Message { 
+    getSha1(): string;
+    setSha1(value: string): SearchMapChecksumRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): SearchMapChecksumRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: SearchMapChecksumRequest): SearchMapChecksumRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: SearchMapChecksumRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): SearchMapChecksumRequest;
+    static deserializeBinaryFromReader(message: SearchMapChecksumRequest, reader: jspb.BinaryReader): SearchMapChecksumRequest;
+}
+
+export namespace SearchMapChecksumRequest {
+    export type AsObject = {
+        sha1: string,
+    }
+}
+
+export class SearchMapChecksumReply extends jspb.Message { 
+
+    hasChecksum(): boolean;
+    clearChecksum(): void;
+    getChecksum(): google_protobuf_wrappers_pb.UInt32Value | undefined;
+    setChecksum(value?: google_protobuf_wrappers_pb.UInt32Value): SearchMapChecksumReply;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): SearchMapChecksumReply.AsObject;
+    static toObject(includeInstance: boolean, msg: SearchMapChecksumReply): SearchMapChecksumReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: SearchMapChecksumReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): SearchMapChecksumReply;
+    static deserializeBinaryFromReader(message: SearchMapChecksumReply, reader: jspb.BinaryReader): SearchMapChecksumReply;
+}
+
+export namespace SearchMapChecksumReply {
+    export type AsObject = {
+        checksum?: google_protobuf_wrappers_pb.UInt32Value.AsObject,
     }
 }
 

@@ -6,7 +6,6 @@ var lobby_pb = require('./lobby_pb.js');
 var google_protobuf_wrappers_pb = require('google-protobuf/google/protobuf/wrappers_pb.js');
 var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
-var google_protobuf_struct_pb = require('google-protobuf/google/protobuf/struct_pb.js');
 var player_pb = require('./player_pb.js');
 var game_pb = require('./game_pb.js');
 
@@ -87,6 +86,28 @@ function deserialize_lobby_GetPlayerRequest(buffer_arg) {
   return lobby_pb.GetPlayerRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_lobby_ImportMapChecksumsReply(arg) {
+  if (!(arg instanceof lobby_pb.ImportMapChecksumsReply)) {
+    throw new Error('Expected argument of type lobby.ImportMapChecksumsReply');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_ImportMapChecksumsReply(buffer_arg) {
+  return lobby_pb.ImportMapChecksumsReply.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_lobby_ImportMapChecksumsRequest(arg) {
+  if (!(arg instanceof lobby_pb.ImportMapChecksumsRequest)) {
+    throw new Error('Expected argument of type lobby.ImportMapChecksumsRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_ImportMapChecksumsRequest(buffer_arg) {
+  return lobby_pb.ImportMapChecksumsRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_lobby_JoinGameReply(arg) {
   if (!(arg instanceof lobby_pb.JoinGameReply)) {
     throw new Error('Expected argument of type lobby.JoinGameReply');
@@ -151,6 +172,28 @@ function serialize_lobby_ListNodesReply(arg) {
 
 function deserialize_lobby_ListNodesReply(buffer_arg) {
   return lobby_pb.ListNodesReply.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_lobby_SearchMapChecksumReply(arg) {
+  if (!(arg instanceof lobby_pb.SearchMapChecksumReply)) {
+    throw new Error('Expected argument of type lobby.SearchMapChecksumReply');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_SearchMapChecksumReply(buffer_arg) {
+  return lobby_pb.SearchMapChecksumReply.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_lobby_SearchMapChecksumRequest(arg) {
+  if (!(arg instanceof lobby_pb.SearchMapChecksumRequest)) {
+    throw new Error('Expected argument of type lobby.SearchMapChecksumRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_SearchMapChecksumRequest(buffer_arg) {
+  return lobby_pb.SearchMapChecksumRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_lobby_UpdateAndGetPlayerReply(arg) {
@@ -317,6 +360,29 @@ cancelGame: {
     requestDeserialize: deserialize_lobby_CancelGameRequest,
     responseSerialize: serialize_google_protobuf_Empty,
     responseDeserialize: deserialize_google_protobuf_Empty,
+  },
+  // Imports map checksums
+importMapChecksums: {
+    path: '/lobby.FloLobby/ImportMapChecksums',
+    requestStream: false,
+    responseStream: false,
+    requestType: lobby_pb.ImportMapChecksumsRequest,
+    responseType: lobby_pb.ImportMapChecksumsReply,
+    requestSerialize: serialize_lobby_ImportMapChecksumsRequest,
+    requestDeserialize: deserialize_lobby_ImportMapChecksumsRequest,
+    responseSerialize: serialize_lobby_ImportMapChecksumsReply,
+    responseDeserialize: deserialize_lobby_ImportMapChecksumsReply,
+  },
+  searchMapChecksum: {
+    path: '/lobby.FloLobby/SearchMapChecksum',
+    requestStream: false,
+    responseStream: false,
+    requestType: lobby_pb.SearchMapChecksumRequest,
+    responseType: lobby_pb.SearchMapChecksumReply,
+    requestSerialize: serialize_lobby_SearchMapChecksumRequest,
+    requestDeserialize: deserialize_lobby_SearchMapChecksumRequest,
+    responseSerialize: serialize_lobby_SearchMapChecksumReply,
+    responseDeserialize: deserialize_lobby_SearchMapChecksumReply,
   },
 };
 

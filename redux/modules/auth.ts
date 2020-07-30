@@ -2,12 +2,14 @@ import {
   createSlice,
   createAsyncThunk,
   SerializedError,
+  PayloadAction,
 } from "@reduxjs/toolkit";
 import { ApiClient } from "../../helpers/api-client";
 import { PlayerRef } from "../../types/player";
 import { FLO_ACCESS_TOKEN_STORAGE_KEY } from "../../const";
 
 export interface AuthState {
+  authToken: string;
   playerInfoLoading: boolean;
   playerInfoError?: SerializedError;
   playerInfo?: PlayerRef;
@@ -32,7 +34,10 @@ export const fetchPlayerInfo = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
+    authToken: null,
     playerInfoLoading: false,
+    playerInfoError: null,
+    playerInfo: null,
   } as AuthState,
   reducers: {
     setPlayerInfo(state, action) {
@@ -41,7 +46,11 @@ const authSlice = createSlice({
     },
     signOut(state) {
       state.playerInfo = null;
+      state.authToken = null;
       localStorage.removeItem(FLO_ACCESS_TOKEN_STORAGE_KEY);
+    },
+    setAuthToken(state, { payload }: PayloadAction<string>) {
+      state.authToken = payload;
     },
   },
   extraReducers: (builder) => {
@@ -51,7 +60,6 @@ const authSlice = createSlice({
         state.playerInfoError = undefined;
       })
       .addCase(fetchPlayerInfo.rejected, (state, action) => {
-        console.log(action.error);
         state.playerInfoLoading = false;
         state.playerInfoError = action.error;
       })
@@ -62,6 +70,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setPlayerInfo, signOut } = authSlice.actions;
+export const { setPlayerInfo, signOut, setAuthToken } = authSlice.actions;
 
 export default authSlice.reducer;

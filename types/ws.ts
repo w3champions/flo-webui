@@ -1,4 +1,6 @@
 import { PlayerRef } from "./player";
+import { MapList } from "./map";
+import { MapPlayer, MapForce } from "./game";
 
 export enum WsStatus {
   Idle = "Idle",
@@ -15,6 +17,10 @@ export enum WsMessageTypeId {
   PlayerSession = "PlayerSession",
   ConnectRejected = "ConnectRejected",
   Disconnect = "Disconnect",
+  ListMaps = "ListMaps",
+  ListMapsError = "ListMapsError",
+  GetMapDetail = "GetMapDetail",
+  GetMapDetailError = "GetMapDetailError",
 }
 
 export interface WsMessage {
@@ -59,4 +65,24 @@ export interface ConnectMessage extends WsMessage {
 
 export interface DisconnectMessage extends WsMessage {
   reason: string;
+}
+
+export interface ListMapsMessage extends WsMessage {
+  data: MapList;
+}
+
+export interface GetMapDetailMessage extends WsMessage {
+  path: string;
+  sha1: string;
+  crc32: number;
+  name: string;
+  author: string;
+  description: string;
+  width: number;
+  height: number;
+  preview_jpeg_base64: string;
+  suggested_players: string;
+  num_players: number;
+  players: MapPlayer[];
+  forces: MapForce[];
 }

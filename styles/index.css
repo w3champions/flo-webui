@@ -7,15 +7,23 @@
 
 body {
   /* @apply p-12; */
+  padding: 50px 0 0 0;
+  background-color: #394b59;
 }
 
 .flo-wrapper {
   @apply p-3;
-  color: #0b3948;
+  /* color: #0b3948; */
 }
 
 .flo-wrapper {
   @apply p-6;
+}
+
+.flo-wrapper.flo-wrapper-flex {
+  height: calc(100vh - 50px);
+  display: flex;
+  overflow: hidden;
 }
 
 .flo-alert {
@@ -24,4 +32,9 @@ body {
 
 .flo-text-warn {
   @apply font-semibold text-orange-500;
+}
+
+.flo-text-info {
+  color: #d9dbf1;
+  text-shadow: 1px 1px #000;
 }

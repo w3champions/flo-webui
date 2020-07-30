@@ -21,7 +21,7 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
   const dispatch: AppDispatch = useDispatch();
 
   return (
-    <Navbar>
+    <Navbar fixedToTop>
       <Navbar.Group align={Alignment.LEFT}>
         {!noIcon && (
           <>
@@ -43,13 +43,11 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
 
         {setupDone && (
           <div className="flex space-x-1">
-            <Button
-              icon={IconNames.PLUS}
-              text="Create Game"
-              intent={Intent.PRIMARY}
-            />
-            <Button minimal icon={IconNames.SEARCH}>
-              Search
+            <Link href="/create-game">
+              <Button icon={IconNames.PLUS} text="Create Game" minimal />
+            </Link>
+            <Button minimal icon={IconNames.LIST}>
+              Servers
             </Button>
           </div>
         )}

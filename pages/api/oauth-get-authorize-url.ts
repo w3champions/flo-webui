@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@now/node";
-import { handleError } from "../../helpers/error";
+import { withErrorHandler } from "../../helpers/error";
 import { sign } from "../../helpers/jwt";
 import joi from "@hapi/joi";
 import { URL } from "url";
@@ -16,7 +16,7 @@ interface GetAuthorizeUrlRequest {
   region: string;
 }
 
-export default handleError(async function getAuthorizeUrl(
+export default withErrorHandler(async function getAuthorizeUrl(
   req: NowRequest,
   res: NowResponse
 ) {

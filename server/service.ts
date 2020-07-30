@@ -6,6 +6,10 @@ import {
   UpdateAndGetPlayerRequest,
   UpdateAndGetPlayerReply,
   GetPlayerReply,
+  SearchMapChecksumRequest,
+  SearchMapChecksumReply,
+  CreateGameRequest,
+  CreateGameReply,
 } from "../generated/lobby_pb";
 import { FloError, FloErrorCode } from "../helpers/error";
 import * as player from "../generated/player_pb";
@@ -68,5 +72,21 @@ export { UpdateAndGetPlayerRequest, UpdateAndGetPlayerReply };
 export const updateAndGetPlayer = wrap(
   promisify<GrpcCall<UpdateAndGetPlayerRequest, UpdateAndGetPlayerReply>>(
     Client.updateAndGetPlayer.bind(Client)
+  )
+);
+
+export { SearchMapChecksumRequest, SearchMapChecksumReply };
+
+export const searchMapChecksum = wrap(
+  promisify<GrpcCall<SearchMapChecksumRequest, SearchMapChecksumReply>>(
+    Client.searchMapChecksum.bind(Client)
+  )
+);
+
+export { CreateGameRequest, CreateGameReply };
+
+export const createGame = wrap(
+  promisify<GrpcCall<CreateGameRequest, CreateGameReply>>(
+    Client.createGame.bind(Client)
   )
 );

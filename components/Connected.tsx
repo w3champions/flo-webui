@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectPlayerInfo, AppDispatch, selectSetupDone } from "../redux/store";
 import { FLO_ACCESS_TOKEN_STORAGE_KEY } from "../const";
 import { useApiClient } from "../helpers/api-client";
-import { fetchPlayerInfo } from "../redux/modules/auth";
+import { fetchPlayerInfo, setAuthToken } from "../redux/modules/auth";
 import {
   WsProvider,
   Ws,
@@ -12,14 +12,19 @@ import {
   selectWsPlayerSession,
   connect,
 } from "../redux/modules/ws";
-import { WsMessageTypeId } from "../types/ws";
+import {
+  WsMessageTypeId,
+  ClientInfoMessage,
+  PlayerSessionMessage,
+} from "../types/ws";
 import Setup from "./Setup";
+import { PlayerRef } from "../generated/player_pb";
 
 export interface Props {
-  port?: number;
+  component: React.FunctionComponent;
 }
 
-export const Connected: FunctionComponent<Props> = ({ port, children }) => {
+const Connected: FunctionComponent<Props> = ({ component: Component }) => {
   const dispatch = useDispatch<AppDispatch>();
   const client = useApiClient();
   const [token, setToken] = useState<string>(null);
@@ -31,7 +36,7 @@ export const Connected: FunctionComponent<Props> = ({ port, children }) => {
 
   useEffect(function initEnv() {
     const accessToken = localStorage.getItem(FLO_ACCESS_TOKEN_STORAGE_KEY);
-    if (accessToken) {
+    if (accessToken && !playerInfo) {
       setToken(accessToken);
       dispatch(
         fetchPlayerInfo({
@@ -53,7 +58,7 @@ export const Connected: FunctionComponent<Props> = ({ port, children }) => {
         return;
       }
 
-      port = port || 3551;
+      const port = 3551;
       const ws = new Ws(
         {
           port,
@@ -63,6 +68,7 @@ export const Connected: FunctionComponent<Props> = ({ port, children }) => {
       );
 
       setWsSocket(ws);
+      dispatch(setAuthToken(token));
       dispatch(updatePort(port));
 
       return () => {
@@ -92,7 +98,15 @@ export const Connected: FunctionComponent<Props> = ({ port, children }) => {
     [playerInfo, clientInfo, playerSession, wsSocket]
   );
 
-  const content = setupDone ? children : <Setup />;
+  const content = setupDone ? <Component /> : <Setup />;
 
   return <WsProvider value={wsSocket}>{content}</WsProvider>;
 };
+
+export function withConnected<C extends React.FunctionComponent>(
+  component: C
+): React.FunctionComponent {
+  return function WithConnected() {
+    return <Connected component={component} />;
+  };
+}

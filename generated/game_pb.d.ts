@@ -444,6 +444,31 @@ export namespace MapForce {
     }
 }
 
+export class MapChecksumImportItem extends jspb.Message { 
+    getSha1(): string;
+    setSha1(value: string): MapChecksumImportItem;
+
+    getChecksum(): number;
+    setChecksum(value: number): MapChecksumImportItem;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): MapChecksumImportItem.AsObject;
+    static toObject(includeInstance: boolean, msg: MapChecksumImportItem): MapChecksumImportItem.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: MapChecksumImportItem, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): MapChecksumImportItem;
+    static deserializeBinaryFromReader(message: MapChecksumImportItem, reader: jspb.BinaryReader): MapChecksumImportItem;
+}
+
+export namespace MapChecksumImportItem {
+    export type AsObject = {
+        sha1: string,
+        checksum: number,
+    }
+}
+
 export enum SelectedNodeType {
     SELECTEDNODETYPEPUBLIC = 0,
     SELECTEDNODETYPEPRIVATE = 1,

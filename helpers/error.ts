@@ -5,6 +5,7 @@ export enum FloErrorCode {
   Unknown = "Unknown",
   BadRequest = "BadRequest",
   Unauthorized = "Unauthorized",
+  MethodNotAllowed = "MethodNotAllowed",
   BlizzardAPI = "Blizzard API",
   FloService = "FloService",
 }
@@ -22,7 +23,7 @@ export class FloError extends Error {
 
 export type Fn = (req: NowRequest, res: NowResponse) => void | Promise<void>;
 
-export function handleError(f: Fn): Fn {
+export function withErrorHandler(f: Fn): Fn {
   return async (req: NowRequest, res: NowResponse) => {
     try {
       await f(req, res);
@@ -32,12 +33,14 @@ export function handleError(f: Fn): Fn {
       let data = null;
       if (e instanceof FloError) {
         kind = e.code;
-        if (e.code == FloErrorCode.Unauthorized) {
+        if (e.code === FloErrorCode.Unauthorized) {
           status = 401;
-        } else if (e.code == FloErrorCode.FloService) {
+        } else if (e.code === FloErrorCode.FloService) {
           if (e.data.code === 16 /* Unauthenticated */) {
             status = 401;
           }
+        } else if (e.code === FloErrorCode.MethodNotAllowed) {
+          status = 405;
         }
         if (e.data) {
           data = e.data;

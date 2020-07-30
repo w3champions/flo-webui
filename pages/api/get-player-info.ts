@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@now/node";
-import { handleError } from "../../helpers/error";
+import { withErrorHandler } from "../../helpers/error";
 import joi from "@hapi/joi";
 import { getServerApiClient } from "../../helpers/api-client";
 
@@ -11,7 +11,7 @@ interface GetPlayerInfoRequest {
   accessToken: string;
 }
 
-export default handleError(async function getPlayerInfo(
+export default withErrorHandler(async function getPlayerInfo(
   req: NowRequest,
   res: NowResponse
 ) {
@@ -26,8 +26,6 @@ export default handleError(async function getPlayerInfo(
       },
     })
     .then((res) => res.data);
-
-  console.log(userInfo);
 
   res.json({
     player_info: userInfo,

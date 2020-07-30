@@ -1,6 +1,5 @@
-import Head from "next/head";
 import { Layout } from "../components/Layout";
-import { Connected } from "../components/Connected";
+import { withConnected } from "../components/Connected";
 import { Button, Icon } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import SignIn from "../components/SignIn";
@@ -19,8 +18,9 @@ import {
 } from "../redux/modules/ws";
 import { WsStatus } from "../types/ws";
 import ConnectLobby from "../components/ConnectLobby";
+import CreateGameDialog from "../components/CreateGameDialog";
 
-export default function Home() {
+export default withConnected(function Home() {
   const playerLoading = useSelector(selectPlayerInfoLoading);
   const player = useSelector(selectPlayerInfo);
   const wsReady = useSelector(selectWsReady);
@@ -28,53 +28,51 @@ export default function Home() {
 
   return (
     <Layout>
-      <Connected>
-        <h1 className="mb-6 text-3xl font-semibold">
-          Flo - Warcraft III Hosting Tool
-        </h1>
+      <h1 className="mb-6 text-3xl font-semibold">
+        Flo - Warcraft III Hosting Tool
+      </h1>
 
-        {playerLoading && <Spinner />}
-        {!playerLoading && (
-          <>
-            <div className="mb-2 flex flex-row items-center justify-center text-xl font-semibold">
-              <StatusIcon ok={!!player} />
-              <span className="flex-1">Sign in</span>
-            </div>
-            <div className="mb-6">
-              {player ? (
-                <p>
-                  Hello,{" "}
-                  <span className="text-blue-600 font-semibold">
-                    {player.name}
-                  </span>
-                  .
-                </p>
-              ) : (
-                <SignIn />
-              )}
-            </div>
-          </>
-        )}
+      {playerLoading && <Spinner />}
+      {!playerLoading && (
+        <>
+          <div className="mb-2 flex flex-row items-center justify-center text-xl font-semibold">
+            <StatusIcon ok={!!player} />
+            <span className="flex-1">Sign in</span>
+          </div>
+          <div className="mb-6">
+            {player ? (
+              <p>
+                Hello,{" "}
+                <span className="flo-text-info font-semibold">
+                  {player.name}
+                </span>
+                .
+              </p>
+            ) : (
+              <SignIn />
+            )}
+          </div>
+        </>
+      )}
 
-        <div className="mb-2 mt-3 flex flex-row items-center justify-center text-xl font-semibold">
-          <StatusIcon ok={wsReady} />
-          <span className="flex-1 block">Connect to your computer</span>
-        </div>
-        <div className="mb-6">
-          <ConnectWs />
-        </div>
+      <div className="mb-2 mt-3 flex flex-row items-center justify-center text-xl font-semibold">
+        <StatusIcon ok={wsReady} />
+        <span className="flex-1 block">Connect to your computer</span>
+      </div>
+      <div className="mb-6">
+        <ConnectWs />
+      </div>
 
-        <div className="mb-2 mt-3 flex flex-row items-center justify-center text-xl font-semibold">
-          <StatusIcon ok={!!playerSession} />
-          <span className="flex-1 block">Connect to server</span>
-        </div>
-        <div>
-          <ConnectLobby />
-        </div>
-      </Connected>
+      <div className="mb-2 mt-3 flex flex-row items-center justify-center text-xl font-semibold">
+        <StatusIcon ok={!!playerSession} />
+        <span className="flex-1 block">Connect to server</span>
+      </div>
+      <div>
+        <ConnectLobby />
+      </div>
     </Layout>
   );
-}
+});
 
 function StatusIcon(props: { ok: boolean }) {
   return props.ok ? (
