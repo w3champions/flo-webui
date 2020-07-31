@@ -1,7 +1,6 @@
 import {
   createSlice,
   SerializedError,
-  PayloadAction,
   createSelector,
   createAsyncThunk,
 } from "@reduxjs/toolkit";

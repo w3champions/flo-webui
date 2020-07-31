@@ -1,5 +1,4 @@
 import { Layout } from "../components/Layout";
-import { withConnected } from "../components/Connected";
 import { Button, Icon } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import SignIn from "../components/SignIn";
@@ -18,7 +17,7 @@ import {
 } from "../redux/modules/ws";
 import { WsStatus } from "../types/ws";
 import ConnectLobby from "../components/ConnectLobby";
-import CreateGameDialog from "../components/CreateGameDialog";
+import { withConnected } from "../providers/ws";
 
 export default withConnected(function Home() {
   const playerLoading = useSelector(selectPlayerInfoLoading);

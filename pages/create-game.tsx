@@ -1,6 +1,4 @@
 import { Layout } from "../components/Layout";
-import { withConnected } from "../components/Connected";
-import { useFloWs } from "../redux/modules/ws";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { WsMessageTypeId, GetMapDetailMessage } from "../types/ws";
@@ -45,10 +43,11 @@ import {
 } from "../redux/modules/game";
 import { useApiClient } from "../helpers/api-client";
 import { Scrollbar } from "react-scrollbars-custom";
+import { useWs, withConnected } from "../providers/ws";
 
 export default withConnected(function CreateGame() {
   const dispatch = useDispatch();
-  const ws = useFloWs();
+  const ws = useWs();
   const initialFilterValue = useSelector(selectMapFilter);
   const [filterValue, setFilterValue] = useState(initialFilterValue);
   const commitFilterValue = useDebounceCallback(

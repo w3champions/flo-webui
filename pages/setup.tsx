@@ -6,12 +6,16 @@ import {
   selectPlayerInfo,
   selectPlayerInfoLoading,
   selectPlayerInfoError,
+  selectSetupDone,
 } from "../redux/store";
 import { Spinner } from "../components/Spinner";
 import ConnectWs from "../components/ConnectWs";
 import { selectWsReady, selectWsPlayerSession } from "../redux/modules/ws";
 import ConnectLobby from "../components/ConnectLobby";
 import Head from "next/head";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useWs } from "../providers/ws";
 
 export default function Setup() {
   const playerLoading = useSelector(selectPlayerInfoLoading);
@@ -19,6 +23,14 @@ export default function Setup() {
   const player = useSelector(selectPlayerInfo);
   const wsReady = useSelector(selectWsReady);
   const playerSession = useSelector(selectWsPlayerSession);
+  const router = useRouter();
+  const done = useSelector(selectSetupDone);
+
+  useEffect(() => {
+    if (done) {
+      router.replace("/");
+    }
+  }, [done]);
 
   return (
     <div className={`${Classes.DARK} p-24`}>
@@ -26,17 +38,28 @@ export default function Setup() {
         <title>Flo - Warcraft III Hosting Tool</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1 className="mb-6 text-3xl">
-        <span className="font-bold">Flo</span>
+
+      <h1 className="flex flex-row justify-center items-center mb-6 text-3xl space-x-4">
+        <img
+          className="flex-initial shadow"
+          src="/flo.svg"
+          width={48}
+          height={48}
+        />
+        <span className="flex-1 font-bold">
+          Flo<span>&nbsp;- Warcraft III Hosting Tool</span>
+        </span>
       </h1>
-      <h2 className="mb-4 text-2xl text-orange-600">Setup Required</h2>
+      <h2 className="mb-6 text-2xl">
+        Welcome! Let's setup Flo in a few simple steps.
+      </h2>
 
       {playerLoading && <Spinner />}
       {!playerLoading && (
         <>
           <div className="mb-2 flex flex-row items-center justify-center text-xl font-semibold">
             <StatusIcon ok={!!player} />
-            <span className="flex-1">1. Sign in</span>
+            <span className="flex-1">1. Sign in your Battle.net® account</span>
           </div>
           {playerError && (
             <Callout intent={Intent.DANGER} title="Flo Service Error">
@@ -76,10 +99,16 @@ export default function Setup() {
           <StatusIcon ok={!!playerSession} />
           <span className="flex-1 block">3. Connect to server</span>
         </div>
-        <div>
+        <div className="mb-6">
           <ConnectLobby />
         </div>
       </div>
+
+      {done ? (
+        <div>
+          <Spinner />
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -6,16 +6,14 @@ import { Alert } from "./Alert";
 import { Button, Callout, Intent } from "@blueprintjs/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  useFloWs,
   selectWsPlayerSessionLoadStatus,
   selectWsPlayerSession,
 } from "../redux/modules/ws";
+import { useWs } from "../providers/ws";
 
 export default function ConnectLobby() {
-  const dispatch = useDispatch();
   const playerSession = useSelector(selectWsPlayerSession);
   const { loading, error } = useSelector(selectWsPlayerSessionLoadStatus);
-  const ws = useFloWs();
 
   return (
     <div className="leading-normal">

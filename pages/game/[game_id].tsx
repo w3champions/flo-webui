@@ -1,10 +1,6 @@
 import { Layout } from "../../components/Layout";
-import { Connected } from "../../components/Connected";
+import { withConnected } from "../../providers/ws";
 
-export default function Game() {
-  return (
-    <Layout>
-      <Connected>OK</Connected>
-    </Layout>
-  );
-}
+export default withConnected(function Game() {
+  return <Layout>GAME!</Layout>;
+});

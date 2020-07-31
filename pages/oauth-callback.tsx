@@ -16,6 +16,7 @@ import {
   PlayerSourceState,
   BNetState,
 } from "../generated/player_pb";
+import { useAuth } from "../providers/auth";
 
 interface Props {
   error?: {
@@ -27,10 +28,12 @@ interface Props {
 export default function OAuthCallback(props: Props) {
   const { token, error } = props;
   const router = useRouter();
+  const { setAuthToken } = useAuth();
 
   useEffect(() => {
     if (token) {
       localStorage.setItem(FLO_ACCESS_TOKEN_STORAGE_KEY, token);
+      setAuthToken(token);
       router.replace("/");
     } else {
       localStorage.removeItem(FLO_ACCESS_TOKEN_STORAGE_KEY);

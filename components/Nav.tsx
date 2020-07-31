@@ -1,6 +1,11 @@
 import { FunctionComponent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPlayerInfo, AppDispatch, selectSetupDone } from "../redux/store";
+import {
+  selectPlayerInfo,
+  AppDispatch,
+  selectSetupDone,
+  selectCurrentGameId,
+} from "../redux/store";
 import Link from "next/link";
 import {
   Navbar,
@@ -14,11 +19,15 @@ import {
 } from "@blueprintjs/core";
 import { signOut } from "../redux/modules/auth";
 import { IconNames } from "@blueprintjs/icons";
+import { useRouter } from "next/router";
 
 export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
+  const router = useRouter();
   const setupDone = useSelector(selectSetupDone);
+  const currentGameId = useSelector(selectCurrentGameId);
   const playerInfo = useSelector(selectPlayerInfo);
   const dispatch: AppDispatch = useDispatch();
+  const path = router.pathname;
 
   return (
     <Navbar fixedToTop>
@@ -29,7 +38,7 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
               <Link href="/">
                 <a>
                   <img
-                    className="fill-current h-8 w-8 mr-2"
+                    className="fill-current h-8 w-8 mr-2 shadow"
                     width="64"
                     height="64"
                     src="/flo.svg"
@@ -41,16 +50,37 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
           </>
         )}
 
-        {setupDone && (
-          <div className="flex space-x-1">
-            <Link href="/create-game">
-              <Button icon={IconNames.PLUS} text="Create Game" minimal />
-            </Link>
-            <Button minimal icon={IconNames.LIST}>
-              Servers
-            </Button>
-          </div>
-        )}
+        {setupDone ? (
+          currentGameId ? (
+            <div className="flex flex-row items-center justify-center space-x-2">
+              <Icon
+                icon={IconNames.RECORD}
+                className="animate-pulse text-red-500"
+              />
+              <span className="font-bold">GAME#{currentGameId}</span>
+            </div>
+          ) : (
+            <div className="flex space-x-1">
+              <Link href="/">
+                <Button
+                  minimal
+                  icon={IconNames.DASHBOARD}
+                  active={path === "/"}
+                >
+                  Dashboard
+                </Button>
+              </Link>
+              <Link href="/create-game">
+                <Button
+                  icon={IconNames.PLUS}
+                  text="Create Game"
+                  minimal
+                  active={path === "/create-game"}
+                />
+              </Link>
+            </div>
+          )
+        ) : null}
       </Navbar.Group>
 
       <Navbar.Group align={Alignment.RIGHT} className="flex space-x-1">

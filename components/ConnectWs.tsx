@@ -12,9 +12,9 @@ import {
   selectWsClientInfo,
   selectWsClientInfoReload,
   reloadClientInfo,
-  useFloWs,
 } from "../redux/modules/ws";
 import { WsStatus, War3InfoError } from "../types/ws";
+import { useWs } from "../providers/ws";
 
 export default function ConnectWs() {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export default function ConnectWs() {
   const { reloading, error: reloadError } = useSelector(
     selectWsClientInfoReload
   );
-  const ws = useFloWs();
+  const ws = useWs();
 
   const gameLocated =
     clientInfo && clientInfo.war3_info.located ? (
@@ -66,13 +66,13 @@ export default function ConnectWs() {
   return (
     <div className="leading-normal">
       {error && (
-        <Callout intent={Intent.DANGER}>
-          Connection failed. Please ensure Flo is running on port {port}.
+        <Callout intent={Intent.DANGER} title="Connection failed">
+          Please ensure Flo is running on port {port}.
         </Callout>
       )}
       {reloadError && (
-        <Callout intent={Intent.DANGER}>
-          Detect game path failed: {reloadError.message}.
+        <Callout intent={Intent.DANGER} title="Detect game path failed">
+          {reloadError.message}.
         </Callout>
       )}
       {status === WsStatus.Connecting && <Spinner />}

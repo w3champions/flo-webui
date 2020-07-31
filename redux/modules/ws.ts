@@ -25,107 +25,18 @@ import {
   setMapListLoadError,
   setMapLoadDetailLoadError,
 } from "./map";
-
-const WsContext = React.createContext(null as Ws);
-
-export const WsProvider = WsContext.Provider;
-export const WsConsumer = WsContext.Consumer;
-
-export function useFloWs() {
-  return useContext(WsContext);
-}
-
-export class Ws {
-  private socket: WebSocket = null;
-  private queue: WsMessage[] = [];
-  private connected = false;
-
-  constructor(arg: ConnectArg, dispatch: AppDispatch) {
-    dispatch(updateStatus(WsStatus.Connecting));
-    const socket = new WebSocket(`ws://127.0.0.1:${arg.port}`);
-    this.socket = socket;
-    socket.onerror = (e) => {
-      if (!this.socket) {
-        return;
-      }
-      console.error("flo: socket.onerror:", e);
-      this.drop();
-      dispatch(
-        updateError({
-          message: JSON.stringify(e),
-        })
-      );
-    };
-
-    socket.onopen = () => {
-      if (!this.socket) {
-        return;
-      }
-
-      this.connected = true;
-      dispatch(updateStatus(WsStatus.Connected));
-      if (this.queue.length) {
-        const items = this.queue;
-        this.queue = [];
-        for (const item of items) {
-          socket.send(JSON.stringify(item));
-        }
-      }
-    };
-
-    socket.onmessage = (evt) => {
-      if (!this.socket) {
-        console.warn("flo: message dropped:", evt);
-        return;
-      }
-      let msg: WsMessage;
-      try {
-        msg = JSON.parse(evt.data);
-      } catch (e) {
-        console.error("flo: malformed message data:", evt.data);
-      }
-      dispatchMessage(dispatch, msg);
-    };
-
-    socket.onclose = () => {
-      if (!this.socket) {
-        return;
-      }
-      dispatch(updateStatus(WsStatus.Disconnected));
-    };
-  }
-
-  send<T extends WsMessage>(msg: T) {
-    if (this.connected) {
-      this.socket.send(JSON.stringify(msg));
-    } else {
-      this.queue.push(msg);
-    }
-  }
-
-  drop() {
-    if (this.socket) {
-      this.socket.close();
-      this.socket = null;
-    }
-  }
-}
+import { Ws } from "../../providers/ws";
 
 export interface WsState {
   status: WsStatus;
   error?: SerializedError;
   clientInfo: ClientInfoMessage;
   clientInfoReloading: boolean;
-  clientInfoReloadError: ErrorMessage;
+  clientInfoReloadError: SerializedError;
   playerSession: PlayerSessionMessage;
   playerSessionLoading: boolean;
   playerSessionError: SerializedError;
   port: number;
-}
-
-interface ConnectArg {
-  port: number;
-  token: string;
 }
 
 export const reloadClientInfo = createAsyncThunk(
@@ -199,11 +110,22 @@ const wsSlice = createSlice({
       state.playerSession = null;
       state.playerSessionError = action.payload;
     },
+    setWsDisconnected(state) {
+      state.status = WsStatus.Disconnected;
+      if (state.clientInfoReloading) {
+        state.clientInfoReloading = false;
+      }
+      state.clientInfo = null;
+      if (state.playerSessionLoading) {
+        state.playerSessionLoading = false;
+      }
+      state.playerSession = null;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-function dispatchMessage(dispatch: AppDispatch, msg: WsMessage) {
+export function dispatchMessage(dispatch: AppDispatch, msg: WsMessage) {
   switch (msg.type) {
     case WsMessageTypeId.ClientInfo: {
       return dispatch(
@@ -254,6 +176,7 @@ export const {
   updateError,
   updateClientInfo,
   updatePort,
+  setWsDisconnected,
 } = wsSlice.actions;
 
 export const selectWsReady = (state: AppState) =>

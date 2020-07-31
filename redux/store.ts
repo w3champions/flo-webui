@@ -1,6 +1,7 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, createSelector } from "@reduxjs/toolkit";
 import rootReducer from "./reducer";
 import { WsStatus } from "../types/ws";
+import { selectWsPlayerSession } from "./modules/ws";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -19,5 +20,8 @@ export const selectPlayerInfoLoading = (state: AppState) =>
   state.auth.playerInfoLoading;
 export const selectPlayerInfoError = (state: AppState) =>
   state.auth.playerInfoError;
+export const selectCurrentGameId = createSelector(selectWsPlayerSession, (s) =>
+  s ? s.game_id : null
+);
 
 export default store;
