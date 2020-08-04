@@ -20,6 +20,8 @@ interface IFloLobbyService extends grpc.ServiceDefinition<grpc.UntypedServiceImp
     listGames: IFloLobbyService_IListGames;
     createGame: IFloLobbyService_ICreateGame;
     joinGame: IFloLobbyService_IJoinGame;
+    createJoinGameToken: IFloLobbyService_ICreateJoinGameToken;
+    joinGameByToken: IFloLobbyService_IJoinGameByToken;
     leaveGame: IFloLobbyService_ILeaveGame;
     updateGameSlotSettings: IFloLobbyService_IUpdateGameSlotSettings;
     cancelGame: IFloLobbyService_ICancelGame;
@@ -90,6 +92,24 @@ interface IFloLobbyService_IJoinGame extends grpc.MethodDefinition<lobby_pb.Join
     responseSerialize: grpc.serialize<lobby_pb.JoinGameReply>;
     responseDeserialize: grpc.deserialize<lobby_pb.JoinGameReply>;
 }
+interface IFloLobbyService_ICreateJoinGameToken extends grpc.MethodDefinition<lobby_pb.CreateJoinGameTokenRequest, lobby_pb.CreateJoinGameTokenReply> {
+    path: string; // "/lobby.FloLobby/CreateJoinGameToken"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<lobby_pb.CreateJoinGameTokenRequest>;
+    requestDeserialize: grpc.deserialize<lobby_pb.CreateJoinGameTokenRequest>;
+    responseSerialize: grpc.serialize<lobby_pb.CreateJoinGameTokenReply>;
+    responseDeserialize: grpc.deserialize<lobby_pb.CreateJoinGameTokenReply>;
+}
+interface IFloLobbyService_IJoinGameByToken extends grpc.MethodDefinition<lobby_pb.JoinGameByTokenRequest, lobby_pb.JoinGameReply> {
+    path: string; // "/lobby.FloLobby/JoinGameByToken"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<lobby_pb.JoinGameByTokenRequest>;
+    requestDeserialize: grpc.deserialize<lobby_pb.JoinGameByTokenRequest>;
+    responseSerialize: grpc.serialize<lobby_pb.JoinGameReply>;
+    responseDeserialize: grpc.deserialize<lobby_pb.JoinGameReply>;
+}
 interface IFloLobbyService_ILeaveGame extends grpc.MethodDefinition<lobby_pb.LeaveGameRequest, google_protobuf_empty_pb.Empty> {
     path: string; // "/lobby.FloLobby/LeaveGame"
     requestStream: false;
@@ -146,6 +166,8 @@ export interface IFloLobbyServer {
     listGames: grpc.handleUnaryCall<lobby_pb.ListGamesRequest, lobby_pb.ListGamesReply>;
     createGame: grpc.handleUnaryCall<lobby_pb.CreateGameRequest, lobby_pb.CreateGameReply>;
     joinGame: grpc.handleUnaryCall<lobby_pb.JoinGameRequest, lobby_pb.JoinGameReply>;
+    createJoinGameToken: grpc.handleUnaryCall<lobby_pb.CreateJoinGameTokenRequest, lobby_pb.CreateJoinGameTokenReply>;
+    joinGameByToken: grpc.handleUnaryCall<lobby_pb.JoinGameByTokenRequest, lobby_pb.JoinGameReply>;
     leaveGame: grpc.handleUnaryCall<lobby_pb.LeaveGameRequest, google_protobuf_empty_pb.Empty>;
     updateGameSlotSettings: grpc.handleUnaryCall<lobby_pb.UpdateGameSlotSettingsRequest, lobby_pb.UpdateGameSlotSettingsReply>;
     cancelGame: grpc.handleUnaryCall<lobby_pb.CancelGameRequest, google_protobuf_empty_pb.Empty>;
@@ -175,6 +197,12 @@ export interface IFloLobbyClient {
     joinGame(request: lobby_pb.JoinGameRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
     joinGame(request: lobby_pb.JoinGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
     joinGame(request: lobby_pb.JoinGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
+    createJoinGameToken(request: lobby_pb.CreateJoinGameTokenRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.CreateJoinGameTokenReply) => void): grpc.ClientUnaryCall;
+    createJoinGameToken(request: lobby_pb.CreateJoinGameTokenRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.CreateJoinGameTokenReply) => void): grpc.ClientUnaryCall;
+    createJoinGameToken(request: lobby_pb.CreateJoinGameTokenRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.CreateJoinGameTokenReply) => void): grpc.ClientUnaryCall;
+    joinGameByToken(request: lobby_pb.JoinGameByTokenRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
+    joinGameByToken(request: lobby_pb.JoinGameByTokenRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
+    joinGameByToken(request: lobby_pb.JoinGameByTokenRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
     leaveGame(request: lobby_pb.LeaveGameRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     leaveGame(request: lobby_pb.LeaveGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     leaveGame(request: lobby_pb.LeaveGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
@@ -215,6 +243,12 @@ export class FloLobbyClient extends grpc.Client implements IFloLobbyClient {
     public joinGame(request: lobby_pb.JoinGameRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
     public joinGame(request: lobby_pb.JoinGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
     public joinGame(request: lobby_pb.JoinGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
+    public createJoinGameToken(request: lobby_pb.CreateJoinGameTokenRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.CreateJoinGameTokenReply) => void): grpc.ClientUnaryCall;
+    public createJoinGameToken(request: lobby_pb.CreateJoinGameTokenRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.CreateJoinGameTokenReply) => void): grpc.ClientUnaryCall;
+    public createJoinGameToken(request: lobby_pb.CreateJoinGameTokenRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.CreateJoinGameTokenReply) => void): grpc.ClientUnaryCall;
+    public joinGameByToken(request: lobby_pb.JoinGameByTokenRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
+    public joinGameByToken(request: lobby_pb.JoinGameByTokenRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
+    public joinGameByToken(request: lobby_pb.JoinGameByTokenRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.JoinGameReply) => void): grpc.ClientUnaryCall;
     public leaveGame(request: lobby_pb.LeaveGameRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public leaveGame(request: lobby_pb.LeaveGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public leaveGame(request: lobby_pb.LeaveGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;

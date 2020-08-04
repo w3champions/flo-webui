@@ -1,6 +1,7 @@
 import { PlayerRef } from "./player";
 import { MapList } from "./map";
 import { MapPlayer, MapForce } from "./game";
+import { GameInfo, Slot, SlotSettings } from "./lobby";
 
 export enum WsStatus {
   Idle = "Idle",
@@ -21,6 +22,12 @@ export enum WsMessageTypeId {
   ListMapsError = "ListMapsError",
   GetMapDetail = "GetMapDetail",
   GetMapDetailError = "GetMapDetailError",
+  CurrentGameInfo = "CurrentGameInfo",
+  GamePlayerEnter = "GamePlayerEnter",
+  GamePlayerLeave = "GamePlayerLeave",
+  GameSlotUpdate = "GameSlotUpdate",
+  PlayerSessionUpdate = "PlayerSessionUpdate",
+  GameSlotUpdateRequest = "GameSlotUpdateRequest",
 }
 
 export interface WsMessage {
@@ -65,6 +72,7 @@ export interface ConnectMessage extends WsMessage {
 
 export interface DisconnectMessage extends WsMessage {
   reason: string;
+  message: string;
 }
 
 export interface ListMapsMessage extends WsMessage {
@@ -85,4 +93,46 @@ export interface GetMapDetailMessage extends WsMessage {
   num_players: number;
   players: MapPlayer[];
   forces: MapForce[];
+}
+
+export interface CurrentGameInfoMessage extends WsMessage, GameInfo {}
+
+export interface GamePlayerEnterMessage extends WsMessage {
+  game_id: number;
+  slot_index: number;
+  slot: Slot;
+}
+
+export interface GamePlayerLeaveMessage extends WsMessage {
+  game_id: number;
+  player_id: number;
+  reason: PlayerLeaveReason;
+}
+
+export enum PlayerLeaveReason {
+  Left = 0,
+  Kicked = 1,
+  GameCancelled = 2,
+}
+
+export interface GameSlotUpdateMessage extends WsMessage {
+  game_id: number;
+  slot_index: number;
+  slot_settings: SlotSettings;
+}
+
+export interface PlayerSessionUpdateMessage extends WsMessage {
+  status: PlayerStatus;
+  game_id: number | number;
+}
+
+export interface GameSlotUpdateMessage extends WsMessage {
+  game_id: number;
+  slot_index: number;
+  slot_settings: SlotSettings;
+}
+
+export interface GameSlotUpdateRequestMessage extends WsMessage {
+  game_id: number;
+  slot_settings: SlotSettings;
 }

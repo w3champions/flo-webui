@@ -1,9 +1,8 @@
 import { NowRequest, NowResponse } from "@now/node";
 import { withErrorHandler, FloError, FloErrorCode } from "../../helpers/error";
-import { promisify } from "util";
 import { withAuthorized } from "../../helpers/auth";
 import { PlayerRef } from "../../types/player";
-import { CreateGame } from "../../types/game";
+import { CreateGameRequestBody } from "../../types/game";
 import joi from "@hapi/joi";
 import { withMethod } from "../../helpers/method";
 import {
@@ -55,7 +54,9 @@ export default withErrorHandler(
       res: NowResponse,
       player: PlayerRef
     ) {
-      const payload: CreateGame = await Schema.validateAsync(req.body);
+      const payload: CreateGameRequestBody = await Schema.validateAsync(
+        req.body
+      );
 
       const checksumReply = await searchMapChecksum(
         new SearchMapChecksumRequest().setSha1(payload.map.sha1)

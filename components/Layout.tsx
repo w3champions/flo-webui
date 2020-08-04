@@ -5,8 +5,9 @@ import { Classes } from "@blueprintjs/core";
 
 export const Layout: FunctionComponent<{
   noIcon?: boolean;
+  noNav?: boolean;
   flex?: boolean;
-}> = ({ noIcon, flex, children }) => {
+}> = ({ noIcon, noNav, flex, children }) => {
   return (
     <>
       <Head>
@@ -14,7 +15,7 @@ export const Layout: FunctionComponent<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={Classes.DARK}>
-        <Nav noIcon={noIcon} />
+        {noNav ? null : <Nav noIcon={noIcon} />}
         <div className={`flo-wrapper ${flex ? "flo-wrapper-flex" : ""}`}>
           {children}
         </div>

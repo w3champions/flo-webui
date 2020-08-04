@@ -8,24 +8,27 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectWsStatus,
   selectWsError,
-  selectWsPort,
   selectWsClientInfo,
   selectWsClientInfoReload,
   reloadClientInfo,
 } from "../redux/modules/ws";
 import { WsStatus, War3InfoError } from "../types/ws";
-import { useWs } from "../providers/ws";
+import { useWs, useWsPort } from "../providers/ws";
+import { FLO_DEFAULT_WS_PORT } from "../const";
+import { useRouter } from "next/router";
+import { IconNames } from "@blueprintjs/icons";
 
 export default function ConnectWs() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const status = useSelector(selectWsStatus);
   const error = useSelector(selectWsError);
-  const port = useSelector(selectWsPort);
   const clientInfo = useSelector(selectWsClientInfo);
   const { reloading, error: reloadError } = useSelector(
     selectWsClientInfoReload
   );
   const ws = useWs();
+  const port = useWsPort();
 
   const gameLocated =
     clientInfo && clientInfo.war3_info.located ? (
@@ -64,11 +67,29 @@ export default function ConnectWs() {
   );
 
   return (
-    <div className="leading-normal">
-      {error && (
-        <Callout intent={Intent.DANGER} title="Connection failed">
-          Please ensure Flo is running on port {port}.
+    <div className="leading-normal space-y-4">
+      {port !== FLO_DEFAULT_WS_PORT && (
+        <Callout intent={Intent.WARNING} title="Custom port specified">
+          Custom local port set to {port} .
+          <br />
+          <br />
+          <Button
+            small
+            onClick={() => {
+              window.location.href = `/setup?port=${FLO_DEFAULT_WS_PORT}`;
+            }}
+          >
+            Reset to default port
+          </Button>
         </Callout>
+      )}
+
+      {error && (
+        <div className="mb-4">
+          <Callout intent={Intent.DANGER} title="Connection failed">
+            Please ensure Flo is running on port {port}.
+          </Callout>
+        </div>
       )}
       {reloadError && (
         <Callout intent={Intent.DANGER} title="Detect game path failed">
@@ -76,6 +97,7 @@ export default function ConnectWs() {
         </Callout>
       )}
       {status === WsStatus.Connecting && <Spinner />}
+
       {clientInfo && status === WsStatus.Connected ? (
         <>
           <p>

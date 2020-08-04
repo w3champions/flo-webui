@@ -53,6 +53,28 @@ function deserialize_lobby_CreateGameRequest(buffer_arg) {
   return lobby_pb.CreateGameRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_lobby_CreateJoinGameTokenReply(arg) {
+  if (!(arg instanceof lobby_pb.CreateJoinGameTokenReply)) {
+    throw new Error('Expected argument of type lobby.CreateJoinGameTokenReply');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_CreateJoinGameTokenReply(buffer_arg) {
+  return lobby_pb.CreateJoinGameTokenReply.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_lobby_CreateJoinGameTokenRequest(arg) {
+  if (!(arg instanceof lobby_pb.CreateJoinGameTokenRequest)) {
+    throw new Error('Expected argument of type lobby.CreateJoinGameTokenRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_CreateJoinGameTokenRequest(buffer_arg) {
+  return lobby_pb.CreateJoinGameTokenRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_lobby_GetPlayerByTokenRequest(arg) {
   if (!(arg instanceof lobby_pb.GetPlayerByTokenRequest)) {
     throw new Error('Expected argument of type lobby.GetPlayerByTokenRequest');
@@ -106,6 +128,17 @@ function serialize_lobby_ImportMapChecksumsRequest(arg) {
 
 function deserialize_lobby_ImportMapChecksumsRequest(buffer_arg) {
   return lobby_pb.ImportMapChecksumsRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_lobby_JoinGameByTokenRequest(arg) {
+  if (!(arg instanceof lobby_pb.JoinGameByTokenRequest)) {
+    throw new Error('Expected argument of type lobby.JoinGameByTokenRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_JoinGameByTokenRequest(buffer_arg) {
+  return lobby_pb.JoinGameByTokenRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_lobby_JoinGameReply(arg) {
@@ -322,6 +355,30 @@ joinGame: {
     responseType: lobby_pb.JoinGameReply,
     requestSerialize: serialize_lobby_JoinGameRequest,
     requestDeserialize: deserialize_lobby_JoinGameRequest,
+    responseSerialize: serialize_lobby_JoinGameReply,
+    responseDeserialize: deserialize_lobby_JoinGameReply,
+  },
+  // Creates a join token
+createJoinGameToken: {
+    path: '/lobby.FloLobby/CreateJoinGameToken',
+    requestStream: false,
+    responseStream: false,
+    requestType: lobby_pb.CreateJoinGameTokenRequest,
+    responseType: lobby_pb.CreateJoinGameTokenReply,
+    requestSerialize: serialize_lobby_CreateJoinGameTokenRequest,
+    requestDeserialize: deserialize_lobby_CreateJoinGameTokenRequest,
+    responseSerialize: serialize_lobby_CreateJoinGameTokenReply,
+    responseDeserialize: deserialize_lobby_CreateJoinGameTokenReply,
+  },
+  // Join a game by token
+joinGameByToken: {
+    path: '/lobby.FloLobby/JoinGameByToken',
+    requestStream: false,
+    responseStream: false,
+    requestType: lobby_pb.JoinGameByTokenRequest,
+    responseType: lobby_pb.JoinGameReply,
+    requestSerialize: serialize_lobby_JoinGameByTokenRequest,
+    requestDeserialize: deserialize_lobby_JoinGameByTokenRequest,
     responseSerialize: serialize_lobby_JoinGameReply,
     responseDeserialize: deserialize_lobby_JoinGameReply,
   },

@@ -18,6 +18,8 @@ body {
 
 .flo-wrapper {
   @apply p-6;
+  max-width: 1366px;
+  margin: 0 auto;
 }
 
 .flo-wrapper.flo-wrapper-flex {
@@ -35,6 +37,11 @@ body {
 }
 
 .flo-text-info {
-  color: #d9dbf1;
+  color: #fff;
   text-shadow: 1px 1px #000;
+}
+
+button.bp3-button {
+  outline: none;
+  text-transform: uppercase;
 }

@@ -1,5 +1,6 @@
 export const FLO_ACCESS_TOKEN_STORAGE_KEY = "flo_access_token";
-export const FLO_PORT_STORAGE_KEY = "flo_port";
+export const FLO_WS_PORT_STORAGE_KEY = "flo_port";
+export const FLO_DEFAULT_WS_PORT = 3551;
 export const WAR3_STORAGE_MAP_PATH_PREFIX = "maps";
 export const PLAYER_COLORS = [
   { r: 255, g: 3, b: 3 },

@@ -11,6 +11,13 @@ export type AppDispatch = typeof store.dispatch;
 
 export type AppState = ReturnType<typeof store.getState>;
 
+export const selectSetupRequired = (state: AppState) =>
+  !state.auth.playerInfo ||
+  state.ws.error ||
+  state.ws.status === WsStatus.Disconnected ||
+  !state.ws.playerSession ||
+  state.ws.playerSessionError;
+
 export const selectSetupDone = (state: AppState) =>
   !!state.auth.playerInfo &&
   state.ws.status === WsStatus.Connected &&

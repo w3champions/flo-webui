@@ -367,6 +367,77 @@ export namespace JoinGameReply {
     }
 }
 
+export class CreateJoinGameTokenRequest extends jspb.Message { 
+    getGameId(): number;
+    setGameId(value: number): CreateJoinGameTokenRequest;
+
+    getPlayerId(): number;
+    setPlayerId(value: number): CreateJoinGameTokenRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreateJoinGameTokenRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: CreateJoinGameTokenRequest): CreateJoinGameTokenRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreateJoinGameTokenRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreateJoinGameTokenRequest;
+    static deserializeBinaryFromReader(message: CreateJoinGameTokenRequest, reader: jspb.BinaryReader): CreateJoinGameTokenRequest;
+}
+
+export namespace CreateJoinGameTokenRequest {
+    export type AsObject = {
+        gameId: number,
+        playerId: number,
+    }
+}
+
+export class CreateJoinGameTokenReply extends jspb.Message { 
+    getToken(): string;
+    setToken(value: string): CreateJoinGameTokenReply;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreateJoinGameTokenReply.AsObject;
+    static toObject(includeInstance: boolean, msg: CreateJoinGameTokenReply): CreateJoinGameTokenReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreateJoinGameTokenReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreateJoinGameTokenReply;
+    static deserializeBinaryFromReader(message: CreateJoinGameTokenReply, reader: jspb.BinaryReader): CreateJoinGameTokenReply;
+}
+
+export namespace CreateJoinGameTokenReply {
+    export type AsObject = {
+        token: string,
+    }
+}
+
+export class JoinGameByTokenRequest extends jspb.Message { 
+    getToken(): string;
+    setToken(value: string): JoinGameByTokenRequest;
+
+    getPlayerId(): number;
+    setPlayerId(value: number): JoinGameByTokenRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): JoinGameByTokenRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: JoinGameByTokenRequest): JoinGameByTokenRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: JoinGameByTokenRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): JoinGameByTokenRequest;
+    static deserializeBinaryFromReader(message: JoinGameByTokenRequest, reader: jspb.BinaryReader): JoinGameByTokenRequest;
+}
+
+export namespace JoinGameByTokenRequest {
+    export type AsObject = {
+        token: string,
+        playerId: number,
+    }
+}
+
 export class LeaveGameRequest extends jspb.Message { 
     getGameId(): number;
     setGameId(value: number): LeaveGameRequest;

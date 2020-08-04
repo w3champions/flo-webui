@@ -20,6 +20,7 @@ import {
 import { signOut } from "../redux/modules/auth";
 import { IconNames } from "@blueprintjs/icons";
 import { useRouter } from "next/router";
+import { useWs } from "../providers/ws";
 
 export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
   const router = useRouter();
@@ -28,9 +29,10 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
   const playerInfo = useSelector(selectPlayerInfo);
   const dispatch: AppDispatch = useDispatch();
   const path = router.pathname;
+  const ws = useWs();
 
   return (
-    <Navbar fixedToTop>
+    <Navbar fixedToTop style={{ maxWidth: 1366, margin: "0 auto" }}>
       <Navbar.Group align={Alignment.LEFT}>
         {!noIcon && (
           <>
@@ -97,6 +99,9 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
                   text="Sign out"
                   onClick={() => {
                     dispatch(signOut());
+                    if (ws) {
+                      ws.drop();
+                    }
                   }}
                 />
               </Menu>

@@ -84,6 +84,16 @@ export default withConnected(function CreateGame() {
   const creating = useSelector(selectGameCreating);
   const apiClient = useApiClient();
 
+  if (creating) {
+    return (
+      <Layout flex>
+        <NonIdealState title="Creating game...">
+          <Spinner />
+        </NonIdealState>
+      </Layout>
+    );
+  }
+
   return (
     <Layout flex>
       <div className="flex flex-col w-full space-y-1">

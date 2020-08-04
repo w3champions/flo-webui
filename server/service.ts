@@ -10,6 +10,11 @@ import {
   SearchMapChecksumReply,
   CreateGameRequest,
   CreateGameReply,
+  LeaveGameRequest,
+  CreateJoinGameTokenRequest,
+  CreateJoinGameTokenReply,
+  JoinGameByTokenRequest,
+  JoinGameReply,
 } from "../generated/lobby_pb";
 import { FloError, FloErrorCode } from "../helpers/error";
 import * as player from "../generated/player_pb";
@@ -88,5 +93,24 @@ export { CreateGameRequest, CreateGameReply };
 export const createGame = wrap(
   promisify<GrpcCall<CreateGameRequest, CreateGameReply>>(
     Client.createGame.bind(Client)
+  )
+);
+
+export { LeaveGameRequest };
+export const leaveGame = wrap(
+  promisify<GrpcCall<LeaveGameRequest, void>>(Client.leaveGame.bind(Client))
+);
+
+export { CreateJoinGameTokenRequest, CreateJoinGameTokenReply };
+export const createJoinGameToken = wrap(
+  promisify<GrpcCall<CreateJoinGameTokenRequest, CreateJoinGameTokenReply>>(
+    Client.createJoinGameToken.bind(Client)
+  )
+);
+
+export { JoinGameByTokenRequest, JoinGameReply };
+export const joinGameByToken = wrap(
+  promisify<GrpcCall<JoinGameByTokenRequest, JoinGameReply>>(
+    Client.joinGameByToken.bind(Client)
   )
 );

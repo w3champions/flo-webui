@@ -22,12 +22,15 @@ interface FetchPlayerInfoArg {
 
 export const fetchPlayerInfo = createAsyncThunk(
   "auth/fetchPlayerInfo",
-  async (arg: FetchPlayerInfoArg, thunkAPI) => {
+  async (arg: FetchPlayerInfoArg, { dispatch }) => {
     return arg.client
       .post("/api/get-player-info-by-token", {
         token: arg.accessToken,
       })
-      .then((res) => res.data);
+      .then((res) => {
+        dispatch(setAuthToken(arg.accessToken));
+        return res.data;
+      });
   }
 );
 

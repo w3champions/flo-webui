@@ -15,7 +15,9 @@ import ConnectLobby from "../components/ConnectLobby";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useWs } from "../providers/ws";
+import { useWsSetupEffects } from "../providers/ws";
+import { useAuth } from "../providers/auth";
+import { FloErrorCode } from "../helpers/error";
 
 export default function Setup() {
   const playerLoading = useSelector(selectPlayerInfoLoading);
@@ -25,6 +27,8 @@ export default function Setup() {
   const playerSession = useSelector(selectWsPlayerSession);
   const router = useRouter();
   const done = useSelector(selectSetupDone);
+
+  useWsSetupEffects();
 
   useEffect(() => {
     if (done) {
@@ -61,12 +65,12 @@ export default function Setup() {
             <StatusIcon ok={!!player} />
             <span className="flex-1">1. Sign in your Battle.net® account</span>
           </div>
-          {playerError && (
+          {playerError && playerError.code !== FloErrorCode.Unauthorized && (
             <Callout intent={Intent.DANGER} title="Flo Service Error">
               {playerError.message}
             </Callout>
           )}
-          {!playerError && (
+          {(!playerError || playerError.code === FloErrorCode.Unauthorized) && (
             <div className="mb-6">
               {player ? (
                 <p>

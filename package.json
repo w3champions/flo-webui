@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./generated --ts_out=./generated --grpc_out=./generated -I ../flo-grpc/proto ../flo-grpc/proto/*.proto"
+    "gen": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./generated --ts_out=./generated --grpc_out=./generated -I ../flo/deps/flo-grpc/proto ../flo/deps/flo-grpc/proto/*.proto"
   },
   "dependencies": {
     "@blueprintjs/core": "^3.30.0",

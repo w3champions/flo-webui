@@ -1,10 +1,18 @@
 import { GetMapDetailMessage } from "./ws";
 
-export interface CreateGame {
+export interface CreateGameRequestBody {
   name: string;
   map: GameMap;
   is_private: boolean;
   is_live: boolean;
+}
+
+export interface LeaveGameRequestBody {
+  game_id: number;
+}
+
+export interface CreateJoinGameTokenBody {
+  game_id: number;
 }
 
 export interface GameMap {

@@ -8,8 +8,8 @@ import {
 import { MapList, MapEntry } from "../../types/map";
 import { AppState } from "../store";
 import { GetMapDetailMessage, WsMessageTypeId } from "../../types/ws";
-import { Ws } from "./ws";
 import { WAR3_STORAGE_MAP_PATH_PREFIX } from "../../const";
+import { Ws } from "../../providers/ws";
 
 export interface MapState {
   list: MapList;
@@ -187,6 +187,17 @@ export const loadMapDetail = createAsyncThunk(
     ws.send({
       type: WsMessageTypeId.GetMapDetail,
       path: `${WAR3_STORAGE_MAP_PATH_PREFIX}${id}`,
+    });
+    dispatch(mapSlice.actions.startLoadDetail());
+  }
+);
+
+export const loadMapDetailByPath = createAsyncThunk(
+  "map/loadMapDetailByPath",
+  async ({ ws, path }: { ws: Ws; path: string }, { dispatch }) => {
+    ws.send({
+      type: WsMessageTypeId.GetMapDetail,
+      path,
     });
     dispatch(mapSlice.actions.startLoadDetail());
   }

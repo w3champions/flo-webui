@@ -17,6 +17,11 @@ import {
   DisconnectMessage,
   ListMapsMessage,
   GetMapDetailMessage,
+  CurrentGameInfoMessage,
+  GamePlayerLeaveMessage,
+  GameSlotUpdateMessage,
+  PlayerSessionUpdateMessage,
+  GamePlayerEnterMessage,
 } from "../../types/ws";
 import React, { useContext } from "react";
 import {
@@ -26,6 +31,13 @@ import {
   setMapLoadDetailLoadError,
 } from "./map";
 import { Ws } from "../../providers/ws";
+import {
+  updateCurrentGame,
+  updateSlot,
+  updatePlayerEnter,
+  updatePlayerLeave,
+} from "./game";
+import { NextRouter } from "next/router";
 
 export interface WsState {
   status: WsStatus;
@@ -36,7 +48,6 @@ export interface WsState {
   playerSession: PlayerSessionMessage;
   playerSessionLoading: boolean;
   playerSessionError: SerializedError;
-  port: number;
 }
 
 export const reloadClientInfo = createAsyncThunk(
@@ -71,7 +82,6 @@ const wsSlice = createSlice({
   initialState: {
     status: WsStatus.Idle,
     clientInfo: null,
-    port: 3551,
     clientInfoReloading: false,
   } as WsState,
   reducers: {
@@ -83,9 +93,6 @@ const wsSlice = createSlice({
       if (action.payload) {
         state.status = WsStatus.Disconnected;
       }
-    },
-    updatePort(state, action: PayloadAction<number>) {
-      state.port = action.payload;
     },
     updateClientInfo(state, action: PayloadAction<ClientInfoMessage>) {
       state.clientInfo = action.payload;
@@ -100,6 +107,16 @@ const wsSlice = createSlice({
     updatePlayerSession(state, action: PayloadAction<PlayerSessionMessage>) {
       state.playerSessionLoading = false;
       state.playerSession = action.payload;
+    },
+    updatePlayerSessionPartial(
+      state,
+      action: PayloadAction<Partial<PlayerSessionMessage>>
+    ) {
+      state.playerSessionLoading = false;
+      state.playerSession = {
+        ...state.playerSession,
+        ...action.payload,
+      };
     },
     updatePlayerSessionLoading(state, action: PayloadAction<boolean>) {
       state.playerSessionLoading = action.payload;
@@ -125,7 +142,11 @@ const wsSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export function dispatchMessage(dispatch: AppDispatch, msg: WsMessage) {
+export function dispatchMessage(
+  router: NextRouter,
+  dispatch: AppDispatch,
+  msg: WsMessage
+) {
   switch (msg.type) {
     case WsMessageTypeId.ClientInfo: {
       return dispatch(
@@ -142,6 +163,13 @@ export function dispatchMessage(dispatch: AppDispatch, msg: WsMessage) {
         wsSlice.actions.updatePlayerSession(msg as PlayerSessionMessage)
       );
     }
+    case WsMessageTypeId.PlayerSessionUpdate: {
+      return dispatch(
+        wsSlice.actions.updatePlayerSessionPartial(
+          msg as PlayerSessionUpdateMessage
+        )
+      );
+    }
     case WsMessageTypeId.ConnectRejected: {
       return dispatch(
         wsSlice.actions.updatePlayerSessionError({
@@ -150,9 +178,10 @@ export function dispatchMessage(dispatch: AppDispatch, msg: WsMessage) {
       );
     }
     case WsMessageTypeId.Disconnect: {
+      const payload: DisconnectMessage = msg as DisconnectMessage;
       return dispatch(
         wsSlice.actions.updatePlayerSessionError({
-          message: (msg as DisconnectMessage).reason,
+          message: `${payload.reason}: ${payload.message}`,
         })
       );
     }
@@ -168,6 +197,28 @@ export function dispatchMessage(dispatch: AppDispatch, msg: WsMessage) {
     case WsMessageTypeId.GetMapDetailError: {
       return dispatch(setMapLoadDetailLoadError(msg as SerializedError));
     }
+    case WsMessageTypeId.CurrentGameInfo: {
+      if (router.pathname !== "/lobby") {
+        router.push("/lobby");
+      }
+      dispatch(updateCurrentGame(msg as CurrentGameInfoMessage));
+      return;
+    }
+    case WsMessageTypeId.GamePlayerEnter: {
+      const payload = msg as GamePlayerEnterMessage;
+      dispatch(updatePlayerEnter(payload));
+      return;
+    }
+    case WsMessageTypeId.GamePlayerLeave: {
+      const payload = msg as GamePlayerLeaveMessage;
+      dispatch(updatePlayerLeave(payload));
+      return;
+    }
+    case WsMessageTypeId.GameSlotUpdate: {
+      const payload = msg as GameSlotUpdateMessage;
+      dispatch(updateSlot(payload));
+      return;
+    }
   }
 }
 
@@ -175,7 +226,6 @@ export const {
   updateStatus,
   updateError,
   updateClientInfo,
-  updatePort,
   setWsDisconnected,
 } = wsSlice.actions;
 
@@ -186,7 +236,6 @@ export const selectWsReady = (state: AppState) =>
 export const selectWs = (state: AppState) => state.ws;
 export const selectWsStatus = createSelector(selectWs, (s) => s.status);
 export const selectWsError = createSelector(selectWs, (s) => s.error);
-export const selectWsPort = createSelector(selectWs, (s) => s.port);
 export const selectWsClientInfo = createSelector(selectWs, (s) => s.clientInfo);
 export const selectWsClientInfoReload = createSelector(selectWs, (s) => ({
   reloading: s.clientInfoReloading,
