@@ -101,8 +101,6 @@ export default function ConnectWs() {
       {clientInfo && status === WsStatus.Connected ? (
         <>
           <p>
-            Connected.
-            <br />
             Running on local port{" "}
             <span className="flo-text-info font-semibold">{port}</span>, version{" "}
             <span className="flo-text-info font-semibold">

@@ -219,6 +219,9 @@ export class SelectedNode extends jspb.Message {
     getIpAddr(): string;
     setIpAddr(value: string): SelectedNode;
 
+    getCountryId(): string;
+    setCountryId(value: string): SelectedNode;
+
 
     hasSecret(): boolean;
     clearSecret(): void;
@@ -243,6 +246,7 @@ export namespace SelectedNode {
         name: string,
         location: string,
         ipAddr: string,
+        countryId: string,
         secret?: google_protobuf_wrappers_pb.StringValue.AsObject,
     }
 }

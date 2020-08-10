@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { WsMessage, WsStatus } from "../types/ws";
 import {
   AppDispatch,
-  selectCurrentGameId,
+  selectSessionGameId,
   selectSetupRequired,
   selectSetupDone,
 } from "../redux/store";
@@ -204,7 +204,7 @@ export function useWsSetupEffects() {
   const router = useRouter();
   const { authToken, player } = useAuth();
   const clientInfo = useSelector(selectWsClientInfo);
-  const currentGameId = useSelector(selectCurrentGameId);
+  const currentGameId = useSelector(selectSessionGameId);
   const { ws, port, connectWs } = useContext(WsContext);
   const setupRequired = useSelector(selectSetupRequired);
   const resumeError = useSelector(selectResumeError);

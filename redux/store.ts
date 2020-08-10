@@ -27,7 +27,7 @@ export const selectPlayerInfoLoading = (state: AppState) =>
   state.auth.playerInfoLoading;
 export const selectPlayerInfoError = (state: AppState) =>
   state.auth.playerInfoError;
-export const selectCurrentGameId = createSelector(selectWsPlayerSession, (s) =>
+export const selectSessionGameId = createSelector(selectWsPlayerSession, (s) =>
   s ? s.game_id : null
 );
 

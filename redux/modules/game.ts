@@ -11,12 +11,18 @@ import {
   GameSlotUpdateMessage,
   GamePlayerEnterMessage,
   GamePlayerLeaveMessage,
+  GamePlayerPingMapSnapshotMessage,
+  GamePlayerPingMapSnapshotRequestMessage,
+  GameSelectNodeMessage,
 } from "../../types/ws";
 import { CreateGameRequestBody } from "../../types/game";
 import { ApiClient } from "../../helpers/api-client";
 import { AppState } from "../store";
 import { GameInfo, SlotStatus } from "../../types/lobby";
-import { player } from "../../server/service";
+import { GamePlayerPingSnapshot } from "../../types/node";
+import { Ws } from "../../providers/ws";
+import { PlayerRef } from "../../types/player";
+import { selectNodes } from "./node";
 
 interface CreateGameArg {
   client: ApiClient;
@@ -37,6 +43,10 @@ export interface GameState {
   createGameLoading: boolean;
   createGameError: SerializedError;
   currentGame: GameInfo;
+  currentNodeId: number | null;
+  currentNodeLoading: boolean;
+  pingSnapshotLoading: boolean;
+  pingSnapshot: GamePlayerPingSnapshot;
 }
 
 const gameSlice = createSlice({
@@ -45,6 +55,10 @@ const gameSlice = createSlice({
     createGameLoading: false,
     createGameError: null,
     currentGame: null,
+    currentNodeId: null,
+    currentNodeLoading: false,
+    pingSnapshotLoading: false,
+    pingSnapshot: null,
   } as GameState,
   reducers: {
     clearGameCreateError(state) {
@@ -52,13 +66,29 @@ const gameSlice = createSlice({
     },
     updateCurrentGame(state, action: PayloadAction<GameInfo>) {
       state.currentGame = action.payload;
+      state.currentNodeId =
+        action.payload && action.payload.node ? action.payload.node.id : null;
       state.createGameLoading = false;
+      state.currentNodeLoading = false;
       state.createGameError = null;
     },
     updateSlot(state, action: PayloadAction<GameSlotUpdateMessage>) {
       const { game_id, slot_index, slot_settings } = action.payload;
       if (state.currentGame && state.currentGame.id === game_id) {
         state.currentGame.slots[slot_index].settings = slot_settings;
+      }
+    },
+    startUpdateNode(state) {
+      state.currentNodeId = null;
+      state.currentNodeLoading = true;
+    },
+    updateNode(
+      state,
+      { payload: { game_id, node_id } }: PayloadAction<GameSelectNodeMessage>
+    ) {
+      if (state.currentGame && state.currentGame.id === game_id) {
+        state.currentNodeId = node_id;
+        state.currentNodeLoading = false;
       }
     },
     updatePlayerEnter(
@@ -87,12 +117,24 @@ const gameSlice = createSlice({
         }
       }
     },
+    startLoadPingSnapshot(state) {
+      state.pingSnapshotLoading = true;
+      state.pingSnapshot = null;
+    },
+    setPingSnapshot(
+      state,
+      { payload }: PayloadAction<GamePlayerPingMapSnapshotMessage>
+    ) {
+      state.pingSnapshotLoading = false;
+      state.pingSnapshot = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createGame.pending, (state, action) => {
         state.createGameLoading = true;
         state.createGameError = null;
+        state.currentNodeId = null;
       })
       .addCase(createGame.rejected, (state, action) => {
         state.createGameLoading = false;
@@ -104,6 +146,17 @@ const gameSlice = createSlice({
     // });
   },
 });
+
+export const loadPingSnapshot = createAsyncThunk(
+  "game/loadPingSnapshot",
+  async ({ ws, game_id }: { ws: Ws; game_id: number }, { dispatch }) => {
+    ws.send({
+      type: WsMessageTypeId.GamePlayerPingMapSnapshotRequest,
+      game_id,
+    } as GamePlayerPingMapSnapshotRequestMessage);
+    dispatch(gameSlice.actions.startLoadPingSnapshot());
+  }
+);
 
 export function getCreateGamePayload(
   detail: GetMapDetailMessage,
@@ -156,12 +209,62 @@ export const selectCurrentGame = createSelector(
   (s) => s.currentGame
 );
 
+export const selectCurrentGamePlayers = createSelector(
+  selectCurrentGame,
+  (s) => {
+    const players = [] as PlayerRef[];
+    if (!s) {
+      return players;
+    }
+    for (let slot of s.slots) {
+      if (slot.player) {
+        players.push(slot.player);
+      }
+    }
+    return players;
+  }
+);
+
+export const selectGamePingSnapshotLoading = createSelector(
+  selectGameState,
+  (state) => state.pingSnapshotLoading
+);
+
+export const selectGamePingSnapshot = createSelector(
+  selectGameState,
+  (state) => state.pingSnapshot
+);
+
+export const selectCurrentNodeId = createSelector(
+  selectGameState,
+  (state) => state.currentNodeId
+);
+
+export const selectCurrentNodeLoading = createSelector(
+  selectGameState,
+  (state) => state.currentNodeLoading
+);
+
+export const selectCurrentNode = createSelector(
+  selectCurrentNodeId,
+  selectNodes,
+  (id, nodes) => {
+    if (!id || !nodes.length) {
+      return null;
+    }
+    return nodes.find((node) => node.id === id);
+  }
+);
+
 export const {
   clearGameCreateError,
   updateCurrentGame,
   updateSlot,
   updatePlayerEnter,
   updatePlayerLeave,
+  setPingSnapshot,
+  startUpdateNode,
+  updateNode,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

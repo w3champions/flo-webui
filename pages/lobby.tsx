@@ -5,7 +5,6 @@ import {
   Intent,
   Toaster,
   Position,
-  Toast,
   IToaster,
   NonIdealState,
   Card,
@@ -16,9 +15,15 @@ import { IconNames } from "@blueprintjs/icons";
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useApiClient } from "../helpers/api-client";
-import { selectCurrentGameId } from "../redux/store";
+import { selectSessionGameId } from "../redux/store";
 import { LeaveGameRequestBody } from "../types/game";
-import { selectCurrentGame } from "../redux/modules/game";
+import {
+  selectCurrentGame,
+  selectCurrentGamePlayers,
+  selectCurrentNodeId,
+  startUpdateNode,
+  selectCurrentNodeLoading,
+} from "../redux/modules/game";
 import { Spinner } from "../components/Spinner";
 import { GameSlot, SlotUpdate } from "../components/GameLobby/GameSlot";
 import { Scrollbar } from "react-scrollbars-custom";
@@ -34,6 +39,8 @@ import {
   WsMessageTypeId,
   GameSlotUpdateMessage,
   GameSlotUpdateRequestMessage,
+  GameSelectNodeMessage,
+  GameSelectNodeRequestMessage,
 } from "../types/ws";
 import { MapIcon } from "../components/MapIcon";
 import { useRouter } from "next/router";
@@ -41,6 +48,7 @@ import { useAuth } from "../providers/auth";
 import { Slot } from "../types/lobby";
 import { createAbsoluteUrl } from "../helpers/url";
 import { copyToClipboard } from "../helpers/clipboard";
+import { ServerSelector } from "../components/ServerSelector";
 
 const selectSlotGroups = createSelector(selectCurrentGame, (game) => {
   const groups = {
@@ -103,12 +111,20 @@ export default withConnected(function GameLobby() {
   const [starting, setStarting] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const toaster = useRef(null as IToaster);
-  const currentGameId = useSelector(selectCurrentGameId);
+  const currentGameId = useSelector(selectSessionGameId);
   const currentGame = useSelector(selectCurrentGame);
+  const currentNodeId = useSelector(selectCurrentNodeId);
+  const currentNodeLoading = useSelector(selectCurrentNodeLoading);
+  const currentGamePlayers = useSelector(selectCurrentGamePlayers);
   const mapDetail = useSelector(selectGameMapDetail);
   const { players, referees } = useSelector(selectSlotGroups);
   const ws = useWs();
   const teams = players.length;
+  const canSelectServer =
+    currentGame &&
+    currentGame.created_by &&
+    currentGame.created_by.id === player.id;
+
   const handleSlotSettingChange = useMemo(() => {
     return (update: SlotUpdate) => {
       const { id, ...partial } = update;
@@ -137,7 +153,7 @@ export default withConnected(function GameLobby() {
       toaster.current.show({
         icon: IconNames.INFO_SIGN,
         message:
-          "Invite link has been copied. The link is only valid for 15 minutes.",
+          "Join link has been copied. The link is only valid for 15 minutes.",
         intent: Intent.SUCCESS,
       });
     } catch (e) {
@@ -166,6 +182,18 @@ export default withConnected(function GameLobby() {
       });
     }
   }, []);
+
+  const handleNodeChange = useCallback(
+    (nodeId: number) => {
+      dispatch(startUpdateNode());
+      ws.send({
+        type: WsMessageTypeId.GameSelectNodeRequest,
+        game_id: currentGameId,
+        node_id: nodeId,
+      } as GameSelectNodeRequestMessage);
+    },
+    [currentGameId]
+  );
 
   useEffect(() => {
     if (!currentGameId) {
@@ -208,32 +236,42 @@ export default withConnected(function GameLobby() {
   }
 
   return (
-    <Layout flex>
+    <Layout
+      flex
+      navContent={
+        <div className="flex content-center space-x-2">
+          <Button intent={Intent.PRIMARY} loading={starting}>
+            Start Game
+          </Button>
+          <Button intent={Intent.DANGER} loading={leaving} onClick={leave}>
+            Leave Game
+          </Button>
+          {currentGame.created_by && currentGame.created_by.id === player.id ? (
+            <Button loading={joinLinkLoading} onClick={createJoinLink}>
+              Invite Player
+            </Button>
+          ) : null}
+        </div>
+      }
+    >
       <div className="flex flex-col space-y-4 w-full">
         <div className="flex-initial flex space-x-4">
           <div className="flex-initial w-1/2">
             <MapDetail detail={mapDetail} />
           </div>
           <div className="flex-auto flex flex-col">
-            <div className="flex-initial">
-              <h5 className={Classes.HEADING}>Server</h5>
-            </div>
-            <div className="flex-auto">
-              <h5 className={Classes.HEADING}>Streaming</h5>
-            </div>
-            <div className="flex-initial space-x-4">
-              <Button intent={Intent.PRIMARY} loading={starting}>
-                Start Game
-              </Button>
-              <Button intent={Intent.DANGER} loading={leaving} onClick={leave}>
-                Leave Game
-              </Button>
-              {currentGame.created_by &&
-              currentGame.created_by.id === player.id ? (
-                <Button loading={joinLinkLoading} onClick={createJoinLink}>
-                  Create Join Link
-                </Button>
-              ) : null}
+            <div className="flex-auto flex">
+              <div className="flex-auto">
+                <h5 className={Classes.HEADING}>Server</h5>
+                <ServerSelector
+                  game_id={currentGameId}
+                  players={currentGamePlayers}
+                  value={currentNodeId}
+                  loading={currentNodeLoading}
+                  readonly={!canSelectServer}
+                  onChange={handleNodeChange}
+                />
+              </div>
             </div>
           </div>
         </div>

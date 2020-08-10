@@ -22,6 +22,10 @@ import {
   GameSlotUpdateMessage,
   PlayerSessionUpdateMessage,
   GamePlayerEnterMessage,
+  ListNodesMessage,
+  PingUpdateMessage,
+  GamePlayerPingMapSnapshotMessage,
+  GameSelectNodeMessage,
 } from "../../types/ws";
 import React, { useContext } from "react";
 import {
@@ -36,8 +40,11 @@ import {
   updateSlot,
   updatePlayerEnter,
   updatePlayerLeave,
+  setPingSnapshot,
+  updateNode,
 } from "./game";
 import { NextRouter } from "next/router";
+import { updateNodes, updateNodePing } from "./node";
 
 export interface WsState {
   status: WsStatus;
@@ -217,6 +224,26 @@ export function dispatchMessage(
     case WsMessageTypeId.GameSlotUpdate: {
       const payload = msg as GameSlotUpdateMessage;
       dispatch(updateSlot(payload));
+      return;
+    }
+    case WsMessageTypeId.ListNodes: {
+      const payload = msg as ListNodesMessage;
+      dispatch(updateNodes(payload.nodes));
+      return;
+    }
+    case WsMessageTypeId.PingUpdate: {
+      const payload = msg as PingUpdateMessage;
+      dispatch(updateNodePing(payload));
+      return;
+    }
+    case WsMessageTypeId.GamePlayerPingMapSnapshot: {
+      const payload = msg as GamePlayerPingMapSnapshotMessage;
+      dispatch(setPingSnapshot(payload));
+      return;
+    }
+    case WsMessageTypeId.GameSelectNode: {
+      const payload = msg as GameSelectNodeMessage;
+      dispatch(updateNode(payload));
       return;
     }
   }

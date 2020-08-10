@@ -7,7 +7,6 @@
 import * as grpc from "grpc";
 import * as lobby_pb from "./lobby_pb";
 import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wrappers_pb";
-import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as player_pb from "./player_pb";
 import * as game_pb from "./game_pb";
@@ -24,6 +23,7 @@ interface IFloLobbyService extends grpc.ServiceDefinition<grpc.UntypedServiceImp
     joinGameByToken: IFloLobbyService_IJoinGameByToken;
     leaveGame: IFloLobbyService_ILeaveGame;
     updateGameSlotSettings: IFloLobbyService_IUpdateGameSlotSettings;
+    selectGameNode: IFloLobbyService_ISelectGameNode;
     cancelGame: IFloLobbyService_ICancelGame;
     importMapChecksums: IFloLobbyService_IImportMapChecksums;
     searchMapChecksum: IFloLobbyService_ISearchMapChecksum;
@@ -128,6 +128,15 @@ interface IFloLobbyService_IUpdateGameSlotSettings extends grpc.MethodDefinition
     responseSerialize: grpc.serialize<lobby_pb.UpdateGameSlotSettingsReply>;
     responseDeserialize: grpc.deserialize<lobby_pb.UpdateGameSlotSettingsReply>;
 }
+interface IFloLobbyService_ISelectGameNode extends grpc.MethodDefinition<lobby_pb.SelectGameNodeRequest, google_protobuf_empty_pb.Empty> {
+    path: string; // "/lobby.FloLobby/SelectGameNode"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<lobby_pb.SelectGameNodeRequest>;
+    requestDeserialize: grpc.deserialize<lobby_pb.SelectGameNodeRequest>;
+    responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+}
 interface IFloLobbyService_ICancelGame extends grpc.MethodDefinition<lobby_pb.CancelGameRequest, google_protobuf_empty_pb.Empty> {
     path: string; // "/lobby.FloLobby/CancelGame"
     requestStream: false;
@@ -170,6 +179,7 @@ export interface IFloLobbyServer {
     joinGameByToken: grpc.handleUnaryCall<lobby_pb.JoinGameByTokenRequest, lobby_pb.JoinGameReply>;
     leaveGame: grpc.handleUnaryCall<lobby_pb.LeaveGameRequest, google_protobuf_empty_pb.Empty>;
     updateGameSlotSettings: grpc.handleUnaryCall<lobby_pb.UpdateGameSlotSettingsRequest, lobby_pb.UpdateGameSlotSettingsReply>;
+    selectGameNode: grpc.handleUnaryCall<lobby_pb.SelectGameNodeRequest, google_protobuf_empty_pb.Empty>;
     cancelGame: grpc.handleUnaryCall<lobby_pb.CancelGameRequest, google_protobuf_empty_pb.Empty>;
     importMapChecksums: grpc.handleUnaryCall<lobby_pb.ImportMapChecksumsRequest, lobby_pb.ImportMapChecksumsReply>;
     searchMapChecksum: grpc.handleUnaryCall<lobby_pb.SearchMapChecksumRequest, lobby_pb.SearchMapChecksumReply>;
@@ -209,6 +219,9 @@ export interface IFloLobbyClient {
     updateGameSlotSettings(request: lobby_pb.UpdateGameSlotSettingsRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.UpdateGameSlotSettingsReply) => void): grpc.ClientUnaryCall;
     updateGameSlotSettings(request: lobby_pb.UpdateGameSlotSettingsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.UpdateGameSlotSettingsReply) => void): grpc.ClientUnaryCall;
     updateGameSlotSettings(request: lobby_pb.UpdateGameSlotSettingsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.UpdateGameSlotSettingsReply) => void): grpc.ClientUnaryCall;
+    selectGameNode(request: lobby_pb.SelectGameNodeRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    selectGameNode(request: lobby_pb.SelectGameNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    selectGameNode(request: lobby_pb.SelectGameNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     cancelGame(request: lobby_pb.CancelGameRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
@@ -255,6 +268,9 @@ export class FloLobbyClient extends grpc.Client implements IFloLobbyClient {
     public updateGameSlotSettings(request: lobby_pb.UpdateGameSlotSettingsRequest, callback: (error: grpc.ServiceError | null, response: lobby_pb.UpdateGameSlotSettingsReply) => void): grpc.ClientUnaryCall;
     public updateGameSlotSettings(request: lobby_pb.UpdateGameSlotSettingsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: lobby_pb.UpdateGameSlotSettingsReply) => void): grpc.ClientUnaryCall;
     public updateGameSlotSettings(request: lobby_pb.UpdateGameSlotSettingsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: lobby_pb.UpdateGameSlotSettingsReply) => void): grpc.ClientUnaryCall;
+    public selectGameNode(request: lobby_pb.SelectGameNodeRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public selectGameNode(request: lobby_pb.SelectGameNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public selectGameNode(request: lobby_pb.SelectGameNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public cancelGame(request: lobby_pb.CancelGameRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public cancelGame(request: lobby_pb.CancelGameRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;

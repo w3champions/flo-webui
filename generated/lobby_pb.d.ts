@@ -6,7 +6,6 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wrappers_pb";
-import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as player_pb from "./player_pb";
 import * as game_pb from "./game_pb";
@@ -518,6 +517,38 @@ export namespace UpdateGameSlotSettingsReply {
     }
 }
 
+export class SelectGameNodeRequest extends jspb.Message { 
+    getGameId(): number;
+    setGameId(value: number): SelectGameNodeRequest;
+
+    getPlayerId(): number;
+    setPlayerId(value: number): SelectGameNodeRequest;
+
+
+    hasNodeId(): boolean;
+    clearNodeId(): void;
+    getNodeId(): google_protobuf_wrappers_pb.Int32Value | undefined;
+    setNodeId(value?: google_protobuf_wrappers_pb.Int32Value): SelectGameNodeRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): SelectGameNodeRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: SelectGameNodeRequest): SelectGameNodeRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: SelectGameNodeRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): SelectGameNodeRequest;
+    static deserializeBinaryFromReader(message: SelectGameNodeRequest, reader: jspb.BinaryReader): SelectGameNodeRequest;
+}
+
+export namespace SelectGameNodeRequest {
+    export type AsObject = {
+        gameId: number,
+        playerId: number,
+        nodeId?: google_protobuf_wrappers_pb.Int32Value.AsObject,
+    }
+}
+
 export class CancelGameRequest extends jspb.Message { 
     getGameId(): number;
     setGameId(value: number): CancelGameRequest;
@@ -556,17 +587,8 @@ export class Node extends jspb.Message {
     getIpAddr(): string;
     setIpAddr(value: string): Node;
 
-
-    hasCreatedAt(): boolean;
-    clearCreatedAt(): void;
-    getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
-    setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): Node;
-
-
-    hasUpdatedAt(): boolean;
-    clearUpdatedAt(): void;
-    getUpdatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
-    setUpdatedAt(value?: google_protobuf_timestamp_pb.Timestamp): Node;
+    getCountryId(): string;
+    setCountryId(value: string): Node;
 
 
     serializeBinary(): Uint8Array;
@@ -585,8 +607,7 @@ export namespace Node {
         name: string,
         location: string,
         ipAddr: string,
-        createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
-        updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+        countryId: string,
     }
 }
 

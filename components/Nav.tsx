@@ -4,7 +4,7 @@ import {
   selectPlayerInfo,
   AppDispatch,
   selectSetupDone,
-  selectCurrentGameId,
+  selectSessionGameId,
 } from "../redux/store";
 import Link from "next/link";
 import {
@@ -22,10 +22,12 @@ import { IconNames } from "@blueprintjs/icons";
 import { useRouter } from "next/router";
 import { useWs } from "../providers/ws";
 
-export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
+export const Nav: FunctionComponent<{
+  noIcon?: boolean;
+  content?: JSX.Element;
+}> = ({ noIcon, content }) => {
   const router = useRouter();
   const setupDone = useSelector(selectSetupDone);
-  const currentGameId = useSelector(selectCurrentGameId);
   const playerInfo = useSelector(selectPlayerInfo);
   const dispatch: AppDispatch = useDispatch();
   const path = router.pathname;
@@ -53,14 +55,8 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
         )}
 
         {setupDone ? (
-          currentGameId ? (
-            <div className="flex flex-row items-center justify-center space-x-2">
-              <Icon
-                icon={IconNames.RECORD}
-                className="animate-pulse text-red-500"
-              />
-              <span className="font-bold">GAME#{currentGameId}</span>
-            </div>
+          content ? (
+            content
           ) : (
             <div className="flex space-x-1">
               <Link href="/">
@@ -107,9 +103,8 @@ export const Nav: FunctionComponent<{ noIcon?: boolean }> = ({ noIcon }) => {
               </Menu>
             }
           >
-            <Button icon="user">
+            <Button icon="user" rightIcon={IconNames.CARET_DOWN}>
               <span>{playerInfo.name}</span>
-              <Icon icon={IconNames.CARET_DOWN}></Icon>
             </Button>
           </Popover>
         )}

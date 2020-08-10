@@ -1,4 +1,5 @@
 import { PlayerRef } from "./player";
+import { SelectedNode } from "./node";
 
 export interface GameInfo {
   id: number;
@@ -57,13 +58,4 @@ export enum Race {
   NightElf = 2,
   Undead = 3,
   Random = 4,
-}
-
-export interface SelectedNode {
-  type: number;
-  id: number | null;
-  name: string;
-  location: string;
-  ip_addr: string;
-  secret: string;
 }

@@ -7,7 +7,8 @@ export const Layout: FunctionComponent<{
   noIcon?: boolean;
   noNav?: boolean;
   flex?: boolean;
-}> = ({ noIcon, noNav, flex, children }) => {
+  navContent?: JSX.Element;
+}> = ({ noIcon, noNav, flex, navContent, children }) => {
   return (
     <>
       <Head>
@@ -15,7 +16,7 @@ export const Layout: FunctionComponent<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={Classes.DARK}>
-        {noNav ? null : <Nav noIcon={noIcon} />}
+        {noNav ? null : <Nav noIcon={noIcon} content={navContent} />}
         <div className={`flo-wrapper ${flex ? "flo-wrapper-flex" : ""}`}>
           {children}
         </div>

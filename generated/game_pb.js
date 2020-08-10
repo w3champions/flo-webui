@@ -1631,6 +1631,7 @@ proto.game.SelectedNode.toObject = function(includeInstance, msg) {
     name: jspb.Message.getFieldWithDefault(msg, 3, ""),
     location: jspb.Message.getFieldWithDefault(msg, 4, ""),
     ipAddr: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    countryId: jspb.Message.getFieldWithDefault(msg, 6, ""),
     secret: (f = msg.getSecret()) && google_protobuf_wrappers_pb.StringValue.toObject(includeInstance, f)
   };
 
@@ -1690,6 +1691,10 @@ proto.game.SelectedNode.deserializeBinaryFromReader = function(msg, reader) {
       msg.setIpAddr(value);
       break;
     case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCountryId(value);
+      break;
+    case 7:
       var value = new google_protobuf_wrappers_pb.StringValue;
       reader.readMessage(value,google_protobuf_wrappers_pb.StringValue.deserializeBinaryFromReader);
       msg.setSecret(value);
@@ -1759,10 +1764,17 @@ proto.game.SelectedNode.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getCountryId();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
   f = message.getSecret();
   if (f != null) {
     writer.writeMessage(
-      6,
+      7,
       f,
       google_protobuf_wrappers_pb.StringValue.serializeBinaryToWriter
     );
@@ -1880,12 +1892,30 @@ proto.game.SelectedNode.prototype.setIpAddr = function(value) {
 
 
 /**
- * optional google.protobuf.StringValue secret = 6;
+ * optional string country_id = 6;
+ * @return {string}
+ */
+proto.game.SelectedNode.prototype.getCountryId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.game.SelectedNode} returns this
+ */
+proto.game.SelectedNode.prototype.setCountryId = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional google.protobuf.StringValue secret = 7;
  * @return {?proto.google.protobuf.StringValue}
  */
 proto.game.SelectedNode.prototype.getSecret = function() {
   return /** @type{?proto.google.protobuf.StringValue} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.StringValue, 6));
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.StringValue, 7));
 };
 
 
@@ -1894,7 +1924,7 @@ proto.game.SelectedNode.prototype.getSecret = function() {
  * @return {!proto.game.SelectedNode} returns this
 */
 proto.game.SelectedNode.prototype.setSecret = function(value) {
-  return jspb.Message.setWrapperField(this, 6, value);
+  return jspb.Message.setWrapperField(this, 7, value);
 };
 
 
@@ -1912,7 +1942,7 @@ proto.game.SelectedNode.prototype.clearSecret = function() {
  * @return {boolean}
  */
 proto.game.SelectedNode.prototype.hasSecret = function() {
-  return jspb.Message.getField(this, 6) != null;
+  return jspb.Message.getField(this, 7) != null;
 };
 
 

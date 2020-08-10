@@ -4,7 +4,6 @@
 var grpc = require('grpc');
 var lobby_pb = require('./lobby_pb.js');
 var google_protobuf_wrappers_pb = require('google-protobuf/google/protobuf/wrappers_pb.js');
-var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
 var player_pb = require('./player_pb.js');
 var game_pb = require('./game_pb.js');
@@ -229,6 +228,17 @@ function deserialize_lobby_SearchMapChecksumRequest(buffer_arg) {
   return lobby_pb.SearchMapChecksumRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_lobby_SelectGameNodeRequest(arg) {
+  if (!(arg instanceof lobby_pb.SelectGameNodeRequest)) {
+    throw new Error('Expected argument of type lobby.SelectGameNodeRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_lobby_SelectGameNodeRequest(buffer_arg) {
+  return lobby_pb.SelectGameNodeRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_lobby_UpdateAndGetPlayerReply(arg) {
   if (!(arg instanceof lobby_pb.UpdateAndGetPlayerReply)) {
     throw new Error('Expected argument of type lobby.UpdateAndGetPlayerReply');
@@ -405,6 +415,18 @@ updateGameSlotSettings: {
     requestDeserialize: deserialize_lobby_UpdateGameSlotSettingsRequest,
     responseSerialize: serialize_lobby_UpdateGameSlotSettingsReply,
     responseDeserialize: deserialize_lobby_UpdateGameSlotSettingsReply,
+  },
+  // Select a node that will be used
+selectGameNode: {
+    path: '/lobby.FloLobby/SelectGameNode',
+    requestStream: false,
+    responseStream: false,
+    requestType: lobby_pb.SelectGameNodeRequest,
+    responseType: google_protobuf_empty_pb.Empty,
+    requestSerialize: serialize_lobby_SelectGameNodeRequest,
+    requestDeserialize: deserialize_lobby_SelectGameNodeRequest,
+    responseSerialize: serialize_google_protobuf_Empty,
+    responseDeserialize: deserialize_google_protobuf_Empty,
   },
   // Cancels a game
 cancelGame: {

@@ -43,5 +43,5 @@ body {
 
 button.bp3-button {
   outline: none;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }

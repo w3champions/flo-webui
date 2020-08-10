@@ -2,6 +2,8 @@ import { PlayerRef } from "./player";
 import { MapList } from "./map";
 import { MapPlayer, MapForce } from "./game";
 import { GameInfo, Slot, SlotSettings } from "./lobby";
+import { FloNode, GamePlayerPingSnapshot } from "./node";
+import { SelectedNode } from "../generated/game_pb";
 
 export enum WsStatus {
   Idle = "Idle",
@@ -28,6 +30,13 @@ export enum WsMessageTypeId {
   GameSlotUpdate = "GameSlotUpdate",
   PlayerSessionUpdate = "PlayerSessionUpdate",
   GameSlotUpdateRequest = "GameSlotUpdateRequest",
+  ListNodes = "ListNodes",
+  PingUpdate = "PingUpdate",
+  GameSelectNodeRequest = "GameSelectNodeRequest",
+  GameSelectNode = "GameSelectNode",
+  GamePlayerPingMapUpdate = "GamePlayerPingMapUpdate",
+  GamePlayerPingMapSnapshotRequest = "GamePlayerPingMapSnapshotRequest",
+  GamePlayerPingMapSnapshot = "GamePlayerPingMapSnapshot",
 }
 
 export interface WsMessage {
@@ -135,4 +144,41 @@ export interface GameSlotUpdateMessage extends WsMessage {
 export interface GameSlotUpdateRequestMessage extends WsMessage {
   game_id: number;
   slot_settings: SlotSettings;
+}
+
+export interface ListNodesMessage extends WsMessage {
+  nodes: FloNode[];
+}
+
+export interface GameSelectNodeMessage extends WsMessage {
+  game_id: number;
+  node_id: number | null;
+}
+
+export interface GameSelectNodeRequestMessage extends WsMessage {
+  game_id: number;
+  node_id: number;
+}
+
+export interface PingUpdateMessage extends WsMessage {
+  node_id: number;
+  ping: number | null;
+}
+
+export interface GamePlayerPingMapUpdateMessage extends WsMessage {
+  game_id: number;
+  player_id: number;
+  ping_map: {
+    [node_id: number]: number;
+  };
+}
+
+export interface GamePlayerPingMapSnapshotRequestMessage extends WsMessage {
+  game_id: number;
+}
+
+export interface GamePlayerPingMapSnapshotMessage
+  extends GamePlayerPingSnapshot,
+    WsMessage {
+  game_id: number;
 }
