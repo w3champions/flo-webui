@@ -26,6 +26,7 @@ import {
   PingUpdateMessage,
   GamePlayerPingMapSnapshotMessage,
   GameSelectNodeMessage,
+  GamePlayerPingMapUpdateMessage,
 } from "../../types/ws";
 import React, { useContext } from "react";
 import {
@@ -42,6 +43,7 @@ import {
   updatePlayerLeave,
   setPingSnapshot,
   updateNode,
+  updateCurrentPing,
 } from "./game";
 import { NextRouter } from "next/router";
 import { updateNodes, updateNodePing } from "./node";
@@ -55,6 +57,7 @@ export interface WsState {
   playerSession: PlayerSessionMessage;
   playerSessionLoading: boolean;
   playerSessionError: SerializedError;
+  disconnectError: SerializedError;
 }
 
 export const reloadClientInfo = createAsyncThunk(
@@ -90,6 +93,11 @@ const wsSlice = createSlice({
     status: WsStatus.Idle,
     clientInfo: null,
     clientInfoReloading: false,
+    clientInfoReloadError: null,
+    playerSession: null,
+    playerSessionLoading: false,
+    playerSessionError: null,
+    disconnectError: null,
   } as WsState,
   reducers: {
     updateStatus(state, action: PayloadAction<WsStatus>) {
@@ -145,6 +153,9 @@ const wsSlice = createSlice({
       }
       state.playerSession = null;
     },
+    setDisconnectError(state, action: PayloadAction<SerializedError>) {
+      state.disconnectError = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -186,11 +197,11 @@ export function dispatchMessage(
     }
     case WsMessageTypeId.Disconnect: {
       const payload: DisconnectMessage = msg as DisconnectMessage;
-      return dispatch(
-        wsSlice.actions.updatePlayerSessionError({
-          message: `${payload.reason}: ${payload.message}`,
-        })
-      );
+      const error = {
+        message: payload.message,
+      };
+      dispatch(wsSlice.actions.updatePlayerSessionError(error));
+      return dispatch(wsSlice.actions.setDisconnectError(error));
     }
     case WsMessageTypeId.ListMaps: {
       return dispatch(setMapListLoaded((msg as ListMapsMessage).data));
@@ -246,6 +257,11 @@ export function dispatchMessage(
       dispatch(updateNode(payload));
       return;
     }
+    case WsMessageTypeId.GamePlayerPingMapUpdate: {
+      const payload = msg as GamePlayerPingMapUpdateMessage;
+      dispatch(updateCurrentPing(payload));
+      return;
+    }
   }
 }
 
@@ -253,6 +269,7 @@ export const {
   updateStatus,
   updateError,
   updateClientInfo,
+  setDisconnectError,
   setWsDisconnected,
 } = wsSlice.actions;
 
@@ -278,6 +295,10 @@ export const selectWsPlayerSessionLoadStatus = createSelector(
     loading: s.playerSessionLoading,
     error: s.playerSessionError,
   })
+);
+export const selectWsDisconnectError = createSelector(
+  selectWs,
+  (s) => s.disconnectError
 );
 
 export default wsSlice.reducer;

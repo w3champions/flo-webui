@@ -30,3 +30,9 @@ export interface GamePlayerPingSnapshot {
     };
   };
 }
+
+export interface GamePlayerPingMap {
+  [player_id: number]: {
+    [node_id: number]: number;
+  };
+}

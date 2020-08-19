@@ -81,8 +81,17 @@ export default withConnected(function CreateGame() {
 
   const listLoading = useSelector(selectMapListLoading);
   const listError = useSelector(selectMapListLoadError);
-  const creating = useSelector(selectGameCreating);
+  const createError = useSelector(selectGameCreateError);
+  const [creating, setCreating] = useState(false);
   const apiClient = useApiClient();
+
+  useEffect(() => {
+    if (createError) {
+      if (creating) {
+        setCreating(false);
+      }
+    }
+  }, [createError]);
 
   if (creating) {
     return (
@@ -146,6 +155,7 @@ export default withConnected(function CreateGame() {
             >
               <MapPreview
                 onCreate={(detail) => {
+                  setCreating(true);
                   dispatch(
                     createGame({
                       client: apiClient,

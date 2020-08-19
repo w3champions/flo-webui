@@ -14,12 +14,13 @@ import {
   GamePlayerPingMapSnapshotMessage,
   GamePlayerPingMapSnapshotRequestMessage,
   GameSelectNodeMessage,
+  GamePlayerPingMapUpdateMessage,
 } from "../../types/ws";
 import { CreateGameRequestBody } from "../../types/game";
 import { ApiClient } from "../../helpers/api-client";
 import { AppState } from "../store";
 import { GameInfo, SlotStatus } from "../../types/lobby";
-import { GamePlayerPingSnapshot } from "../../types/node";
+import { GamePlayerPingSnapshot, GamePlayerPingMap } from "../../types/node";
 import { Ws } from "../../providers/ws";
 import { PlayerRef } from "../../types/player";
 import { selectNodes } from "./node";
@@ -45,6 +46,7 @@ export interface GameState {
   currentGame: GameInfo;
   currentNodeId: number | null;
   currentNodeLoading: boolean;
+  currentPingMap: GamePlayerPingMap;
   pingSnapshotLoading: boolean;
   pingSnapshot: GamePlayerPingSnapshot;
 }
@@ -57,6 +59,7 @@ const gameSlice = createSlice({
     currentGame: null,
     currentNodeId: null,
     currentNodeLoading: false,
+    currentPingMap: null,
     pingSnapshotLoading: false,
     pingSnapshot: null,
   } as GameState,
@@ -68,6 +71,7 @@ const gameSlice = createSlice({
       state.currentGame = action.payload;
       state.currentNodeId =
         action.payload && action.payload.node ? action.payload.node.id : null;
+      state.currentPingMap = null;
       state.createGameLoading = false;
       state.currentNodeLoading = false;
       state.createGameError = null;
@@ -89,6 +93,7 @@ const gameSlice = createSlice({
       if (state.currentGame && state.currentGame.id === game_id) {
         state.currentNodeId = node_id;
         state.currentNodeLoading = false;
+        state.currentPingMap = null;
       }
     },
     updatePlayerEnter(
@@ -127,6 +132,25 @@ const gameSlice = createSlice({
     ) {
       state.pingSnapshotLoading = false;
       state.pingSnapshot = payload;
+    },
+    updateCurrentPing(
+      state,
+      { payload }: PayloadAction<GamePlayerPingMapUpdateMessage>
+    ) {
+      if (!state.currentPingMap) {
+        state.currentPingMap = {
+          [payload.player_id]: payload.ping_map,
+        };
+      } else {
+        const map = state.currentPingMap[payload.player_id];
+        if (map) {
+          for (let [node_id, ping] of Object.entries(payload.ping_map)) {
+            map[node_id] = ping;
+          }
+        } else {
+          state.currentPingMap[payload.player_id] = payload.ping_map;
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -256,6 +280,33 @@ export const selectCurrentNode = createSelector(
   }
 );
 
+export const selectCurrentPingMap = createSelector(
+  selectGameState,
+  (state) => state.currentPingMap
+);
+
+export const selectCurrentNodePingMap = createSelector(
+  selectCurrentNode,
+  selectCurrentPingMap,
+  (state) => state.auth.playerInfo,
+  (node, pingMap, playerInfo) => {
+    if (!node || !pingMap || !playerInfo) {
+      return null;
+    }
+    const r = {
+      [playerInfo.id]: node.ping,
+    };
+    const nodeIdString = String(node.id);
+    for (let [player_id, map] of Object.entries(pingMap)) {
+      const ping = map[nodeIdString];
+      if (typeof ping === "number") {
+        r[player_id] = ping;
+      }
+    }
+    return r;
+  }
+);
+
 export const {
   clearGameCreateError,
   updateCurrentGame,
@@ -265,6 +316,7 @@ export const {
   setPingSnapshot,
   startUpdateNode,
   updateNode,
+  updateCurrentPing,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

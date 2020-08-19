@@ -37,6 +37,7 @@ export enum WsMessageTypeId {
   GamePlayerPingMapUpdate = "GamePlayerPingMapUpdate",
   GamePlayerPingMapSnapshotRequest = "GamePlayerPingMapSnapshotRequest",
   GamePlayerPingMapSnapshot = "GamePlayerPingMapSnapshot",
+  GameStartRequest = "GameStartRequest",
 }
 
 export interface WsMessage {
@@ -180,5 +181,9 @@ export interface GamePlayerPingMapSnapshotRequestMessage extends WsMessage {
 export interface GamePlayerPingMapSnapshotMessage
   extends GamePlayerPingSnapshot,
     WsMessage {
+  game_id: number;
+}
+
+export interface GameStartRequestMessage extends WsMessage {
   game_id: number;
 }

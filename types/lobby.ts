@@ -15,9 +15,11 @@ export interface GameInfo {
 
 export enum GameStatus {
   Preparing = 0,
-  Playing = 1,
-  Ended = 2,
-  Paused = 3,
+  Created = 1,
+  Running = 2,
+  Ended = 3,
+  Paused = 4,
+  Terminated = 5,
 }
 
 export interface Map {

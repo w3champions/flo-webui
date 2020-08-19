@@ -1,4 +1,11 @@
-import { Icon, Callout, Intent, Classes } from "@blueprintjs/core";
+import {
+  Icon,
+  Callout,
+  Intent,
+  Classes,
+  Dialog,
+  Button,
+} from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import SignIn from "../components/SignIn";
 import { useSelector } from "react-redux";
@@ -10,7 +17,12 @@ import {
 } from "../redux/store";
 import { Spinner } from "../components/Spinner";
 import ConnectWs from "../components/ConnectWs";
-import { selectWsReady, selectWsPlayerSession } from "../redux/modules/ws";
+import {
+  selectWsReady,
+  selectWsPlayerSession,
+  selectWsPlayerSessionLoadStatus,
+  selectWsDisconnectError,
+} from "../redux/modules/ws";
 import ConnectLobby from "../components/ConnectLobby";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -25,6 +37,7 @@ export default function Setup() {
   const player = useSelector(selectPlayerInfo);
   const wsReady = useSelector(selectWsReady);
   const playerSession = useSelector(selectWsPlayerSession);
+  const disconnectError = useSelector(selectWsDisconnectError);
   const router = useRouter();
   const done = useSelector(selectSetupDone);
 
@@ -113,6 +126,28 @@ export default function Setup() {
           <Spinner />
         </div>
       ) : null}
+      <Dialog
+        className={Classes.DARK}
+        isOpen={!!disconnectError}
+        icon={IconNames.ERROR}
+        title="Connection Closed"
+      >
+        {disconnectError && (
+          <div className={Classes.DIALOG_BODY}>{disconnectError.message}</div>
+        )}
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Button
+              intent={Intent.PRIMARY}
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Reconnect
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

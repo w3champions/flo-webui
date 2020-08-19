@@ -2,6 +2,8 @@ import { Slot, SlotStatus, Race, SlotSettings } from "../../types/lobby";
 import classnames from "classnames";
 import { Button, Popover, Menu, MenuItem, Icon, Card } from "@blueprintjs/core";
 import PlayerColorPicker from "./PlayerColorPicker";
+import PingValue from "../PingValue";
+import { IconNames } from "@blueprintjs/icons";
 
 export type SlotUpdate = {
   id: number;
@@ -15,6 +17,7 @@ export interface GameSlotProps {
   teams: number;
   host?: boolean;
   me?: boolean;
+  ping?: number | null;
   onSettingsChange?: HandlerSlotSettingsChange;
 }
 
@@ -29,11 +32,12 @@ export const GameSlot: React.FunctionComponent<GameSlotProps> = ({
   host,
   me,
   onSettingsChange,
+  ping,
 }) => {
   let inner = null;
 
   if (slot.player) {
-    inner = renderPlayerSlot(id, slot, teams, host, me, onSettingsChange);
+    inner = renderPlayerSlot(id, slot, teams, host, me, onSettingsChange, ping);
   } else if (slot.settings.status === SlotStatus.Open) {
     inner = renderOpenSlot(slot);
   }
@@ -45,20 +49,35 @@ export const GameSlot: React.FunctionComponent<GameSlotProps> = ({
   );
 };
 
+const SlotItemStyles = {
+  height: 28,
+};
+
 function renderPlayerSlot(
   id: number,
   slot: Slot,
   teams: number,
   host: boolean,
   me: boolean,
-  onSettingsChange: HandlerSlotSettingsChange
+  onSettingsChange: HandlerSlotSettingsChange,
+  ping?: number | null
 ) {
   if (slot.settings.team === 24) {
     return (
       <div className="flex p-1 items-center">
-        <Button className="flex-auto px-4 justify-start">
-          {slot.player ? slot.player.name : null}
-        </Button>
+        <div
+          className="flex-auto px-4 flex items-center"
+          style={SlotItemStyles}
+        >
+          <span className={`flex-auto ${me ? "font-semibold" : ""}`}>
+            {slot.player ? <span>{slot.player.name}</span> : null}
+          </span>
+          {me ? null : (
+            <small className="flex-initial">
+              <PingValue value={ping} />
+            </small>
+          )}
+        </div>
       </div>
     );
   }
@@ -83,9 +102,16 @@ function renderPlayerSlot(
           }}
         />
       </div>
-      <Button className="flex-auto px-4 justify-start">
-        {slot.player ? <span>{slot.player.name}</span> : null}
-      </Button>
+      <div className="flex-auto px-4 flex">
+        <span className={`flex-auto ${me ? "font-semibold" : ""}`}>
+          {slot.player ? <span>{slot.player.name}</span> : null}
+        </span>
+        {me ? null : (
+          <small className="flex-initial">
+            <PingValue value={ping} />
+          </small>
+        )}
+      </div>
       <div className="flex-initial">
         <RacePicker
           readonly={!me}

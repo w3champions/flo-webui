@@ -127,7 +127,7 @@ export function ServerSelector({
                       data.node_ping_map[node.id] &&
                       data.node_ping_map[node.id].player_ping_map[p.id];
                     return (
-                      <td key={p.id}>
+                      <td key={p.id} className="text-xs">
                         <PingValue value={ping} />
                       </td>
                     );
@@ -143,7 +143,7 @@ export function ServerSelector({
 
   return (
     <div className="space-y-2">
-      <Button onClick={() => setOpen(true)} large loading={loading}>
+      <Button onClick={() => setOpen(true)} loading={loading}>
         {selected ? (
           <span className="inline-flex items-center">
             <FlagIcon className="flex-initial mr-2" id={selected.country_id} />
