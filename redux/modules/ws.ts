@@ -27,6 +27,9 @@ import {
   GamePlayerPingMapSnapshotMessage,
   GameSelectNodeMessage,
   GamePlayerPingMapUpdateMessage,
+  GameStartRejectMessage,
+  GameStartingMessage,
+  GameStartedMessage,
 } from "../../types/ws";
 import React, { useContext } from "react";
 import {
@@ -44,6 +47,9 @@ import {
   setPingSnapshot,
   updateNode,
   updateCurrentPing,
+  updateStartGameRejection,
+  updateStartGameLoading,
+  updateGameStarted,
 } from "./game";
 import { NextRouter } from "next/router";
 import { updateNodes, updateNodePing } from "./node";
@@ -260,6 +266,19 @@ export function dispatchMessage(
     case WsMessageTypeId.GamePlayerPingMapUpdate: {
       const payload = msg as GamePlayerPingMapUpdateMessage;
       dispatch(updateCurrentPing(payload));
+      return;
+    }
+    case WsMessageTypeId.GameStartReject: {
+      const payload = msg as GameStartRejectMessage;
+      dispatch(updateStartGameRejection(payload));
+      return;
+    }
+    case WsMessageTypeId.GameStarting: {
+      dispatch(updateStartGameLoading(msg as GameStartingMessage));
+      return;
+    }
+    case WsMessageTypeId.GameStarted: {
+      dispatch(updateGameStarted(msg as GameStartedMessage));
       return;
     }
   }

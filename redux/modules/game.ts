@@ -15,11 +15,14 @@ import {
   GamePlayerPingMapSnapshotRequestMessage,
   GameSelectNodeMessage,
   GamePlayerPingMapUpdateMessage,
+  GameStartRejectMessage,
+  GameStartingMessage,
+  GameStartedMessage,
 } from "../../types/ws";
 import { CreateGameRequestBody } from "../../types/game";
 import { ApiClient } from "../../helpers/api-client";
 import { AppState } from "../store";
-import { GameInfo, SlotStatus } from "../../types/lobby";
+import { GameInfo, SlotStatus, GameStatus } from "../../types/lobby";
 import { GamePlayerPingSnapshot, GamePlayerPingMap } from "../../types/node";
 import { Ws } from "../../providers/ws";
 import { PlayerRef } from "../../types/player";
@@ -49,6 +52,8 @@ export interface GameState {
   currentPingMap: GamePlayerPingMap;
   pingSnapshotLoading: boolean;
   pingSnapshot: GamePlayerPingSnapshot;
+  startGameLoading: boolean;
+  startGameRejection: GameStartRejectMessage;
 }
 
 const gameSlice = createSlice({
@@ -62,6 +67,8 @@ const gameSlice = createSlice({
     currentPingMap: null,
     pingSnapshotLoading: false,
     pingSnapshot: null,
+    startGameLoading: false,
+    startGameRejection: null,
   } as GameState,
   reducers: {
     clearGameCreateError(state) {
@@ -151,6 +158,38 @@ const gameSlice = createSlice({
           state.currentPingMap[payload.player_id] = payload.ping_map;
         }
       }
+    },
+    updateStartGameLoadingLocal(state, { payload }: PayloadAction<boolean>) {
+      state.startGameLoading = payload;
+      state.startGameRejection = null;
+    },
+    updateStartGameLoading(
+      state,
+      { payload }: PayloadAction<GameStartingMessage>
+    ) {
+      if (state.currentGame && state.currentGame.id === payload.game_id) {
+        state.startGameLoading = true;
+        state.startGameRejection = null;
+      }
+    },
+    updateGameStarted(state, { payload }: PayloadAction<GameStartedMessage>) {
+      if (state.currentGame && state.currentGame.id === payload.game_id) {
+        state.startGameLoading = false;
+        state.startGameRejection = null;
+        state.currentGame.status = GameStatus.Created;
+      }
+    },
+    updateStartGameRejection(
+      state,
+      { payload }: PayloadAction<GameStartRejectMessage>
+    ) {
+      if (state.currentGame && state.currentGame.id === payload.game_id) {
+        state.startGameLoading = false;
+        state.startGameRejection = payload;
+      }
+    },
+    clearStartGameRejection(state) {
+      state.startGameRejection = null;
     },
   },
   extraReducers: (builder) => {
@@ -307,6 +346,12 @@ export const selectCurrentNodePingMap = createSelector(
   }
 );
 
+export const selectGameStarting = (state: AppState) =>
+  state.game.startGameLoading;
+
+export const selectStartGameRejection = (state: AppState) =>
+  state.game.startGameRejection;
+
 export const {
   clearGameCreateError,
   updateCurrentGame,
@@ -317,6 +362,11 @@ export const {
   startUpdateNode,
   updateNode,
   updateCurrentPing,
+  updateStartGameLoading,
+  updateStartGameLoadingLocal,
+  updateStartGameRejection,
+  updateGameStarted,
+  clearStartGameRejection,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

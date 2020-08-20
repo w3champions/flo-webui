@@ -24,6 +24,8 @@ import {
   startUpdateNode,
   selectCurrentNodeLoading,
   selectCurrentNodePingMap,
+  selectGameStarting,
+  updateStartGameLoadingLocal,
 } from "../../redux/modules/game";
 import { Spinner } from "../../components/Spinner";
 import { GameSlot, SlotUpdate } from "../../components/GameLobby/GameSlot";
@@ -47,6 +49,7 @@ import { copyToClipboard } from "../../helpers/clipboard";
 import { ServerSelector } from "../../components/ServerSelector";
 import MapDetail, { GameMapDetail } from "./MapDetail";
 import { Layout } from "../Layout";
+import GameStartFailedAlert from "./GameStartFailedAlert";
 
 export interface GameViewPreparingProps {
   game: GameInfo;
@@ -98,7 +101,6 @@ export default function GameViewPreparing({
   const apiClient = useApiClient();
   const dispatch = useDispatch();
   const { player } = useAuth();
-  const [starting, setStarting] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const toaster = useRef(null as IToaster);
   const currentGameId = game.id;
@@ -106,11 +108,16 @@ export default function GameViewPreparing({
   const currentNodeLoading = useSelector(selectCurrentNodeLoading);
   const currentGamePlayers = useSelector(selectCurrentGamePlayers);
   const currentNodePingMap = useSelector(selectCurrentNodePingMap);
+  const starting = useSelector(selectGameStarting);
   const { players, referees } = useSelector(selectSlotGroups);
   const ws = useWs();
   const teams = players.length;
   const canSelectServer =
     game && game.created_by && game.created_by.id === player.id;
+
+  const setStartingLocal = () => {
+    dispatch(updateStartGameLoadingLocal(true));
+  };
 
   const handleSlotSettingChange = useMemo(() => {
     return (update: SlotUpdate) => {
@@ -202,7 +209,7 @@ export default function GameViewPreparing({
       type: WsMessageTypeId.GameStartRequest,
       game_id: game.id,
     });
-    setStarting(true);
+    setStartingLocal();
   };
 
   if (leaving) {
@@ -247,6 +254,7 @@ export default function GameViewPreparing({
                   value={currentNodeId}
                   loading={currentNodeLoading}
                   readonly={!canSelectServer}
+                  disabled={starting}
                   onChange={handleNodeChange}
                 />
               </div>
@@ -315,6 +323,7 @@ export default function GameViewPreparing({
                           currentNodePingMap &&
                           currentNodePingMap[playerId]
                         }
+                        disabled={starting}
                       />
                     );
                   })}
@@ -347,6 +356,7 @@ export default function GameViewPreparing({
                           currentNodePingMap &&
                           currentNodePingMap[playerId]
                         }
+                        disabled={starting}
                       />
                     );
                   })}
@@ -356,6 +366,7 @@ export default function GameViewPreparing({
           </Scrollbar>
         </Card>
         <Toaster position={Position.TOP} ref={(v) => (toaster.current = v)} />
+        <GameStartFailedAlert />
       </div>
     </Layout>
   );

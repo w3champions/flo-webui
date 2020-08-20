@@ -38,6 +38,9 @@ export enum WsMessageTypeId {
   GamePlayerPingMapSnapshotRequest = "GamePlayerPingMapSnapshotRequest",
   GamePlayerPingMapSnapshot = "GamePlayerPingMapSnapshot",
   GameStartRequest = "GameStartRequest",
+  GameStarting = "GameStarting",
+  GameStartReject = "GameStartReject",
+  GameStarted = "GameStarted",
 }
 
 export interface WsMessage {
@@ -186,4 +189,24 @@ export interface GamePlayerPingMapSnapshotMessage
 
 export interface GameStartRequestMessage extends WsMessage {
   game_id: number;
+}
+
+export interface GameStartingMessage extends WsMessage {
+  game_id: number;
+}
+
+export interface GameStartedMessage extends WsMessage {
+  game_id: number;
+}
+
+export interface GameStartRejectMessage extends WsMessage {
+  game_id: number;
+  message: string;
+  player_client_info_map: {
+    [player_id: number]: {
+      game_id: number;
+      war3_version: string;
+      map_sha1: number[];
+    };
+  };
 }

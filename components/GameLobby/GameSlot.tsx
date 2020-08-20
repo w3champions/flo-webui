@@ -18,6 +18,7 @@ export interface GameSlotProps {
   host?: boolean;
   me?: boolean;
   ping?: number | null;
+  disabled?: boolean;
   onSettingsChange?: HandlerSlotSettingsChange;
 }
 
@@ -33,11 +34,21 @@ export const GameSlot: React.FunctionComponent<GameSlotProps> = ({
   me,
   onSettingsChange,
   ping,
+  disabled,
 }) => {
   let inner = null;
 
   if (slot.player) {
-    inner = renderPlayerSlot(id, slot, teams, host, me, onSettingsChange, ping);
+    inner = renderPlayerSlot(
+      id,
+      slot,
+      teams,
+      host,
+      me,
+      onSettingsChange,
+      ping,
+      disabled
+    );
   } else if (slot.settings.status === SlotStatus.Open) {
     inner = renderOpenSlot(slot);
   }
@@ -60,7 +71,8 @@ function renderPlayerSlot(
   host: boolean,
   me: boolean,
   onSettingsChange: HandlerSlotSettingsChange,
-  ping?: number | null
+  ping?: number | null,
+  disabled?: boolean
 ) {
   if (slot.settings.team === 24) {
     return (
@@ -85,7 +97,7 @@ function renderPlayerSlot(
     <div className="flex p-1 items-center justify-center content-center space-x-1">
       <div className="flex-initial" style={TeamStyles}>
         <TeamPicker
-          readonly={!me}
+          readonly={!me || disabled}
           value={slot.settings.team}
           teams={teams}
           onChange={(team) => {
@@ -95,7 +107,7 @@ function renderPlayerSlot(
       </div>
       <div className="flex-initial">
         <PlayerColorPicker
-          readonly={!me}
+          readonly={!me || disabled}
           value={slot.settings.color}
           onChange={(color) => {
             onSettingsChange && onSettingsChange({ id, color });
@@ -114,7 +126,7 @@ function renderPlayerSlot(
       </div>
       <div className="flex-initial">
         <RacePicker
-          readonly={!me}
+          readonly={!me || disabled}
           value={slot.settings.race}
           onChange={(race) => {
             onSettingsChange && onSettingsChange({ id, race });
@@ -123,7 +135,7 @@ function renderPlayerSlot(
       </div>
       <div className="flex-initial">
         <HandicapPicker
-          readonly={!me}
+          readonly={!me || disabled}
           value={slot.settings.handicap}
           onChange={(handicap) => {
             onSettingsChange && onSettingsChange({ id, handicap });

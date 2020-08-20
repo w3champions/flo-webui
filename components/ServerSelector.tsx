@@ -31,6 +31,7 @@ export interface ServerSelectorProps {
   game_id: number;
   players: PlayerRef[];
   readonly?: boolean;
+  disabled?: boolean;
   loading?: boolean;
   value?: number | null;
   onChange?: (nodeId: number) => void;
@@ -42,6 +43,7 @@ export function ServerSelector({
   readonly,
   loading,
   value,
+  disabled,
   onChange,
 }: ServerSelectorProps) {
   const dispatch = useDispatch();
@@ -143,7 +145,11 @@ export function ServerSelector({
 
   return (
     <div className="space-y-2">
-      <Button onClick={() => setOpen(true)} loading={loading}>
+      <Button
+        onClick={() => setOpen(true)}
+        loading={loading}
+        disabled={disabled}
+      >
         {selected ? (
           <span className="inline-flex items-center">
             <FlagIcon className="flex-initial mr-2" id={selected.country_id} />
