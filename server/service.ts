@@ -1,6 +1,6 @@
 import grpc from "grpc";
 import { promisify } from "util";
-import { FloLobbyClient } from "../generated/lobby_grpc_pb";
+import { FloControllerClient } from "../generated/controller_grpc_pb";
 import {
   GetPlayerByTokenRequest,
   UpdateAndGetPlayerRequest,
@@ -15,7 +15,7 @@ import {
   CreateJoinGameTokenReply,
   JoinGameByTokenRequest,
   JoinGameReply,
-} from "../generated/lobby_pb";
+} from "../generated/controller_pb";
 import { FloError, FloErrorCode } from "../helpers/error";
 import * as player from "../generated/player_pb";
 import * as game from "../generated/game_pb";
@@ -24,7 +24,7 @@ export { player, game };
 
 const { FLO_SERVICE, FLO_SERVICE_SECRET } = process.env;
 
-const Client = new FloLobbyClient(
+const Client = new FloControllerClient(
   FLO_SERVICE,
   grpc.credentials.createInsecure()
 );

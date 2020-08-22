@@ -12,7 +12,7 @@ export const Layout: FunctionComponent<{
   return (
     <>
       <Head>
-        <title>Flo - Warcraft III Hosting Tool</title>
+        <title>Flo - Warcraft III Hosting Service</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={Classes.DARK}>

@@ -52,7 +52,7 @@ export default function MapDetail({
             src={`data:image/jpeg;base64,${map.preview_jpeg_base64}`}
           />
         </div>
-        <div className="flex-initial flex items-center content-start">
+        <div className="flex-initial flex items-center content-center justify-center">
           <MapIcon className="flex-initial" num_player={map.num_players} />
           <div className="flex-initial text-xl ml-2 flo-text-info">
             <div className="font-extrabold ">{map.name}</div>

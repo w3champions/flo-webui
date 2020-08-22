@@ -129,6 +129,7 @@ export default function GameViewPreparing({
       ws.send({
         type: WsMessageTypeId.GameSlotUpdateRequest,
         game_id: currentGameId,
+        slot_index: id,
         slot_settings: newSettings,
       } as GameSlotUpdateRequestMessage);
     };

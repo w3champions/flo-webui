@@ -147,6 +147,7 @@ export interface GameSlotUpdateMessage extends WsMessage {
 
 export interface GameSlotUpdateRequestMessage extends WsMessage {
   game_id: number;
+  slot_index: number;
   slot_settings: SlotSettings;
 }
 

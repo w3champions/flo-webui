@@ -18,14 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useApiClient } from "../helpers/api-client";
 import { selectSessionGameId } from "../redux/store";
 import { LeaveGameRequestBody } from "../types/game";
-import {
-  selectCurrentGame,
-  selectCurrentGamePlayers,
-  selectCurrentNodeId,
-  startUpdateNode,
-  selectCurrentNodeLoading,
-  selectCurrentNodePingMap,
-} from "../redux/modules/game";
+import { selectCurrentGame } from "../redux/modules/game";
 import { Spinner } from "../components/Spinner";
 import { GameSlot, SlotUpdate } from "../components/GameLobby/GameSlot";
 import { Scrollbar } from "react-scrollbars-custom";
@@ -166,9 +159,5 @@ export default withConnected(function GameLobby() {
     return <GameViewPreparing game={currentGame} mapDetail={mapDetail} />;
   }
 
-  if (currentGame.status === GameStatus.Created) {
-    return <GameViewCreated game={currentGame} mapDetail={mapDetail} />;
-  }
-
-  return null;
+  return <GameViewCreated game={currentGame} mapDetail={mapDetail} />;
 });

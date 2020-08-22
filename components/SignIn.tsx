@@ -4,6 +4,8 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { useApiClient } from "../helpers/api-client";
 import { Alert } from "../components/Alert";
 import { Button } from "@blueprintjs/core";
+import { useDispatch } from "react-redux";
+import { signOut } from "../redux/modules/auth";
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);

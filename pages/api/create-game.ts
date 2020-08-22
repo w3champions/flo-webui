@@ -8,7 +8,7 @@ import { withMethod } from "../../helpers/method";
 import {
   CreateGameRequest,
   SearchMapChecksumRequest,
-} from "../../generated/lobby_pb";
+} from "../../generated/controller_pb";
 import { Map, MapPlayer, MapForce } from "../../generated/game_pb";
 import { getUint8ArrayFromHexString } from "../../helpers/bytes";
 import { searchMapChecksum, createGame } from "../../server/service";

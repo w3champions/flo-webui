@@ -31,6 +31,16 @@ export interface Map {
 export interface Slot {
   player: PlayerRef;
   settings: SlotSettings;
+  client_status: SlotClientStatus;
+}
+
+export enum SlotClientStatus {
+  Pending = 0,
+  Connected = 1,
+  Loading = 2,
+  Loaded = 3,
+  Disconnected = 4,
+  Left = 5,
 }
 
 export interface SlotSettings {

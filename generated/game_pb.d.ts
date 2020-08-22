@@ -8,6 +8,7 @@ import * as jspb from "google-protobuf";
 import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wrappers_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as player_pb from "./player_pb";
+import * as node_pb from "./node_pb";
 
 export class Game extends jspb.Message { 
     getId(): number;
@@ -33,8 +34,8 @@ export class Game extends jspb.Message {
 
     hasNode(): boolean;
     clearNode(): void;
-    getNode(): SelectedNode | undefined;
-    setNode(value?: SelectedNode): Game;
+    getNode(): node_pb.Node | undefined;
+    setNode(value?: node_pb.Node): Game;
 
     getIsPrivate(): boolean;
     setIsPrivate(value: boolean): Game;
@@ -102,7 +103,7 @@ export namespace Game {
         status: GameStatus,
         map?: Map.AsObject,
         slotsList: Array<Slot.AsObject>,
-        node?: SelectedNode.AsObject,
+        node?: node_pb.Node.AsObject,
         isPrivate: boolean,
         secret?: google_protobuf_wrappers_pb.Int32Value.AsObject,
         isLive: boolean,
@@ -140,6 +141,12 @@ export class GameEntry extends jspb.Message {
 
     getMaxPlayers(): number;
     setMaxPlayers(value: number): GameEntry;
+
+
+    hasNode(): boolean;
+    clearNode(): void;
+    getNode(): node_pb.Node | undefined;
+    setNode(value?: node_pb.Node): GameEntry;
 
 
     hasCreatedBy(): boolean;
@@ -192,62 +199,12 @@ export namespace GameEntry {
         isLive: boolean,
         numPlayers: number,
         maxPlayers: number,
+        node?: node_pb.Node.AsObject,
         createdBy?: player_pb.PlayerRef.AsObject,
         startedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         endedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
-    }
-}
-
-export class SelectedNode extends jspb.Message { 
-    getType(): SelectedNodeType;
-    setType(value: SelectedNodeType): SelectedNode;
-
-
-    hasId(): boolean;
-    clearId(): void;
-    getId(): google_protobuf_wrappers_pb.Int32Value | undefined;
-    setId(value?: google_protobuf_wrappers_pb.Int32Value): SelectedNode;
-
-    getName(): string;
-    setName(value: string): SelectedNode;
-
-    getLocation(): string;
-    setLocation(value: string): SelectedNode;
-
-    getIpAddr(): string;
-    setIpAddr(value: string): SelectedNode;
-
-    getCountryId(): string;
-    setCountryId(value: string): SelectedNode;
-
-
-    hasSecret(): boolean;
-    clearSecret(): void;
-    getSecret(): google_protobuf_wrappers_pb.StringValue | undefined;
-    setSecret(value?: google_protobuf_wrappers_pb.StringValue): SelectedNode;
-
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): SelectedNode.AsObject;
-    static toObject(includeInstance: boolean, msg: SelectedNode): SelectedNode.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: SelectedNode, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): SelectedNode;
-    static deserializeBinaryFromReader(message: SelectedNode, reader: jspb.BinaryReader): SelectedNode;
-}
-
-export namespace SelectedNode {
-    export type AsObject = {
-        type: SelectedNodeType,
-        id?: google_protobuf_wrappers_pb.Int32Value.AsObject,
-        name: string,
-        location: string,
-        ipAddr: string,
-        countryId: string,
-        secret?: google_protobuf_wrappers_pb.StringValue.AsObject,
     }
 }
 
@@ -264,6 +221,9 @@ export class Slot extends jspb.Message {
     getSettings(): SlotSettings | undefined;
     setSettings(value?: SlotSettings): Slot;
 
+    getClientStatus(): SlotClientStatus;
+    setClientStatus(value: SlotClientStatus): Slot;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Slot.AsObject;
@@ -279,6 +239,7 @@ export namespace Slot {
     export type AsObject = {
         player?: player_pb.PlayerRef.AsObject,
         settings?: SlotSettings.AsObject,
+        clientStatus: SlotClientStatus,
     }
 }
 
@@ -473,11 +434,6 @@ export namespace MapChecksumImportItem {
     }
 }
 
-export enum SelectedNodeType {
-    SELECTEDNODETYPEPUBLIC = 0,
-    SELECTEDNODETYPEPRIVATE = 1,
-}
-
 export enum SlotStatus {
     SLOTSTATUSOPEN = 0,
     SLOTSTATUSCLOSED = 1,
@@ -496,6 +452,15 @@ export enum Computer {
     COMPUTEREASY = 0,
     COMPUTERNORMAL = 1,
     COMPUTERINSANE = 2,
+}
+
+export enum SlotClientStatus {
+    SLOTCLIENTSTATUSPENDING = 0,
+    SLOTCLIENTSTATUSCONNECTED = 1,
+    SLOTCLIENTSTATUSLOADING = 2,
+    SLOTCLIENTSTATUSLOADED = 3,
+    SLOTCLIENTSTATUSLEFT = 4,
+    SLOTCLIENTSTATUSDISCONNECTED = 5,
 }
 
 export enum GameStatus {

@@ -1,5 +1,5 @@
-// package: lobby
-// file: lobby.proto
+// package: controller
+// file: controller.proto
 
 /* tslint:disable */
 /* eslint-disable */
@@ -9,6 +9,7 @@ import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wr
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as player_pb from "./player_pb";
 import * as game_pb from "./game_pb";
+import * as node_pb from "./node_pb";
 
 export class GetPlayerRequest extends jspb.Message { 
     getPlayerId(): number;
@@ -149,9 +150,9 @@ export namespace UpdateAndGetPlayerReply {
 
 export class ListNodesReply extends jspb.Message { 
     clearNodesList(): void;
-    getNodesList(): Array<Node>;
-    setNodesList(value: Array<Node>): ListNodesReply;
-    addNodes(value?: Node, index?: number): Node;
+    getNodesList(): Array<node_pb.Node>;
+    setNodesList(value: Array<node_pb.Node>): ListNodesReply;
+    addNodes(value?: node_pb.Node, index?: number): node_pb.Node;
 
 
     serializeBinary(): Uint8Array;
@@ -166,7 +167,7 @@ export class ListNodesReply extends jspb.Message {
 
 export namespace ListNodesReply {
     export type AsObject = {
-        nodesList: Array<Node.AsObject>,
+        nodesList: Array<node_pb.Node.AsObject>,
     }
 }
 
@@ -462,61 +463,6 @@ export namespace LeaveGameRequest {
     }
 }
 
-export class UpdateGameSlotSettingsRequest extends jspb.Message { 
-    getGameId(): number;
-    setGameId(value: number): UpdateGameSlotSettingsRequest;
-
-    getPlayerId(): number;
-    setPlayerId(value: number): UpdateGameSlotSettingsRequest;
-
-
-    hasSettings(): boolean;
-    clearSettings(): void;
-    getSettings(): game_pb.SlotSettings | undefined;
-    setSettings(value?: game_pb.SlotSettings): UpdateGameSlotSettingsRequest;
-
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): UpdateGameSlotSettingsRequest.AsObject;
-    static toObject(includeInstance: boolean, msg: UpdateGameSlotSettingsRequest): UpdateGameSlotSettingsRequest.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: UpdateGameSlotSettingsRequest, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): UpdateGameSlotSettingsRequest;
-    static deserializeBinaryFromReader(message: UpdateGameSlotSettingsRequest, reader: jspb.BinaryReader): UpdateGameSlotSettingsRequest;
-}
-
-export namespace UpdateGameSlotSettingsRequest {
-    export type AsObject = {
-        gameId: number,
-        playerId: number,
-        settings?: game_pb.SlotSettings.AsObject,
-    }
-}
-
-export class UpdateGameSlotSettingsReply extends jspb.Message { 
-    clearSlotsList(): void;
-    getSlotsList(): Array<game_pb.Slot>;
-    setSlotsList(value: Array<game_pb.Slot>): UpdateGameSlotSettingsReply;
-    addSlots(value?: game_pb.Slot, index?: number): game_pb.Slot;
-
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): UpdateGameSlotSettingsReply.AsObject;
-    static toObject(includeInstance: boolean, msg: UpdateGameSlotSettingsReply): UpdateGameSlotSettingsReply.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: UpdateGameSlotSettingsReply, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): UpdateGameSlotSettingsReply;
-    static deserializeBinaryFromReader(message: UpdateGameSlotSettingsReply, reader: jspb.BinaryReader): UpdateGameSlotSettingsReply;
-}
-
-export namespace UpdateGameSlotSettingsReply {
-    export type AsObject = {
-        slotsList: Array<game_pb.Slot.AsObject>,
-    }
-}
-
 export class SelectGameNodeRequest extends jspb.Message { 
     getGameId(): number;
     setGameId(value: number): SelectGameNodeRequest;
@@ -571,43 +517,6 @@ export namespace CancelGameRequest {
     export type AsObject = {
         gameId: number,
         playerId: number,
-    }
-}
-
-export class Node extends jspb.Message { 
-    getId(): number;
-    setId(value: number): Node;
-
-    getName(): string;
-    setName(value: string): Node;
-
-    getLocation(): string;
-    setLocation(value: string): Node;
-
-    getIpAddr(): string;
-    setIpAddr(value: string): Node;
-
-    getCountryId(): string;
-    setCountryId(value: string): Node;
-
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): Node.AsObject;
-    static toObject(includeInstance: boolean, msg: Node): Node.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: Node, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): Node;
-    static deserializeBinaryFromReader(message: Node, reader: jspb.BinaryReader): Node;
-}
-
-export namespace Node {
-    export type AsObject = {
-        id: number,
-        name: string,
-        location: string,
-        ipAddr: string,
-        countryId: string,
     }
 }
 

@@ -51,11 +51,6 @@ export default function Setup() {
 
   return (
     <div className={`${Classes.DARK} p-24`}>
-      <Head>
-        <title>Flo - Warcraft III Hosting Tool</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <h1 className="flex flex-row justify-center items-center mb-6 text-3xl space-x-4">
         <img
           className="flex-initial shadow"
@@ -64,7 +59,7 @@ export default function Setup() {
           height={48}
         />
         <span className="flex-1 font-bold">
-          Flo<span>&nbsp;- Warcraft III Hosting Tool</span>
+          Flo<span>&nbsp;- Warcraft III Hosting Service</span>
         </span>
       </h1>
       <h2 className="mb-6 text-2xl">

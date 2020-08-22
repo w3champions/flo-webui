@@ -65,6 +65,8 @@ const authSlice = createSlice({
       .addCase(fetchPlayerInfo.rejected, (state, action) => {
         state.playerInfoLoading = false;
         state.playerInfoError = action.error;
+        state.authToken = null;
+        localStorage.removeItem(FLO_ACCESS_TOKEN_STORAGE_KEY);
       })
       .addCase(fetchPlayerInfo.fulfilled, (state, action) => {
         state.playerInfoLoading = false;
