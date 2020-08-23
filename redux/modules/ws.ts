@@ -30,6 +30,7 @@ import {
   GameStartRejectMessage,
   GameStartingMessage,
   GameStartedMessage,
+  GameSlotClientStatusUpdateMessage,
 } from "../../types/ws";
 import React, { useContext } from "react";
 import {
@@ -50,6 +51,7 @@ import {
   updateStartGameRejection,
   updateStartGameLoading,
   updateGameStarted,
+  updateSlotClientStatus,
 } from "./game";
 import { NextRouter } from "next/router";
 import { updateNodes, updateNodePing } from "./node";
@@ -279,6 +281,12 @@ export function dispatchMessage(
     }
     case WsMessageTypeId.GameStarted: {
       dispatch(updateGameStarted(msg as GameStartedMessage));
+      return;
+    }
+    case WsMessageTypeId.GameSlotClientStatusUpdate: {
+      dispatch(
+        updateSlotClientStatus(msg as GameSlotClientStatusUpdateMessage)
+      );
       return;
     }
   }

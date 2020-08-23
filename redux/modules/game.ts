@@ -18,6 +18,7 @@ import {
   GameStartRejectMessage,
   GameStartingMessage,
   GameStartedMessage,
+  GameSlotClientStatusUpdateMessage,
 } from "../../types/ws";
 import { CreateGameRequestBody } from "../../types/game";
 import { ApiClient } from "../../helpers/api-client";
@@ -116,16 +117,18 @@ const gameSlice = createSlice({
       { payload }: PayloadAction<GamePlayerLeaveMessage>
     ) {
       if (state.currentGame && state.currentGame.id === payload.game_id) {
-        const slot = state.currentGame.slots.find(
-          (s) => s.player && s.player.id === payload.player_id
-        );
-        if (slot) {
-          slot.player = null;
-          slot.settings.status = SlotStatus.Open;
-        } else {
-          console.error(
-            `player slot not found: game = ${payload.game_id}, player = ${payload.player_id}`
+        if (state.currentGame.status == GameStatus.Preparing) {
+          const slot = state.currentGame.slots.find(
+            (s) => s.player && s.player.id === payload.player_id
           );
+          if (slot) {
+            slot.player = null;
+            slot.settings.status = SlotStatus.Open;
+          } else {
+            console.error(
+              `player slot not found: game = ${payload.game_id}, player = ${payload.player_id}`
+            );
+          }
         }
       }
     },
@@ -190,6 +193,19 @@ const gameSlice = createSlice({
     },
     clearStartGameRejection(state) {
       state.startGameRejection = null;
+    },
+    updateSlotClientStatus(
+      state,
+      { payload }: PayloadAction<GameSlotClientStatusUpdateMessage>
+    ) {
+      if (state.currentGame && state.currentGame.id === payload.game_id) {
+        const slot = state.currentGame.slots.find(
+          (s) => s.player && s.player.id === payload.player_id
+        );
+        if (slot) {
+          slot.client_status = payload.status;
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -367,6 +383,7 @@ export const {
   updateStartGameRejection,
   updateGameStarted,
   clearStartGameRejection,
+  updateSlotClientStatus,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

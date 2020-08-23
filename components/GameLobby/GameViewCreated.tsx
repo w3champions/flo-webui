@@ -70,7 +70,7 @@ export default function GameViewCreated({
     setLeaving(true);
     try {
       await apiClient.put("/api/leave-game", {
-        game_id: game.id * 11,
+        game_id: game.id,
       } as LeaveGameRequestBody);
     } catch (e) {
       setLeaving(false);
