@@ -252,6 +252,7 @@ proto.game.Game.toObject = function(includeInstance, msg) {
     isLive: jspb.Message.getBooleanFieldWithDefault(msg, 9, false),
     numPlayers: jspb.Message.getFieldWithDefault(msg, 10, 0),
     maxPlayers: jspb.Message.getFieldWithDefault(msg, 11, 0),
+    randomSeed: jspb.Message.getFieldWithDefault(msg, 12, 0),
     createdBy: (f = msg.getCreatedBy()) && player_pb.PlayerRef.toObject(includeInstance, f),
     startedAt: (f = msg.getStartedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     endedAt: (f = msg.getEndedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
@@ -342,26 +343,30 @@ proto.game.Game.deserializeBinaryFromReader = function(msg, reader) {
       msg.setMaxPlayers(value);
       break;
     case 12:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRandomSeed(value);
+      break;
+    case 13:
       var value = new player_pb.PlayerRef;
       reader.readMessage(value,player_pb.PlayerRef.deserializeBinaryFromReader);
       msg.setCreatedBy(value);
       break;
-    case 13:
+    case 14:
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setStartedAt(value);
       break;
-    case 14:
+    case 15:
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setEndedAt(value);
       break;
-    case 15:
+    case 16:
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setCreatedAt(value);
       break;
-    case 16:
+    case 17:
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setUpdatedAt(value);
@@ -476,10 +481,17 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getRandomSeed();
+  if (f !== 0) {
+    writer.writeInt32(
+      12,
+      f
+    );
+  }
   f = message.getCreatedBy();
   if (f != null) {
     writer.writeMessage(
-      12,
+      13,
       f,
       player_pb.PlayerRef.serializeBinaryToWriter
     );
@@ -487,7 +499,7 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
   f = message.getStartedAt();
   if (f != null) {
     writer.writeMessage(
-      13,
+      14,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
@@ -495,7 +507,7 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
   f = message.getEndedAt();
   if (f != null) {
     writer.writeMessage(
-      14,
+      15,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
@@ -503,7 +515,7 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
   f = message.getCreatedAt();
   if (f != null) {
     writer.writeMessage(
-      15,
+      16,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
@@ -511,7 +523,7 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
   f = message.getUpdatedAt();
   if (f != null) {
     writer.writeMessage(
-      16,
+      17,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
@@ -795,12 +807,30 @@ proto.game.Game.prototype.setMaxPlayers = function(value) {
 
 
 /**
- * optional player.PlayerRef created_by = 12;
+ * optional int32 random_seed = 12;
+ * @return {number}
+ */
+proto.game.Game.prototype.getRandomSeed = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 12, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.game.Game} returns this
+ */
+proto.game.Game.prototype.setRandomSeed = function(value) {
+  return jspb.Message.setProto3IntField(this, 12, value);
+};
+
+
+/**
+ * optional player.PlayerRef created_by = 13;
  * @return {?proto.player.PlayerRef}
  */
 proto.game.Game.prototype.getCreatedBy = function() {
   return /** @type{?proto.player.PlayerRef} */ (
-    jspb.Message.getWrapperField(this, player_pb.PlayerRef, 12));
+    jspb.Message.getWrapperField(this, player_pb.PlayerRef, 13));
 };
 
 
@@ -809,7 +839,7 @@ proto.game.Game.prototype.getCreatedBy = function() {
  * @return {!proto.game.Game} returns this
 */
 proto.game.Game.prototype.setCreatedBy = function(value) {
-  return jspb.Message.setWrapperField(this, 12, value);
+  return jspb.Message.setWrapperField(this, 13, value);
 };
 
 
@@ -827,17 +857,17 @@ proto.game.Game.prototype.clearCreatedBy = function() {
  * @return {boolean}
  */
 proto.game.Game.prototype.hasCreatedBy = function() {
-  return jspb.Message.getField(this, 12) != null;
+  return jspb.Message.getField(this, 13) != null;
 };
 
 
 /**
- * optional google.protobuf.Timestamp started_at = 13;
+ * optional google.protobuf.Timestamp started_at = 14;
  * @return {?proto.google.protobuf.Timestamp}
  */
 proto.game.Game.prototype.getStartedAt = function() {
   return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 13));
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 14));
 };
 
 
@@ -846,7 +876,7 @@ proto.game.Game.prototype.getStartedAt = function() {
  * @return {!proto.game.Game} returns this
 */
 proto.game.Game.prototype.setStartedAt = function(value) {
-  return jspb.Message.setWrapperField(this, 13, value);
+  return jspb.Message.setWrapperField(this, 14, value);
 };
 
 
@@ -864,17 +894,17 @@ proto.game.Game.prototype.clearStartedAt = function() {
  * @return {boolean}
  */
 proto.game.Game.prototype.hasStartedAt = function() {
-  return jspb.Message.getField(this, 13) != null;
+  return jspb.Message.getField(this, 14) != null;
 };
 
 
 /**
- * optional google.protobuf.Timestamp ended_at = 14;
+ * optional google.protobuf.Timestamp ended_at = 15;
  * @return {?proto.google.protobuf.Timestamp}
  */
 proto.game.Game.prototype.getEndedAt = function() {
   return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 14));
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 15));
 };
 
 
@@ -883,7 +913,7 @@ proto.game.Game.prototype.getEndedAt = function() {
  * @return {!proto.game.Game} returns this
 */
 proto.game.Game.prototype.setEndedAt = function(value) {
-  return jspb.Message.setWrapperField(this, 14, value);
+  return jspb.Message.setWrapperField(this, 15, value);
 };
 
 
@@ -901,17 +931,17 @@ proto.game.Game.prototype.clearEndedAt = function() {
  * @return {boolean}
  */
 proto.game.Game.prototype.hasEndedAt = function() {
-  return jspb.Message.getField(this, 14) != null;
+  return jspb.Message.getField(this, 15) != null;
 };
 
 
 /**
- * optional google.protobuf.Timestamp created_at = 15;
+ * optional google.protobuf.Timestamp created_at = 16;
  * @return {?proto.google.protobuf.Timestamp}
  */
 proto.game.Game.prototype.getCreatedAt = function() {
   return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 15));
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 16));
 };
 
 
@@ -920,7 +950,7 @@ proto.game.Game.prototype.getCreatedAt = function() {
  * @return {!proto.game.Game} returns this
 */
 proto.game.Game.prototype.setCreatedAt = function(value) {
-  return jspb.Message.setWrapperField(this, 15, value);
+  return jspb.Message.setWrapperField(this, 16, value);
 };
 
 
@@ -938,17 +968,17 @@ proto.game.Game.prototype.clearCreatedAt = function() {
  * @return {boolean}
  */
 proto.game.Game.prototype.hasCreatedAt = function() {
-  return jspb.Message.getField(this, 15) != null;
+  return jspb.Message.getField(this, 16) != null;
 };
 
 
 /**
- * optional google.protobuf.Timestamp updated_at = 16;
+ * optional google.protobuf.Timestamp updated_at = 17;
  * @return {?proto.google.protobuf.Timestamp}
  */
 proto.game.Game.prototype.getUpdatedAt = function() {
   return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 16));
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 17));
 };
 
 
@@ -957,7 +987,7 @@ proto.game.Game.prototype.getUpdatedAt = function() {
  * @return {!proto.game.Game} returns this
 */
 proto.game.Game.prototype.setUpdatedAt = function(value) {
-  return jspb.Message.setWrapperField(this, 16, value);
+  return jspb.Message.setWrapperField(this, 17, value);
 };
 
 
@@ -975,7 +1005,7 @@ proto.game.Game.prototype.clearUpdatedAt = function() {
  * @return {boolean}
  */
 proto.game.Game.prototype.hasUpdatedAt = function() {
-  return jspb.Message.getField(this, 16) != null;
+  return jspb.Message.getField(this, 17) != null;
 };
 
 

@@ -14,12 +14,12 @@ export interface GameInfo {
 }
 
 export enum GameStatus {
-  Preparing = 0,
-  Created = 1,
-  Running = 2,
-  Ended = 3,
-  Paused = 4,
-  Terminated = 5,
+  Preparing = "Preparing",
+  Created = "Created",
+  Running = "Running",
+  Ended = "Ended",
+  Paused = "Paused",
+  Terminated = "Terminated",
 }
 
 export interface Map {
@@ -35,12 +35,12 @@ export interface Slot {
 }
 
 export enum SlotClientStatus {
-  Pending = 0,
-  Connected = 1,
-  Loading = 2,
-  Loaded = 3,
-  Disconnected = 4,
-  Left = 5,
+  Pending = "Pending",
+  Connected = "Connected",
+  Loading = "Loading",
+  Loaded = "Loaded",
+  Disconnected = "Disconnected",
+  Left = "Left",
 }
 
 export interface SlotSettings {
@@ -53,21 +53,21 @@ export interface SlotSettings {
 }
 
 export enum Computer {
-  Easy = 0,
-  Normal = 1,
-  Insane = 2,
+  Easy = "Easy",
+  Normal = "Normal",
+  Insane = "Insane",
 }
 
 export enum SlotStatus {
-  Open = 0,
-  Closed = 1,
-  Occupied = 2,
+  Open = "Open",
+  Closed = "Closed",
+  Occupied = "Occupied",
 }
 
 export enum Race {
-  Human = 0,
-  Orc = 1,
-  NightElf = 2,
-  Undead = 3,
-  Random = 4,
+  Human = "Human",
+  Orc = "Orc",
+  NightElf = "NightElf",
+  Undead = "Undead",
+  Random = "Random",
 }

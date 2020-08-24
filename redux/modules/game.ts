@@ -48,6 +48,7 @@ export interface GameState {
   createGameLoading: boolean;
   createGameError: SerializedError;
   currentGame: GameInfo;
+  currentLanGameName: string;
   currentNodeId: number | null;
   currentNodeLoading: boolean;
   currentPingMap: GamePlayerPingMap;
@@ -63,6 +64,7 @@ const gameSlice = createSlice({
     createGameLoading: false,
     createGameError: null,
     currentGame: null,
+    currentLanGameName: null,
     currentNodeId: null,
     currentNodeLoading: false,
     currentPingMap: null,
@@ -74,6 +76,13 @@ const gameSlice = createSlice({
   reducers: {
     clearGameCreateError(state) {
       state.createGameError = null;
+    },
+    checkCurrentGameId(state, action: PayloadAction<number>) {
+      if (state.currentGame && state.currentGame.id !== action.payload) {
+        state.currentGame = null;
+        state.currentNodeId = null;
+        state.currentPingMap = null;
+      }
     },
     updateCurrentGame(state, action: PayloadAction<GameInfo>) {
       state.currentGame = action.payload;
@@ -165,6 +174,7 @@ const gameSlice = createSlice({
     updateStartGameLoadingLocal(state, { payload }: PayloadAction<boolean>) {
       state.startGameLoading = payload;
       state.startGameRejection = null;
+      state.currentLanGameName = null;
     },
     updateStartGameLoading(
       state,
@@ -180,6 +190,7 @@ const gameSlice = createSlice({
         state.startGameLoading = false;
         state.startGameRejection = null;
         state.currentGame.status = GameStatus.Created;
+        state.currentLanGameName = payload.lan_game_name;
       }
     },
     updateStartGameRejection(
@@ -368,9 +379,13 @@ export const selectGameStarting = (state: AppState) =>
 export const selectStartGameRejection = (state: AppState) =>
   state.game.startGameRejection;
 
+export const selectLanGameName = (state: AppState) =>
+  state.game.currentLanGameName;
+
 export const {
   clearGameCreateError,
   updateCurrentGame,
+  checkCurrentGameId,
   updateSlot,
   updatePlayerEnter,
   updatePlayerLeave,

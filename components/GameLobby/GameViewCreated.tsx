@@ -22,6 +22,7 @@ import {
   selectCurrentNodePingMap,
   selectCurrentGame,
   selectCurrentNode,
+  selectLanGameName,
 } from "../../redux/modules/game";
 import { createSelector } from "@reduxjs/toolkit";
 import PlayerColorPicker from "./PlayerColorPicker";
@@ -62,6 +63,7 @@ export default function GameViewCreated({
 }: GameViewCreatedProps) {
   const loadingPlayers = useSelector(selectLoadingPlayers);
   const node = useSelector(selectCurrentNode);
+  const lanGameName = useSelector(selectLanGameName);
   const apiClient = useApiClient();
   const [leaving, setLeaving] = useState(false);
   const toaster = useRef(null as IToaster);
@@ -110,7 +112,19 @@ export default function GameViewCreated({
                 </span>
               </h3>
 
-              <div>Please join the LAN game.</div>
+              <div>
+                <p>
+                  LAN game name
+                  <br />
+                  {lanGameName ? (
+                    <span className="flo-text-info text-xl font-bold">
+                      {lanGameName}
+                    </span>
+                  ) : (
+                    <Spinner />
+                  )}
+                </p>
+              </div>
 
               <Button intent={Intent.DANGER} loading={leaving} onClick={leave}>
                 Force Leave

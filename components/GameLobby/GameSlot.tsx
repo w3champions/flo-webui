@@ -202,11 +202,11 @@ function TeamPicker({
 interface RacePickerProps {
   value: Race;
   className?: string;
-  onChange?: (value: number) => void;
+  onChange?: (value: Race) => void;
   readonly?: boolean;
 }
 
-const RaceValues = [0, 1, 2, 3, 4];
+const RaceValues = Object.keys(Race);
 
 function RacePicker({ value, className, onChange, readonly }: RacePickerProps) {
   if (readonly) {
@@ -223,7 +223,7 @@ function RacePicker({ value, className, onChange, readonly }: RacePickerProps) {
       text={Race[value]}
       onClick={() => {
         if (onChange) {
-          onChange(value);
+          onChange(value as Race);
         }
       }}
     />
@@ -234,7 +234,7 @@ function RacePicker({ value, className, onChange, readonly }: RacePickerProps) {
       <Button
         className={classnames(className)}
         style={{ width: 80 }}
-        title="Team"
+        title="Race"
       >
         <span>{Race[value]}</span>
       </Button>

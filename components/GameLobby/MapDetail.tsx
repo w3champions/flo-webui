@@ -1,14 +1,9 @@
 import { GetMapDetailMessage } from "../../types/ws";
 import { SerializedError } from "@reduxjs/toolkit";
-import {
-  Callout,
-  Intent,
-  NonIdealState,
-  Spinner,
-  Card,
-} from "@blueprintjs/core";
+import { Callout, Intent, NonIdealState, Card } from "@blueprintjs/core";
 import Scrollbar from "react-scrollbars-custom";
 import { MapIcon } from "../MapIcon";
+import { Spinner } from "../Spinner";
 
 export interface GameMapDetail {
   map: GetMapDetailMessage;

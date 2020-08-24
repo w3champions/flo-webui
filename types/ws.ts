@@ -198,6 +198,7 @@ export interface GameStartingMessage extends WsMessage {
 
 export interface GameStartedMessage extends WsMessage {
   game_id: number;
+  lan_game_name: string;
 }
 
 export interface GameStartRejectMessage extends WsMessage {

@@ -52,6 +52,7 @@ import {
   updateStartGameLoading,
   updateGameStarted,
   updateSlotClientStatus,
+  checkCurrentGameId,
 } from "./game";
 import { NextRouter } from "next/router";
 import { updateNodes, updateNodePing } from "./node";
@@ -190,11 +191,9 @@ export function dispatchMessage(
       );
     }
     case WsMessageTypeId.PlayerSessionUpdate: {
-      return dispatch(
-        wsSlice.actions.updatePlayerSessionPartial(
-          msg as PlayerSessionUpdateMessage
-        )
-      );
+      let payload = msg as PlayerSessionUpdateMessage;
+      dispatch(checkCurrentGameId(payload.game_id));
+      return dispatch(wsSlice.actions.updatePlayerSessionPartial(payload));
     }
     case WsMessageTypeId.ConnectRejected: {
       return dispatch(

@@ -55,6 +55,9 @@ export class Game extends jspb.Message {
     getMaxPlayers(): number;
     setMaxPlayers(value: number): Game;
 
+    getRandomSeed(): number;
+    setRandomSeed(value: number): Game;
+
 
     hasCreatedBy(): boolean;
     clearCreatedBy(): void;
@@ -109,6 +112,7 @@ export namespace Game {
         isLive: boolean,
         numPlayers: number,
         maxPlayers: number,
+        randomSeed: number,
         createdBy?: player_pb.PlayerRef.AsObject,
         startedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         endedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
