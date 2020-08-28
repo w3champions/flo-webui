@@ -19,11 +19,17 @@ import {
   GameStartingMessage,
   GameStartedMessage,
   GameSlotClientStatusUpdateMessage,
+  GameStatusUpdateMessage,
 } from "../../types/ws";
 import { CreateGameRequestBody } from "../../types/game";
 import { ApiClient } from "../../helpers/api-client";
 import { AppState } from "../store";
-import { GameInfo, SlotStatus, GameStatus } from "../../types/lobby";
+import {
+  GameInfo,
+  SlotStatus,
+  GameStatus,
+  NodeGameStatus,
+} from "../../types/lobby";
 import { GamePlayerPingSnapshot, GamePlayerPingMap } from "../../types/node";
 import { Ws } from "../../providers/ws";
 import { PlayerRef } from "../../types/player";
@@ -218,6 +224,36 @@ const gameSlice = createSlice({
         }
       }
     },
+    updateGameStatus(
+      state,
+      { payload }: PayloadAction<GameStatusUpdateMessage>
+    ) {
+      if (state.currentGame && state.currentGame.id === payload.game_id) {
+        switch (payload.status) {
+          case NodeGameStatus.Created:
+          case NodeGameStatus.Waiting:
+            state.currentGame.status = GameStatus.Created;
+            break;
+          case NodeGameStatus.Running:
+            state.currentGame.status = GameStatus.Running;
+            break;
+          case NodeGameStatus.Ended:
+            state.currentGame.status = GameStatus.Ended;
+            break;
+        }
+
+        for (let [player_id, status] of Object.entries(
+          payload.updated_player_game_client_status_map
+        )) {
+          const slot = state.currentGame.slots.find(
+            (s) => s.player && String(s.player.id) === player_id
+          );
+          if (slot) {
+            slot.client_status = status;
+          }
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -399,6 +435,7 @@ export const {
   updateGameStarted,
   clearStartGameRejection,
   updateSlotClientStatus,
+  updateGameStatus,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

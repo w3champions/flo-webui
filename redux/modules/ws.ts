@@ -31,6 +31,7 @@ import {
   GameStartingMessage,
   GameStartedMessage,
   GameSlotClientStatusUpdateMessage,
+  GameStatusUpdateMessage,
 } from "../../types/ws";
 import React, { useContext } from "react";
 import {
@@ -53,6 +54,7 @@ import {
   updateGameStarted,
   updateSlotClientStatus,
   checkCurrentGameId,
+  updateGameStatus,
 } from "./game";
 import { NextRouter } from "next/router";
 import { updateNodes, updateNodePing } from "./node";
@@ -286,6 +288,10 @@ export function dispatchMessage(
       dispatch(
         updateSlotClientStatus(msg as GameSlotClientStatusUpdateMessage)
       );
+      return;
+    }
+    case WsMessageTypeId.GameStatusUpdate: {
+      dispatch(updateGameStatus(msg as GameStatusUpdateMessage));
       return;
     }
   }

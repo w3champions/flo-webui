@@ -1,4 +1,9 @@
-import { GameInfo, Slot, SlotClientStatus } from "../../types/lobby";
+import {
+  GameInfo,
+  Slot,
+  SlotClientStatus,
+  GameStatus,
+} from "../../types/lobby";
 import MapDetail, { GameMapDetail } from "./MapDetail";
 import { IconNames } from "@blueprintjs/icons";
 import { Layout } from "../Layout";
@@ -14,6 +19,7 @@ import {
   Position,
   Toaster,
   IToaster,
+  Tag,
 } from "@blueprintjs/core";
 import { Spinner } from "../Spinner";
 import { useSelector } from "react-redux";
@@ -33,6 +39,7 @@ import { useWs } from "../../providers/ws";
 import { useCallback, useState, useRef } from "react";
 import { LeaveGameRequestBody } from "../../types/game";
 import { useApiClient } from "../../helpers/api-client";
+import { useAuth } from "../../providers/auth";
 
 export interface GameViewCreatedProps {
   game: GameInfo;
@@ -65,6 +72,7 @@ export default function GameViewCreated({
   const node = useSelector(selectCurrentNode);
   const lanGameName = useSelector(selectLanGameName);
   const apiClient = useApiClient();
+  const { player: me } = useAuth();
   const [leaving, setLeaving] = useState(false);
   const toaster = useRef(null as IToaster);
 
@@ -98,48 +106,49 @@ export default function GameViewCreated({
       }
     >
       <div className="flex flex-col w-full space-y-8">
-        <div className="flex-auto flex space-x-16">
+        <div className="flex-auto flex space-x-8">
           <div className="flex-initial">
             <MapDetail detail={mapDetail} vertical />
           </div>
-          <div className="flex-auto space-y-4">
-            <div className="space-y-4">
-              <h3 className={`flex items-center ${Classes.HEADING}`}>
-                <span className="flex-initial mr-4">Game created on</span>
+          <div className="flex-initial space-y-4">
+            <h3 className={`${Classes.HEADING}`}>
+              {getStatusText(game.status)}
+            </h3>
+
+            <div>
+              <h4 className="mb-1">Server</h4>
+              <div className="flex">
                 <FlagIcon className="flex-initial mr-2" id={node.country_id} />
                 <span className="flex-initial font-bold flo-text-info">
                   {node.name}
                 </span>
-              </h3>
-
-              <div>
-                <p>
-                  LAN game name
-                  <br />
-                  {lanGameName ? (
-                    <span className="flo-text-info text-xl font-bold">
-                      {lanGameName}
-                    </span>
-                  ) : (
-                    <Spinner />
-                  )}
-                </p>
               </div>
-
-              <Button intent={Intent.DANGER} loading={leaving} onClick={leave}>
-                Force Leave
-              </Button>
             </div>
 
-            <Divider />
+            <div>
+              <h4 className="mb-1">LAN game name</h4>
+              {lanGameName ? (
+                <span className="flo-text-info text-xl font-bold">
+                  {lanGameName}
+                </span>
+              ) : (
+                <Spinner />
+              )}
+            </div>
 
-            <h3 className={Classes.HEADING}>Players</h3>
-
+            <Button intent={Intent.DANGER} loading={leaving} onClick={leave}>
+              Force Leave
+            </Button>
+          </div>
+          <div className="flex-auto w-1/2 space-y-4">
             {loadingPlayers.map(({ slot, ping }, idx) => {
+              let intent = getClientStatusTagIntent(slot.client_status);
               return (
                 <div
                   key={idx}
-                  className="flex space-x-4 border border-gray-800 rounded px-4 py-4 items-center shadow"
+                  className={`flex space-x-4 border border-gray-800 rounded px-4 py-4 items-center shadow ${
+                    slot.player.id === me.id ? "bg-blue-900" : ""
+                  }`}
                 >
                   <div className="flex-initial">
                     <PlayerColorPicker readonly value={slot.settings.color} />
@@ -151,7 +160,18 @@ export default function GameViewCreated({
                     {slot.player.name}
                   </div>
                   <div className="flex-initial">
-                    {SlotClientStatus[slot.client_status]}
+                    <Tag
+                      minimal={slot.client_status === SlotClientStatus.Pending}
+                      intent={intent}
+                      round
+                      className={
+                        [Intent.PRIMARY, Intent.SUCCESS].includes(intent)
+                          ? "animate-pulse"
+                          : ""
+                      }
+                    >
+                      {SlotClientStatus[slot.client_status]}
+                    </Tag>
                   </div>
                 </div>
               );
@@ -162,4 +182,30 @@ export default function GameViewCreated({
       <Toaster position={Position.TOP} ref={(v) => (toaster.current = v)} />
     </Layout>
   );
+}
+
+function getClientStatusTagIntent(status: SlotClientStatus): Intent {
+  switch (status) {
+    case SlotClientStatus.Pending:
+      return Intent.WARNING;
+    case SlotClientStatus.Connected:
+      return Intent.PRIMARY;
+    case SlotClientStatus.Joined:
+    case SlotClientStatus.Loading:
+      return Intent.SUCCESS;
+    case SlotClientStatus.Disconnected:
+      return Intent.DANGER;
+    case SlotClientStatus.Left:
+      return Intent.NONE;
+  }
+  return Intent.NONE;
+}
+
+function getStatusText(status: GameStatus) {
+  switch (status) {
+    case GameStatus.Created:
+      return "Waiting for players";
+    case GameStatus.Running:
+      return "Running";
+  }
 }

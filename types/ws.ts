@@ -1,7 +1,13 @@
 import { PlayerRef } from "./player";
 import { MapList } from "./map";
 import { MapPlayer, MapForce } from "./game";
-import { GameInfo, Slot, SlotSettings, SlotClientStatus } from "./lobby";
+import {
+  GameInfo,
+  Slot,
+  SlotSettings,
+  SlotClientStatus,
+  NodeGameStatus,
+} from "./lobby";
 import { FloNode, GamePlayerPingSnapshot } from "./node";
 
 export enum WsStatus {
@@ -41,6 +47,7 @@ export enum WsMessageTypeId {
   GameStartReject = "GameStartReject",
   GameStarted = "GameStarted",
   GameSlotClientStatusUpdate = "GameSlotClientStatusUpdate",
+  GameStatusUpdate = "GameStatusUpdate",
 }
 
 export interface WsMessage {
@@ -217,4 +224,10 @@ export interface GameSlotClientStatusUpdateMessage extends WsMessage {
   player_id: number;
   game_id: number;
   status: SlotClientStatus;
+}
+
+export interface GameStatusUpdateMessage extends WsMessage {
+  game_id: number;
+  status: NodeGameStatus;
+  updated_player_game_client_status_map: { [key: string]: SlotClientStatus };
 }

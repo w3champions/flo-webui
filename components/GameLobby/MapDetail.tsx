@@ -40,8 +40,8 @@ export default function MapDetail({
 
   if (vertical) {
     return (
-      <div className="flex space-y-4 flex-col">
-        <div className="flex-initial" style={{ width: 256, height: 256 }}>
+      <div className="flex space-y-4 flex-col items-center">
+        <div className="flex-initial" style={{ width: 128, height: 128 }}>
           <img
             className="shadow border rounded border-black inline-block"
             src={`data:image/jpeg;base64,${map.preview_jpeg_base64}`}
@@ -49,8 +49,8 @@ export default function MapDetail({
         </div>
         <div className="flex-initial flex items-center content-center justify-center">
           <MapIcon className="flex-initial" num_player={map.num_players} />
-          <div className="flex-initial text-xl ml-2 flo-text-info">
-            <div className="font-extrabold ">{map.name}</div>
+          <div className="flex-initial ml-2 flo-text-info">
+            <div className="font-extrabold">{map.name}</div>
             <div className="text-xs">Author: {map.author}</div>
           </div>
         </div>

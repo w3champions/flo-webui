@@ -22,6 +22,13 @@ export enum GameStatus {
   Terminated = "Terminated",
 }
 
+export enum NodeGameStatus {
+  Created = "Created",
+  Waiting = "Waiting",
+  Running = "Running",
+  Ended = "Ended",
+}
+
 export interface Map {
   sha1: number[];
   checksum: number;
@@ -37,6 +44,7 @@ export interface Slot {
 export enum SlotClientStatus {
   Pending = "Pending",
   Connected = "Connected",
+  Joined = "Joined",
   Loading = "Loading",
   Loaded = "Loaded",
   Disconnected = "Disconnected",
