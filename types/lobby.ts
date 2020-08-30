@@ -25,6 +25,7 @@ export enum GameStatus {
 export enum NodeGameStatus {
   Created = "Created",
   Waiting = "Waiting",
+  Loading = "Loading",
   Running = "Running",
   Ended = "Ended",
 }

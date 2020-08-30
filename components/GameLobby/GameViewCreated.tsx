@@ -105,78 +105,78 @@ export default function GameViewCreated({
         </div>
       }
     >
-      <div className="flex flex-col w-full space-y-8">
-        <div className="flex-auto flex space-x-8">
-          <div className="flex-initial">
-            <MapDetail detail={mapDetail} vertical />
-          </div>
-          <div className="flex-initial space-y-4">
-            <h3 className={`${Classes.HEADING}`}>
-              {getStatusText(game.status)}
-            </h3>
-
-            <div>
-              <h4 className="mb-1">Server</h4>
-              <div className="flex">
-                <FlagIcon className="flex-initial mr-2" id={node.country_id} />
-                <span className="flex-initial font-bold flo-text-info">
-                  {node.name}
-                </span>
-              </div>
+      <div className="flex flex-col w-full space-y-4">
+        <div className="flex-initial flex">
+          <div className="flex-auto flex space-x-16">
+            <div className="flex-initial">
+              <MapDetail detail={mapDetail} vertical />
             </div>
-
-            <div>
-              <h4 className="mb-1">LAN game name</h4>
+            <div className="flex-auto space-y-4">
+              <h3 className="mb-1">LAN game name</h3>
               {lanGameName ? (
-                <span className="flo-text-info text-xl font-bold">
+                <span className="flo-text-info text-3xl font-bold">
                   {lanGameName}
                 </span>
               ) : (
                 <Spinner />
               )}
-            </div>
+              <h3 title={game.status} className={`${Classes.HEADING}`}>
+                {getStatusText(game.status)}
+              </h3>
 
-            <Button intent={Intent.DANGER} loading={leaving} onClick={leave}>
-              Force Leave
-            </Button>
-          </div>
-          <div className="flex-auto w-1/2 space-y-4">
-            {loadingPlayers.map(({ slot, ping }, idx) => {
-              let intent = getClientStatusTagIntent(slot.client_status);
-              return (
-                <div
-                  key={idx}
-                  className={`flex space-x-4 border border-gray-800 rounded px-4 py-4 items-center shadow ${
-                    slot.player.id === me.id ? "bg-blue-900" : ""
-                  }`}
-                >
-                  <div className="flex-initial">
-                    <PlayerColorPicker readonly value={slot.settings.color} />
-                  </div>
-                  <div className="flex-initial">
-                    <PingValue value={ping} />
-                  </div>
-                  <div className="flex-auto font-bold flo-text-info">
-                    {slot.player.name}
-                  </div>
-                  <div className="flex-initial">
-                    <Tag
-                      minimal={slot.client_status === SlotClientStatus.Pending}
-                      intent={intent}
-                      round
-                      className={
-                        [Intent.PRIMARY, Intent.SUCCESS].includes(intent)
-                          ? "animate-pulse"
-                          : ""
-                      }
-                    >
-                      {SlotClientStatus[slot.client_status]}
-                    </Tag>
-                  </div>
+              <div>
+                <div className="flex">
+                  <FlagIcon
+                    className="flex-initial mr-2"
+                    id={node.country_id}
+                  />
+                  <span className="flex-initial font-bold flo-text-info">
+                    {node.name}
+                  </span>
                 </div>
-              );
-            })}
+              </div>
+
+              <Button intent={Intent.DANGER} loading={leaving} onClick={leave}>
+                Force Leave
+              </Button>
+            </div>
           </div>
+        </div>
+        <Divider className="flex-initial" />
+        <div className="flex-auto space-y-4">
+          {loadingPlayers.map(({ slot, ping }, idx) => {
+            const intent = getClientStatusTagIntent(slot.client_status);
+            const pulse =
+              intent === Intent.PRIMARY || intent === Intent.SUCCESS;
+            return (
+              <div
+                key={idx}
+                className={`flex space-x-4 border border-gray-800 rounded px-4 py-4 items-center shadow ${
+                  slot.player.id === me.id ? "bg-blue-900" : ""
+                }`}
+              >
+                <div className="flex-initial">
+                  <PlayerColorPicker readonly value={slot.settings.color} />
+                </div>
+                <div className="flex-initial">
+                  <PingValue value={ping} />
+                </div>
+                <div className="flex-auto font-bold flo-text-info">
+                  {slot.player.name}
+                </div>
+                <div className="flex-initial">
+                  <Tag
+                    minimal={slot.client_status === SlotClientStatus.Pending}
+                    intent={intent}
+                    round
+                    className={pulse ? "animate-pulse" : ""}
+                  >
+                    {SlotClientStatus[slot.client_status]}
+                  </Tag>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
       <Toaster position={Position.TOP} ref={(v) => (toaster.current = v)} />
@@ -192,6 +192,7 @@ function getClientStatusTagIntent(status: SlotClientStatus): Intent {
       return Intent.PRIMARY;
     case SlotClientStatus.Joined:
     case SlotClientStatus.Loading:
+    case SlotClientStatus.Loaded:
       return Intent.SUCCESS;
     case SlotClientStatus.Disconnected:
       return Intent.DANGER;
@@ -206,6 +207,6 @@ function getStatusText(status: GameStatus) {
     case GameStatus.Created:
       return "Waiting for players";
     case GameStatus.Running:
-      return "Running";
+      return "Game Started";
   }
 }
