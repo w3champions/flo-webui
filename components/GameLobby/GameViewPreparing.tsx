@@ -325,6 +325,7 @@ export default function GameViewPreparing({
                           currentNodePingMap[playerId]
                         }
                         disabled={starting}
+                        creator={player.id === game.created_by.id}
                       />
                     );
                   })}
@@ -358,6 +359,7 @@ export default function GameViewPreparing({
                           currentNodePingMap[playerId]
                         }
                         disabled={starting}
+                        creator={player.id === game.created_by.id}
                       />
                     );
                   })}

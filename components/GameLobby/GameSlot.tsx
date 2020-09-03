@@ -1,4 +1,10 @@
-import { Slot, SlotStatus, Race, SlotSettings } from "../../types/lobby";
+import {
+  Slot,
+  SlotStatus,
+  Race,
+  SlotSettings,
+  Computer,
+} from "../../types/lobby";
 import classnames from "classnames";
 import { Button, Popover, Menu, MenuItem, Icon, Card } from "@blueprintjs/core";
 import PlayerColorPicker from "./PlayerColorPicker";
@@ -19,6 +25,7 @@ export interface GameSlotProps {
   me?: boolean;
   ping?: number | null;
   disabled?: boolean;
+  creator: boolean;
   onSettingsChange?: HandlerSlotSettingsChange;
 }
 
@@ -35,10 +42,11 @@ export const GameSlot: React.FunctionComponent<GameSlotProps> = ({
   onSettingsChange,
   ping,
   disabled,
+  creator,
 }) => {
   let inner = null;
 
-  if (slot.player) {
+  if (slot.settings.status === SlotStatus.Occupied) {
     inner = renderPlayerSlot(
       id,
       slot,
@@ -46,11 +54,12 @@ export const GameSlot: React.FunctionComponent<GameSlotProps> = ({
       host,
       me,
       onSettingsChange,
+      creator,
       ping,
       disabled
     );
   } else if (slot.settings.status === SlotStatus.Open) {
-    inner = renderOpenSlot(slot);
+    inner = renderOpenSlot(id, slot, onSettingsChange, creator, disabled);
   }
 
   return (
@@ -71,25 +80,30 @@ function renderPlayerSlot(
   host: boolean,
   me: boolean,
   onSettingsChange: HandlerSlotSettingsChange,
+  creator,
   ping?: number | null,
   disabled?: boolean
 ) {
+  const readonly = !me && !(creator && !slot.player);
+
   if (slot.settings.team === 24) {
     return (
       <div className="flex p-1 items-center">
-        <div
-          className="flex-auto px-4 flex items-center"
-          style={SlotItemStyles}
-        >
-          <span className={`flex-auto ${me ? "font-semibold" : ""}`}>
-            {slot.player ? <span>{slot.player.name}</span> : null}
-          </span>
-          {me ? null : (
-            <small className="flex-initial">
-              <PingValue value={ping} />
-            </small>
-          )}
-        </div>
+        {slot.player ? (
+          <div
+            className="flex-auto px-4 flex items-center"
+            style={SlotItemStyles}
+          >
+            <span className={`flex-auto ${me ? "font-semibold" : ""}`}>
+              <span>{slot.player.name}</span>
+            </span>
+            {me ? null : (
+              <small className="flex-initial">
+                <PingValue value={ping} />
+              </small>
+            )}
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -97,7 +111,7 @@ function renderPlayerSlot(
     <div className="flex p-1 items-center justify-center content-center space-x-1">
       <div className="flex-initial" style={TeamStyles}>
         <TeamPicker
-          readonly={!me || disabled}
+          readonly={readonly || disabled}
           value={slot.settings.team}
           teams={teams}
           onChange={(team) => {
@@ -107,26 +121,34 @@ function renderPlayerSlot(
       </div>
       <div className="flex-initial">
         <PlayerColorPicker
-          readonly={!me || disabled}
+          readonly={readonly || disabled}
           value={slot.settings.color}
           onChange={(color) => {
             onSettingsChange && onSettingsChange({ id, color });
           }}
         />
       </div>
-      <div className="flex-auto px-4 flex">
-        <span className={`flex-auto ${me ? "font-semibold" : ""}`}>
-          {slot.player ? <span>{slot.player.name}</span> : null}
-        </span>
-        {me ? null : (
-          <small className="flex-initial">
-            <PingValue value={ping} />
-          </small>
-        )}
-      </div>
+
+      {slot.player ? (
+        <div className="flex-auto px-4 flex">
+          <span className={`flex-auto ${me ? "font-semibold" : ""}`}>
+            <span>{slot.player.name}</span>
+          </span>
+          {me ? null : (
+            <small className="flex-initial">
+              <PingValue value={ping} />
+            </small>
+          )}
+        </div>
+      ) : (
+        <Button className="flex-auto">
+          Computer ({slot.settings.computer})
+        </Button>
+      )}
+
       <div className="flex-initial">
         <RacePicker
-          readonly={!me || disabled}
+          readonly={readonly || disabled}
           value={slot.settings.race}
           onChange={(race) => {
             onSettingsChange && onSettingsChange({ id, race });
@@ -135,7 +157,7 @@ function renderPlayerSlot(
       </div>
       <div className="flex-initial">
         <HandicapPicker
-          readonly={!me || disabled}
+          readonly={readonly || disabled}
           value={slot.settings.handicap}
           onChange={(handicap) => {
             onSettingsChange && onSettingsChange({ id, handicap });
@@ -146,11 +168,51 @@ function renderPlayerSlot(
   );
 }
 
-function renderOpenSlot(slot: Slot) {
+function renderOpenSlot(
+  id: number,
+  slot: Slot,
+  onSettingsChange: HandlerSlotSettingsChange,
+  creator: boolean,
+  disabled?: boolean
+) {
+  if (!creator || slot.settings.team === 24) {
+    return (
+      <div className="p-1">
+        <Button fill disabled={disabled}>
+          Open Slot
+        </Button>
+      </div>
+    );
+  }
+
+  const menu = (
+    <Menu>
+      <MenuItem
+        className="text-center"
+        text="Add Computer"
+        onClick={() => {
+          onSettingsChange &&
+            onSettingsChange({
+              id,
+              computer: Computer.Normal,
+              status: SlotStatus.Occupied,
+            });
+        }}
+      />
+    </Menu>
+  );
   return (
-    <div className="flex p-1 items-center">
-      <Button className="flex-auto">Open Slot</Button>
-    </div>
+    <Popover
+      minimal
+      disabled={disabled}
+      content={menu}
+      targetClassName="flex-auto"
+      className="flex p-1 items-center justify-center"
+    >
+      <Button className="flex-auto" fill disabled={disabled}>
+        Open Slot
+      </Button>
+    </Popover>
   );
 }
 
