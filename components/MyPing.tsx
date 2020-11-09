@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { selectNodes } from "../redux/modules/node";
 import { Classes } from "@blueprintjs/core";
 import { FlagIcon } from "./FlagIcon";
+import PingValue from "./PingValue";
 
 export default function MyPing() {
   const nodes = useSelector(selectNodes);
@@ -28,9 +29,7 @@ export default function MyPing() {
               </div>
             </td>
             <td>
-              <span className={getPingClass(node.ping)}>
-                {node.ping !== null ? `${node.ping}ms` : "N/A"}
-              </span>
+              <PingValue value={node.ping} />
             </td>
           </tr>
         ))}

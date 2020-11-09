@@ -1,11 +1,18 @@
+import { Tooltip } from "@blueprintjs/core";
+import { PingStats } from "../types/ping";
+
 export interface PingValueProps {
-  value: number | null;
+  value: PingStats | null;
 }
 
 export default function PingValue({ value }: PingValueProps) {
-  const text = typeof value === "number" ? `${value}ms` : "N/A";
-
-  return <span className={getPingClass(value)}>{text}</span>;
+  const text = !value || (value && value.avg === null) ? '-' : `${value.avg}ms`;
+  return <Tooltip content={<div>
+    Min: {value && value.min}<br />
+    Max: {value && value.max}<br />
+    Avg: {value && value.avg}<br />
+    Loss Rate: {value && value.loss_rate}<br />
+  </div>}><span className={getPingClass(value && value.avg)}>{text}</span></Tooltip>;
 }
 
 function getPingClass(value: number | null) {

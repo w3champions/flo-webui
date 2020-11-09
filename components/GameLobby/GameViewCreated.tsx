@@ -20,6 +20,7 @@ import {
   Toaster,
   IToaster,
   Tag,
+  NonIdealState,
 } from "@blueprintjs/core";
 import { Spinner } from "../Spinner";
 import { useSelector } from "react-redux";
@@ -29,6 +30,7 @@ import {
   selectCurrentGame,
   selectCurrentNode,
   selectLanGameName,
+  selectStartGameError,
 } from "../../redux/modules/game";
 import { createSelector } from "@reduxjs/toolkit";
 import PlayerColorPicker from "./PlayerColorPicker";
@@ -40,6 +42,7 @@ import { useCallback, useState, useRef } from "react";
 import { LeaveGameRequestBody } from "../../types/game";
 import { useApiClient } from "../../helpers/api-client";
 import { useAuth } from "../../providers/auth";
+import { PingStats } from "../../types/ping";
 
 export interface GameViewCreatedProps {
   game: GameInfo;
@@ -48,7 +51,7 @@ export interface GameViewCreatedProps {
 
 interface LoadingPlayer {
   slot: Slot;
-  ping?: number;
+  ping?: PingStats;
 }
 
 const selectLoadingPlayers = createSelector(
@@ -71,6 +74,7 @@ export default function GameViewCreated({
   const loadingPlayers = useSelector(selectLoadingPlayers);
   const node = useSelector(selectCurrentNode);
   const lanGameName = useSelector(selectLanGameName);
+  const startGameError = useSelector(selectStartGameError);
   const apiClient = useApiClient();
   const { player: me } = useAuth();
   const [leaving, setLeaving] = useState(false);
@@ -112,17 +116,26 @@ export default function GameViewCreated({
               <MapDetail detail={mapDetail} vertical />
             </div>
             <div className="flex-auto space-y-4">
-              <h3 className="mb-1">LAN game name</h3>
-              {lanGameName ? (
-                <span className="flo-text-info text-3xl font-bold">
-                  {lanGameName}
-                </span>
+              {startGameError ? (
+                <Callout intent={Intent.DANGER} title="Create LAN game failed">
+                  {startGameError.message}
+                </Callout>
               ) : (
-                <Spinner />
+                <>
+                  <h3 className="mb-1">LAN game name</h3>
+                  {lanGameName ? (
+                    <span className="flo-text-info text-3xl font-bold">
+                      {lanGameName}
+                    </span>
+                  ) : (
+                    <Spinner />
+                  )}
+
+                  <h3 title={game.status} className={`${Classes.HEADING}`}>
+                    {getStatusText(game.status)}
+                  </h3>
+                </>
               )}
-              <h3 title={game.status} className={`${Classes.HEADING}`}>
-                {getStatusText(game.status)}
-              </h3>
 
               <div>
                 <div className="flex">

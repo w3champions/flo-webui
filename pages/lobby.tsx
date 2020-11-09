@@ -30,12 +30,7 @@ import {
   loadMapDetailByPath,
 } from "../redux/modules/map";
 import {
-  GetMapDetailMessage,
-  WsMessageTypeId,
-  GameSlotUpdateMessage,
-  GameSlotUpdateRequestMessage,
-  GameSelectNodeMessage,
-  GameSelectNodeRequestMessage,
+  GetMapDetailMessage
 } from "../types/ws";
 import { MapIcon } from "../components/MapIcon";
 import { useRouter } from "next/router";
@@ -52,38 +47,6 @@ interface SlotRef {
   slot: Slot;
   player_id?: number;
 }
-
-const selectSlotGroups = createSelector(selectCurrentGame, (game) => {
-  const groups = {
-    players: [] as SlotRef[],
-    referees: [] as SlotRef[],
-  };
-
-  if (!game) {
-    return groups;
-  }
-
-  for (let id = 0; id < game.slots.length; id++) {
-    const slot = game.slots[id];
-    if (slot.settings.team === 24) {
-      groups.referees.push({
-        id,
-        slot,
-        player_id: slot.player && slot.player.id,
-      });
-    } else {
-      groups.players.push({
-        id,
-        slot,
-        player_id: slot.player && slot.player.id,
-      });
-    }
-  }
-
-  // groups.referees = groups.referees.slice(0, 12);
-
-  return groups;
-});
 
 interface GameMapDetail {
   map: GetMapDetailMessage;

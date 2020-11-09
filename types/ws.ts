@@ -9,6 +9,7 @@ import {
   NodeGameStatus,
 } from "./lobby";
 import { FloNode, GamePlayerPingSnapshot } from "./node";
+import { PingStats } from "./ping";
 
 export enum WsStatus {
   Idle = "Idle",
@@ -39,13 +40,14 @@ export enum WsMessageTypeId {
   PingUpdate = "PingUpdate",
   GameSelectNodeRequest = "GameSelectNodeRequest",
   GameSelectNode = "GameSelectNode",
-  GamePlayerPingMapUpdate = "GamePlayerPingMapUpdate",
+  PlayerPingMapUpdate = "PlayerPingMapUpdate",
   GamePlayerPingMapSnapshotRequest = "GamePlayerPingMapSnapshotRequest",
   GamePlayerPingMapSnapshot = "GamePlayerPingMapSnapshot",
   GameStartRequest = "GameStartRequest",
   GameStarting = "GameStarting",
   GameStartReject = "GameStartReject",
   GameStarted = "GameStarted",
+  GameStartError = "GameStartError",
   GameSlotClientStatusUpdate = "GameSlotClientStatusUpdate",
   GameStatusUpdate = "GameStatusUpdate",
 }
@@ -139,6 +141,7 @@ export interface GameSlotUpdateMessage extends WsMessage {
   game_id: number;
   slot_index: number;
   slot_settings: SlotSettings;
+  player: PlayerRef;
 }
 
 export interface PlayerSessionUpdateMessage extends WsMessage {
@@ -173,15 +176,15 @@ export interface GameSelectNodeRequestMessage extends WsMessage {
 }
 
 export interface PingUpdateMessage extends WsMessage {
-  node_id: number;
-  ping: number | null;
+  ping_map: {
+    [node_id: number]: PingStats;
+  };
 }
 
-export interface GamePlayerPingMapUpdateMessage extends WsMessage {
-  game_id: number;
+export interface PlayerPingMapUpdateMessage extends WsMessage {
   player_id: number;
   ping_map: {
-    [node_id: number]: number;
+    [node_id: number]: PingStats;
   };
 }
 

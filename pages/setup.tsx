@@ -45,6 +45,7 @@ export default function Setup() {
 
   useEffect(() => {
     if (done) {
+      console.log('setup check passed, redirecting to /');
       router.replace("/");
     }
   }, [done]);

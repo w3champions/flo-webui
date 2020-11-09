@@ -14,7 +14,7 @@ import {
   GamePlayerPingMapSnapshotMessage,
   GamePlayerPingMapSnapshotRequestMessage,
   GameSelectNodeMessage,
-  GamePlayerPingMapUpdateMessage,
+  PlayerPingMapUpdateMessage,
   GameStartRejectMessage,
   GameStartingMessage,
   GameStartedMessage,
@@ -62,6 +62,7 @@ export interface GameState {
   pingSnapshot: GamePlayerPingSnapshot;
   startGameLoading: boolean;
   startGameRejection: GameStartRejectMessage;
+  startGameError: SerializedError,
 }
 
 const gameSlice = createSlice({
@@ -78,6 +79,7 @@ const gameSlice = createSlice({
     pingSnapshot: null,
     startGameLoading: false,
     startGameRejection: null,
+    startGameError: null,
   } as GameState,
   reducers: {
     clearGameCreateError(state) {
@@ -100,8 +102,9 @@ const gameSlice = createSlice({
       state.createGameError = null;
     },
     updateSlot(state, action: PayloadAction<GameSlotUpdateMessage>) {
-      const { game_id, slot_index, slot_settings } = action.payload;
+      const { game_id, slot_index, slot_settings, player } = action.payload;
       if (state.currentGame && state.currentGame.id === game_id) {
+        state.currentGame.slots[slot_index].player = player;
         state.currentGame.slots[slot_index].settings = slot_settings;
       }
     },
@@ -160,7 +163,7 @@ const gameSlice = createSlice({
     },
     updateCurrentPing(
       state,
-      { payload }: PayloadAction<GamePlayerPingMapUpdateMessage>
+      { payload }: PayloadAction<PlayerPingMapUpdateMessage>
     ) {
       if (!state.currentPingMap) {
         state.currentPingMap = {
@@ -197,7 +200,14 @@ const gameSlice = createSlice({
         state.startGameRejection = null;
         state.currentGame.status = GameStatus.Created;
         state.currentLanGameName = payload.lan_game_name;
+        state.startGameError = null
       }
+    },
+    updateStartGameError(
+      state,
+      { payload }: PayloadAction<SerializedError>
+    ) {
+      state.startGameError = payload
     },
     updateStartGameRejection(
       state,
@@ -401,7 +411,7 @@ export const selectCurrentNodePingMap = createSelector(
     const nodeIdString = String(node.id);
     for (let [player_id, map] of Object.entries(pingMap)) {
       const ping = map[nodeIdString];
-      if (typeof ping === "number") {
+      if (ping) {
         r[player_id] = ping;
       }
     }
@@ -411,6 +421,8 @@ export const selectCurrentNodePingMap = createSelector(
 
 export const selectGameStarting = (state: AppState) =>
   state.game.startGameLoading;
+
+export const selectStartGameError = (state: AppState) => state.game.startGameError;
 
 export const selectStartGameRejection = (state: AppState) =>
   state.game.startGameRejection;
@@ -431,6 +443,7 @@ export const {
   updateCurrentPing,
   updateStartGameLoading,
   updateStartGameLoadingLocal,
+  updateStartGameError,
   updateStartGameRejection,
   updateGameStarted,
   clearStartGameRejection,

@@ -26,7 +26,7 @@ import {
   PingUpdateMessage,
   GamePlayerPingMapSnapshotMessage,
   GameSelectNodeMessage,
-  GamePlayerPingMapUpdateMessage,
+  PlayerPingMapUpdateMessage,
   GameStartRejectMessage,
   GameStartingMessage,
   GameStartedMessage,
@@ -55,9 +55,10 @@ import {
   updateSlotClientStatus,
   checkCurrentGameId,
   updateGameStatus,
+  updateStartGameError,
 } from "./game";
 import { NextRouter } from "next/router";
-import { updateNodes, updateNodePing } from "./node";
+import { updateNodes, updateNodesPing } from "./node";
 
 export interface WsState {
   status: WsStatus;
@@ -253,7 +254,7 @@ export function dispatchMessage(
     }
     case WsMessageTypeId.PingUpdate: {
       const payload = msg as PingUpdateMessage;
-      dispatch(updateNodePing(payload));
+      dispatch(updateNodesPing(payload));
       return;
     }
     case WsMessageTypeId.GamePlayerPingMapSnapshot: {
@@ -266,8 +267,8 @@ export function dispatchMessage(
       dispatch(updateNode(payload));
       return;
     }
-    case WsMessageTypeId.GamePlayerPingMapUpdate: {
-      const payload = msg as GamePlayerPingMapUpdateMessage;
+    case WsMessageTypeId.PlayerPingMapUpdate: {
+      const payload = msg as PlayerPingMapUpdateMessage;
       dispatch(updateCurrentPing(payload));
       return;
     }
@@ -283,6 +284,9 @@ export function dispatchMessage(
     case WsMessageTypeId.GameStarted: {
       dispatch(updateGameStarted(msg as GameStartedMessage));
       return;
+    }
+    case WsMessageTypeId.GameStartError: {
+      return dispatch(updateStartGameError(msg as SerializedError));
     }
     case WsMessageTypeId.GameSlotClientStatusUpdate: {
       dispatch(

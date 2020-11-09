@@ -89,8 +89,6 @@ const selectSlotGroups = createSelector(selectCurrentGame, (game) => {
     }
   }
 
-  // groups.referees = groups.referees.slice(0, 12);
-
   return groups;
 });
 

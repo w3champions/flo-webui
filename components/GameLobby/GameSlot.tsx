@@ -10,6 +10,7 @@ import { Button, Popover, Menu, MenuItem, Icon, Card } from "@blueprintjs/core";
 import PlayerColorPicker from "./PlayerColorPicker";
 import PingValue from "../PingValue";
 import { IconNames } from "@blueprintjs/icons";
+import { PingStats } from "../../types/ping";
 
 export type SlotUpdate = {
   id: number;
@@ -23,7 +24,7 @@ export interface GameSlotProps {
   teams: number;
   host?: boolean;
   me?: boolean;
-  ping?: number | null;
+  ping?: PingStats | null;
   disabled?: boolean;
   creator: boolean;
   onSettingsChange?: HandlerSlotSettingsChange;
@@ -81,7 +82,7 @@ function renderPlayerSlot(
   me: boolean,
   onSettingsChange: HandlerSlotSettingsChange,
   creator,
-  ping?: number | null,
+  ping?: PingStats | null,
   disabled?: boolean
 ) {
   const readonly = !me && !(creator && !slot.player);

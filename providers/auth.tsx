@@ -49,6 +49,7 @@ export const AuthProvider: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     if (error) {
+      console.error("get player info:", error);
       router.replace("/setup");
     }
   }, [error]);

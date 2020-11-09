@@ -1,9 +1,11 @@
+import { PingStats } from "./ping";
+
 export interface FloNode {
   id: number;
   name: string;
   location: string;
   country_id: string;
-  ping: number | null;
+  ping: PingStats | null;
 }
 
 export interface SelectedNode {
@@ -15,17 +17,12 @@ export interface SelectedNode {
   secret: string;
 }
 
-export interface NodePingMap {
-  node_id: number;
-  player_pings: { [player_id: number]: number | null };
-}
-
 export interface GamePlayerPingSnapshot {
   game_id: number;
   node_ping_map: {
     [node_id: number]: {
       player_ping_map: {
-        [player_id: number]: number;
+        [player_id: number]: PingStats;
       };
     };
   };
@@ -33,6 +30,6 @@ export interface GamePlayerPingSnapshot {
 
 export interface GamePlayerPingMap {
   [player_id: number]: {
-    [node_id: number]: number;
+    [node_id: number]: PingStats;
   };
 }
