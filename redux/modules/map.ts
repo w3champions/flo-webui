@@ -87,7 +87,7 @@ const selectMapFiltered = createSelector(
       return null;
     }
 
-    const root = state.list.root.children[0];
+    const root = state.list.root;
 
     if (!filter) {
       return root;
@@ -184,9 +184,10 @@ export const loadMapList = createAsyncThunk(
 export const loadMapDetail = createAsyncThunk(
   "map/loadMapDetail",
   async ({ ws, id }: { ws: Ws; id: string }, { dispatch }) => {
+    const prefix = /^[\/\\](?:war3\.w3mod\:)?/
     ws.send({
       type: WsMessageTypeId.GetMapDetail,
-      path: `${WAR3_STORAGE_MAP_PATH_PREFIX}${id}`,
+      path: id.replace(prefix, '')
     });
     dispatch(mapSlice.actions.startLoadDetail());
   }
