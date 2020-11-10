@@ -3,7 +3,7 @@ import { useState } from "react";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useApiClient } from "../helpers/api-client";
 import { Alert } from "./Alert";
-import { Button, Callout, Intent } from "@blueprintjs/core";
+import { Button, Callout, Classes, Icon, Intent } from "@blueprintjs/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectWsStatus,
@@ -112,7 +112,14 @@ export default function ConnectWs() {
           {detectGamePath}
         </>
       ) : (
-        <p>Download and run Flo.</p>
+        <a
+          className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY}`}
+          href="https://github.com/w3champions/w3champions-hostbot-docs/releases"
+          target="_blank"
+        >
+          <Icon icon={IconNames.DOWNLOAD} />
+          <span>Download Client</span>
+        </a>
       )}
     </div>
   );

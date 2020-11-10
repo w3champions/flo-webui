@@ -10,7 +10,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Flo - Warcraft III Hosting Service</title>
+        <title>Flo - W3Champions Hostbot Service</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Provider store={store}>
