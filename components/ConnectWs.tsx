@@ -3,7 +3,14 @@ import { useState } from "react";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useApiClient } from "../helpers/api-client";
 import { Alert } from "./Alert";
-import { Button, Callout, Classes, Icon, Intent } from "@blueprintjs/core";
+import {
+  Button,
+  Callout,
+  Classes,
+  Dialog,
+  Icon,
+  Intent,
+} from "@blueprintjs/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectWsStatus,
@@ -14,7 +21,7 @@ import {
 } from "../redux/modules/ws";
 import { WsStatus, War3InfoError } from "../types/ws";
 import { useWs, useWsPort } from "../providers/ws";
-import { FLO_DEFAULT_WS_PORT } from "../const";
+import { FLO_DEFAULT_WS_PORT, FLO_MIN_CLIENT_VERSION } from "../const";
 import { useRouter } from "next/router";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -98,29 +105,45 @@ export default function ConnectWs() {
       )}
       {status === WsStatus.Connecting && <Spinner />}
 
-      {clientInfo && status === WsStatus.Connected ? (
-        <>
+      {
+        clientInfo && status === WsStatus.Connected ? (
+          <>
+            <p>
+              Running on local port{" "}
+              <span className="flo-text-info font-semibold">{port}</span>,
+              version{" "}
+              <span className="flo-text-info font-semibold">
+                {clientInfo.version}
+              </span>
+              .
+            </p>
+            {gameLocated}
+            {detectGamePath}
+          </>
+        ) : null
+        // <a
+        //   className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY}`}
+        //   href="https://github.com/w3champions/w3champions-hostbot-docs/releases"
+        //   target="_blank"
+        // >
+        //   <Icon icon={IconNames.DOWNLOAD} />
+        //   <span>Download Client</span>
+        // </a>
+      }
+      <Dialog
+        className={Classes.DARK}
+        isOpen={clientInfo && !hasMinVersion(clientInfo.version)}
+        title="Please Update"
+        icon="warning-sign"
+        isCloseButtonShown={false}
+      >
+        <div className={Classes.DIALOG_BODY}>
           <p>
-            Running on local port{" "}
-            <span className="flo-text-info font-semibold">{port}</span>, version{" "}
-            <span className="flo-text-info font-semibold">
-              {clientInfo.version}
-            </span>
-            .
+            Please update Flo to{" "}
+            <strong>{FLO_MIN_CLIENT_VERSION.join(".")}</strong> or newer.
           </p>
-          {gameLocated}
-          {detectGamePath}
-        </>
-      ) : (
-        <a
-          className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY}`}
-          href="https://github.com/w3champions/w3champions-hostbot-docs/releases"
-          target="_blank"
-        >
-          <Icon icon={IconNames.DOWNLOAD} />
-          <span>Download Client</span>
-        </a>
-      )}
+        </div>
+      </Dialog>
     </div>
   );
 }
@@ -134,4 +157,22 @@ function formatClientErrorMessage(error: War3InfoError) {
     default:
       return "Internal error, please check the logs.";
   }
+}
+
+function hasMinVersion(version: string) {
+  const parts = version.split(".");
+  if (parts.length !== 3) {
+    return false;
+  }
+
+  if (
+    parts.some((v, i) => {
+      console.log(parseInt(v), FLO_MIN_CLIENT_VERSION[i]);
+      return parseInt(v) < FLO_MIN_CLIENT_VERSION[i];
+    })
+  ) {
+    return false;
+  }
+
+  return true;
 }
