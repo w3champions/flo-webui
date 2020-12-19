@@ -63,10 +63,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.query
   )) as CallbackQuery;
 
-  const stateVerified = verify<AuthorizeState>(state);
+  const {region} = verify<AuthorizeState>(state);
 
   const client = getServerApiClient();
-  const getTokenUrl = `https://${stateVerified.region}.battle.net/oauth/token`;
+  const baseURL = region === 'global' ? `https://eu.battle.net` : `https://www.battlenet.com.cn`;
   const params = new URLSearchParams();
   params.append("redirect_uri", getOAuthRedirectUri());
   params.append("scope", "openid");
@@ -75,7 +75,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     const token: BearerToken = await client
-      .post(getTokenUrl, params.toString(), {
+      .post(`${baseURL}/oauth/token`, params.toString(), {
         auth: {
           username: BLIZZARD_CLIENT_ID,
           password: BLIZZARD_CLIENT_SECRET,
@@ -87,7 +87,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       .then((res) => res.data);
 
     const userInfo: UserInfo = await client
-      .get(`https://eu.battle.net/oauth/userinfo`, {
+      .get(`${baseURL}/oauth/userinfo`, {
         headers: {
           Authorization: `Bearer ${token.access_token}`,
         },
@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         .setAccessTokenExp(Math.floor(Date.now() / 1000) + token.expires_in)
     );
     const realm = new protobuf_wrappers.StringValue();
-    realm.setValue(stateVerified.region);
+    realm.setValue(region);
     request
       .setName(userInfo.battletag)
       .setSource(PlayerSource.PLAYERSOURCEBNET)

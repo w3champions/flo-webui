@@ -9,7 +9,7 @@ import { getOAuthRedirectUri } from "../../helpers/oauth";
 const { BLIZZARD_CLIENT_ID } = process.env;
 
 const Schema = joi.object({
-  region: joi.string().valid("us", "eu"),
+  region: joi.string().valid("china", "global"),
 });
 
 interface GetAuthorizeUrlRequest {
@@ -21,11 +21,11 @@ export default withErrorHandler(async function getAuthorizeUrl(
   res: NowResponse
 ) {
   const { region } = (await Schema.validateAsync({
-    region: "eu",
+    region: "global",
     ...req.query,
   })) as GetAuthorizeUrlRequest;
 
-  const url = new URL(`https://${region}.battle.net/oauth/authorize`);
+  const url = region === 'global' ? new URL(`https://eu.battle.net/oauth/authorize`) : new URL(`https://www.battlenet.com.cn/oauth/authorize`);
   url.searchParams.append("client_id", BLIZZARD_CLIENT_ID);
   url.searchParams.append("scope", "openid");
   url.searchParams.append(
