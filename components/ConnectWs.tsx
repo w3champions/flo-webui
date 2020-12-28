@@ -166,9 +166,10 @@ function hasMinVersion(version: string) {
   }
 
   for (var i = 0; i < 3; i++) {
-    if (parseInt(parts[i]) > FLO_MIN_CLIENT_VERSION[i]) {
+    let partInt = parseInt(parts[i]);
+    if (partInt > FLO_MIN_CLIENT_VERSION[i]) {
       return true;
-    } else if (parseInt(parts[i]) < FLO_MIN_CLIENT_VERSION[i]) {
+    } else if (partInt < FLO_MIN_CLIENT_VERSION[i]) {
       return false;
     }
   }
