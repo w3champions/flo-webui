@@ -165,13 +165,12 @@ function hasMinVersion(version: string) {
     return false;
   }
 
-  if (
-    parts.some((v, i) => {
-      console.log(parseInt(v), FLO_MIN_CLIENT_VERSION[i]);
-      return parseInt(v) < FLO_MIN_CLIENT_VERSION[i];
-    })
-  ) {
-    return false;
+  for (var i = 0; i < 3; i++) {
+    if (parseInt(parts[i]) > FLO_MIN_CLIENT_VERSION[i]) {
+      return true;
+    } else if (parseInt(parts[i]) < FLO_MIN_CLIENT_VERSION[i]) {
+      return false;
+    }
   }
 
   return true;
