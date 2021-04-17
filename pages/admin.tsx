@@ -8,10 +8,6 @@ import { selectPlayerInfo } from "../redux/store";
 
 const jwt = require("jsonwebtoken");
 
-const METABASE_SITE_URL = "http://service.w3flo.com:23000";
-const METABASE_SECRET_KEY =
-  "08523503c30a1d497ce16ca0c67410a24833e9bf900d2a6cb0e0ce0a1f9ba8a6";
-
 interface Props {
   iframeUrl: string;
 }
@@ -33,15 +29,12 @@ export default function PlayerGames({ iframeUrl }: Props) {
       )}
     </Layout>
   );
-  return (
-    <>
-      {playerInfo && playerInfo.name}
-      {iframeUrl}
-    </>
-  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const METABASE_SITE_URL = "https://bi.w3flo.com";
+  const METABASE_SECRET_KEY =
+    "08523503c30a1d497ce16ca0c67410a24833e9bf900d2a6cb0e0ce0a1f9ba8a6";
   const payload = {
     resource: { question: 39 },
     params: {},
