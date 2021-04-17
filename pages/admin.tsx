@@ -14,7 +14,7 @@ interface Props {
 
 export default function PlayerGames({ iframeUrl }: Props) {
   const playerInfo = useSelector(selectPlayerInfo);
-  const isAdmin = playerInfo && ADMIN_LIST.includes(playerInfo.name);
+  const isAdmin = playerInfo && ADMIN_LIST.includes(playerInfo.name.toLowerCase());
   return (
     <Layout flex>
       {isAdmin ? (
