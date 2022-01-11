@@ -1,10 +1,12 @@
 import { Provider } from "react-redux";
-import "../styles/index.css";
-
 import store from "../redux/store";
+import { GqlClient } from "../graphql";
 import { AuthProvider } from "../providers/auth";
 import { WsProvider } from "../providers/ws";
+import { Provider as GqlClientPrivider } from "urql"
 import Head from "next/head";
+
+import "../styles/index.css";
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -16,7 +18,9 @@ export default function MyApp({ Component, pageProps }) {
       <Provider store={store}>
         <AuthProvider>
           <WsProvider>
-            <Component {...pageProps} />
+            <GqlClientPrivider value={GqlClient}>
+              <Component {...pageProps} />
+            </GqlClientPrivider>
           </WsProvider>
         </AuthProvider>
       </Provider>

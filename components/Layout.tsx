@@ -12,7 +12,7 @@ export const Layout: FunctionComponent<{
   return (
     <>
       <Head>
-        <title>Flo - W3Champions Hostbot Service</title>
+        <title>Flo</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={Classes.DARK}>

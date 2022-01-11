@@ -16,6 +16,8 @@ export interface AuthContextValue {
   signOut: () => void;
 }
 
+const NO_AUTH_PAGES = ['/about', '/live'];
+
 export const AuthProvider: React.FunctionComponent = ({ children }) => {
   const dispatch = useDispatch();
   const [authToken, setAuthToken] = useState(null);
@@ -43,7 +45,9 @@ export const AuthProvider: React.FunctionComponent = ({ children }) => {
         })
       );
     } else {
-      router.replace("/setup");
+      if (!NO_AUTH_PAGES.some(path => router.pathname.startsWith(path))) {
+        router.replace("/setup");
+      }
     }
   }, []);
 

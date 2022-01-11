@@ -1,0 +1,125 @@
+subscription GameListUpdateSub {
+  gameListUpdateEvents {
+    __typename
+    ... on GameListUpdateEventItemInitial {
+      snapshots {
+        ...GameSnapshotFields
+      }
+    }
+    ... on GameListUpdateEventItemEvent {
+      event {
+        __typename
+        ... on GameListUpdateEventAdded {
+          snapshot {
+            ...GameSnapshotFields
+          }
+        }
+        ... on GameListUpdateEventEnded {
+          gameId
+          endedAt
+        }
+        ... on GameListUpdateEventRemoved {
+          gameId
+        }
+      }
+    }
+  }
+}
+
+subscription GameUpdateSub($id: Int!) {
+  gameUpdateEvents(id: $id) {
+    __typename
+    ... on GameSnapshotWithStats {
+      game {
+        ...GameSnapshotFields
+      }
+      stats {
+        ...GameStatsSnapshotFields
+      }
+    }
+    ... on GameUpdateEvent {
+      gameId
+      data {
+        __typename
+        ... on GameUpdateEventDataEnded {
+          endedAt
+          durationMillis
+        }
+        ... on GameUpdateEventDataRemoved {
+          snapshot {
+            id
+          }
+        }
+        ... on PingStats {
+          time
+          data {
+            ...PingFields
+          }
+        }
+        ... on ActionStats {
+          time
+          data {
+            ...ActionFields
+          }
+        }
+        ... on GameUpdateEventDataPlayerLeft {
+          time
+          playerId
+          reason
+        }
+      }
+    }
+  }
+}
+
+fragment GameSnapshotFields on GameSnapshot {
+  id
+  gameName
+  mapName
+  mapPath
+  nodeId
+  nodeName
+  startedAt
+  endedAt
+  players {
+    ...PlayerFields
+  }
+}
+
+fragment PlayerFields on Player {
+  id
+  name
+  race
+  team
+  leftAt
+  leaveReason
+}
+
+fragment GameStatsSnapshotFields on GameStatsSnapshot {
+  ping {
+    time
+    data {
+      ...PingFields
+    }
+  }
+  action {
+    time
+    data {
+      ...ActionFields
+    }
+  }
+}
+
+fragment PingFields on Ping {
+  playerId
+  min
+  max
+  avg
+  ticks
+}
+
+fragment ActionFields on Action {
+  playerId
+  apm
+  total
+}
