@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 export const FLO_MIN_CLIENT_VERSION = [0, 5, 15];
+=======
+export const FLO_MIN_CLIENT_VERSION = [0, 5, 13];
+>>>>>>> 97ca42ac96630a39b4438dd34a0efc70a6c4e515
 export const FLO_ACCESS_TOKEN_STORAGE_KEY = "flo_access_token";
 export const FLO_WS_PORT_STORAGE_KEY = "flo_port";
 export const FLO_DEFAULT_WS_PORT = 3551;
