@@ -161,6 +161,27 @@ function Game({ game, stats }: { game: Game, stats: Stats }) {
 
     return [pingDataSets, actionDataSets]
   }, [stats])
+  const finishedApmMap = useMemo(() => {
+    if (!game.endedAt) {
+      return null
+    }
+
+    let apm_collect_time = stats.action.length ? stats.action[stats.action.length - 1].time : null
+    let actions = new Map<number, number>()
+    for (let { data } of stats.action) {
+      for (let item of data) {
+        const n = actions.get(item.playerId) || 0
+        actions.set(item.playerId, n + item.total)
+      }
+    }
+    return new Map(game.players.map(p => {
+      const time = p.leftAt || apm_collect_time
+      const total = actions.get(p.id)
+      return [p.id, total && time ? total / time * 60_000 : 0]
+    }));
+  }, [
+    game.endedAt, game.players, stats
+  ])
   const [activaTab, setActiveTab] = useState(ChartTabs.Ping);
   const [running, setRunning] = useState('');
   useEffect(() => {
@@ -228,9 +249,14 @@ function Game({ game, stats }: { game: Game, stats: Stats }) {
             <div className="w-36">
               {stats?.ping && <span title={`${stats.ping.min + tickOffset} ~ ${stats.ping.max + tickOffset}`}>{(stats.ping.avg + tickOffset).toFixed(1)}ms</span>}
             </div>
-            <div className="w-36">
-              {stats?.action && <span>{stats.action.apm.toFixed(1)} APM</span>}
-            </div>
+            {game.endedAt ?
+              <div className="w-36">
+                {<span>{finishedApmMap.get(id)?.toFixed(1)} APM</span>}
+              </div> :
+              <div className="w-36">
+                {stats?.action && <span>{stats.action.apm.toFixed(1)} APM</span>}
+              </div>
+            }
           </div>
         );
       })}

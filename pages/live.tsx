@@ -25,12 +25,13 @@ const enum GameMode {
   Mode2v2 = '2 vs 2',
   Mode4v4 = '4 vs 4',
   ModeFFA = 'FFA',
-  ModeCustom = 'Custom',
+  ModeOtherMelee = 'Other Melee',
+  ModeNonMelee = 'Non-melee',
 }
 
 function getGameMode(game: Game): GameMode {
   if (game.mapPath.includes('Custom')) {
-    return GameMode.ModeCustom
+    return GameMode.ModeNonMelee
   }
 
   const teams = new Set(game.players.map(p => p.team))
@@ -47,7 +48,11 @@ function getGameMode(game: Game): GameMode {
     return GameMode.Mode4v4
   }
 
-  return GameMode.ModeFFA
+  if (teams.size == game.players.length) {
+    return GameMode.ModeFFA
+  }
+
+  return GameMode.ModeOtherMelee
 }
 
 function update(state: State, message: GameListUpdateSubSubscription) {
@@ -114,7 +119,8 @@ function groupdGames(games?: Game[]): GameGroup[] {
     GameMode.Mode2v2,
     GameMode.Mode4v4,
     GameMode.ModeFFA,
-    GameMode.ModeCustom
+    GameMode.ModeOtherMelee,
+    GameMode.ModeNonMelee
   ]
   return modes.map(mode => {
     const games = map.get(mode) || []
