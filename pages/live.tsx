@@ -71,7 +71,9 @@ function update(state: State, message: GameListUpdateSubSubscription) {
         case 'GameListUpdateEventEnded': {
           const { gameId, endedAt } = item.event;
           const game = state.games.find(g => g.id === gameId)
-          game.endedAt = endedAt
+          if (game) {
+            game.endedAt = endedAt
+          }
           return
         }
         case 'GameListUpdateEventRemoved': {
