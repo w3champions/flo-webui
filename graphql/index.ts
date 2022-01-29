@@ -1,10 +1,9 @@
 import { createClient, defaultExchanges, subscriptionExchange } from 'urql';
 import { createClient as createWSClient } from 'graphql-ws';
-const { FLO_STATS_ENDPONT_GRAPHQL, FLO_STATS_ENDPONT_WS } = process?.env
 
 function createSubscriptionExchange() {
   const wsClient = createWSClient({
-    url: FLO_STATS_ENDPONT_WS || 'wss://stats.w3flo.com/ws',
+    url: process.env.NEXT_PUBLIC_FLO_STATS_ENDPONT_WS || 'wss://stats.w3flo.com/ws',
   });
   return subscriptionExchange({
     forwardSubscription: (operation) => ({
@@ -25,7 +24,7 @@ function createGqlClient() {
   }
 
   return createClient({
-    url: FLO_STATS_ENDPONT_GRAPHQL || 'https://stats.w3flo.com/graphql',
+    url: process.env.NEXT_PUBLIC_FLO_STATS_ENDPONT_GRAPHQL || 'https://stats.w3flo.com/graphql',
     exchanges
   });
 }
