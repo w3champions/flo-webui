@@ -35,7 +35,6 @@ import {
 import { createSelector } from "@reduxjs/toolkit";
 import PlayerColorPicker from "./PlayerColorPicker";
 import PingValue from "../PingValue";
-import { load } from "grpc";
 import { FlagIcon } from "../FlagIcon";
 import { useWs } from "../../providers/ws";
 import { useCallback, useState, useRef } from "react";
