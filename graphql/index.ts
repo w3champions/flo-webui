@@ -24,7 +24,7 @@ function createGqlClient() {
   }
 
   return createClient({
-    url: process.env.NEXT_PUBLIC_FLO_STATS_ENDPONT_GRAPHQL || 'https://stats.w3flo.com/graphql',
+    url: process.env.NEXT_PUBLIC_FLO_STATS_ENDPONT_GRAPHQL || 'https://stats.w3flo.com',
     exchanges
   });
 }
