@@ -2,11 +2,14 @@
 /**
  * @fileoverview
  * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
@@ -257,7 +260,9 @@ proto.game.Game.toObject = function(includeInstance, msg) {
     startedAt: (f = msg.getStartedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     endedAt: (f = msg.getEndedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
-    updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    maskPlayerNames: jspb.Message.getBooleanFieldWithDefault(msg, 18, false),
+    gameVersion: (f = msg.getGameVersion()) && google_protobuf_wrappers_pb.StringValue.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -370,6 +375,15 @@ proto.game.Game.deserializeBinaryFromReader = function(msg, reader) {
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setUpdatedAt(value);
+      break;
+    case 18:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setMaskPlayerNames(value);
+      break;
+    case 19:
+      var value = new google_protobuf_wrappers_pb.StringValue;
+      reader.readMessage(value,google_protobuf_wrappers_pb.StringValue.deserializeBinaryFromReader);
+      msg.setGameVersion(value);
       break;
     default:
       reader.skipField();
@@ -526,6 +540,21 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
       17,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getMaskPlayerNames();
+  if (f) {
+    writer.writeBool(
+      18,
+      f
+    );
+  }
+  f = message.getGameVersion();
+  if (f != null) {
+    writer.writeMessage(
+      19,
+      f,
+      google_protobuf_wrappers_pb.StringValue.serializeBinaryToWriter
     );
   }
 };
@@ -1006,6 +1035,61 @@ proto.game.Game.prototype.clearUpdatedAt = function() {
  */
 proto.game.Game.prototype.hasUpdatedAt = function() {
   return jspb.Message.getField(this, 17) != null;
+};
+
+
+/**
+ * optional bool mask_player_names = 18;
+ * @return {boolean}
+ */
+proto.game.Game.prototype.getMaskPlayerNames = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 18, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.game.Game} returns this
+ */
+proto.game.Game.prototype.setMaskPlayerNames = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 18, value);
+};
+
+
+/**
+ * optional google.protobuf.StringValue game_version = 19;
+ * @return {?proto.google.protobuf.StringValue}
+ */
+proto.game.Game.prototype.getGameVersion = function() {
+  return /** @type{?proto.google.protobuf.StringValue} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.StringValue, 19));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.StringValue|undefined} value
+ * @return {!proto.game.Game} returns this
+*/
+proto.game.Game.prototype.setGameVersion = function(value) {
+  return jspb.Message.setWrapperField(this, 19, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.game.Game} returns this
+ */
+proto.game.Game.prototype.clearGameVersion = function() {
+  return this.setGameVersion(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.game.Game.prototype.hasGameVersion = function() {
+  return jspb.Message.getField(this, 19) != null;
 };
 
 
@@ -3251,8 +3335,8 @@ proto.game.SlotClientStatus = {
   SLOTCLIENTSTATUSCONNECTED: 1,
   SLOTCLIENTSTATUSLOADING: 2,
   SLOTCLIENTSTATUSLOADED: 3,
-  SLOTCLIENTSTATUSLEFT: 4,
-  SLOTCLIENTSTATUSDISCONNECTED: 5
+  SLOTCLIENTSTATUSDISCONNECTED: 4,
+  SLOTCLIENTSTATUSLEFT: 5
 };
 
 /**

@@ -72,6 +72,12 @@ subscription GameUpdateSub($id: Int!) {
   }
 }
 
+mutation CreateObserverToken($gameId: Int!) {
+  createObserverToken(gameId: $gameId) {
+    token
+  }
+}
+
 fragment GameSnapshotFields on GameSnapshot {
   id
   gameName

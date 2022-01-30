@@ -88,6 +88,15 @@ export class Game extends jspb.Message {
     getUpdatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
     setUpdatedAt(value?: google_protobuf_timestamp_pb.Timestamp): Game;
 
+    getMaskPlayerNames(): boolean;
+    setMaskPlayerNames(value: boolean): Game;
+
+
+    hasGameVersion(): boolean;
+    clearGameVersion(): void;
+    getGameVersion(): google_protobuf_wrappers_pb.StringValue | undefined;
+    setGameVersion(value?: google_protobuf_wrappers_pb.StringValue): Game;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Game.AsObject;
@@ -118,6 +127,8 @@ export namespace Game {
         endedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+        maskPlayerNames: boolean,
+        gameVersion?: google_protobuf_wrappers_pb.StringValue.AsObject,
     }
 }
 
@@ -463,8 +474,8 @@ export enum SlotClientStatus {
     SLOTCLIENTSTATUSCONNECTED = 1,
     SLOTCLIENTSTATUSLOADING = 2,
     SLOTCLIENTSTATUSLOADED = 3,
-    SLOTCLIENTSTATUSLEFT = 4,
-    SLOTCLIENTSTATUSDISCONNECTED = 5,
+    SLOTCLIENTSTATUSDISCONNECTED = 4,
+    SLOTCLIENTSTATUSLEFT = 5,
 }
 
 export enum GameStatus {

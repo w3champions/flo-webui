@@ -1,4 +1,4 @@
-import grpc from "grpc";
+import * as grpc from '@grpc/grpc-js';
 import { promisify } from "util";
 import { FloControllerClient } from "../generated/controller_grpc_pb";
 import {

@@ -7,6 +7,7 @@
 import * as jspb from "google-protobuf";
 import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wrappers_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as player_pb from "./player_pb";
 import * as game_pb from "./game_pb";
 import * as node_pb from "./node_pb";
@@ -74,6 +75,102 @@ export class GetPlayerReply extends jspb.Message {
 export namespace GetPlayerReply {
     export type AsObject = {
         player?: player_pb.Player.AsObject,
+    }
+}
+
+export class GetPlayersBySourceIdsRequest extends jspb.Message { 
+    getSource(): player_pb.PlayerSource;
+    setSource(value: player_pb.PlayerSource): GetPlayersBySourceIdsRequest;
+
+    clearSourceIdsList(): void;
+    getSourceIdsList(): Array<string>;
+    setSourceIdsList(value: Array<string>): GetPlayersBySourceIdsRequest;
+    addSourceIds(value: string, index?: number): string;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GetPlayersBySourceIdsRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: GetPlayersBySourceIdsRequest): GetPlayersBySourceIdsRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GetPlayersBySourceIdsRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetPlayersBySourceIdsRequest;
+    static deserializeBinaryFromReader(message: GetPlayersBySourceIdsRequest, reader: jspb.BinaryReader): GetPlayersBySourceIdsRequest;
+}
+
+export namespace GetPlayersBySourceIdsRequest {
+    export type AsObject = {
+        source: player_pb.PlayerSource,
+        sourceIdsList: Array<string>,
+    }
+}
+
+export class GetPlayersBySourceIdsReply extends jspb.Message { 
+
+    getPlayerMapMap(): jspb.Map<string, player_pb.PlayerRef>;
+    clearPlayerMapMap(): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GetPlayersBySourceIdsReply.AsObject;
+    static toObject(includeInstance: boolean, msg: GetPlayersBySourceIdsReply): GetPlayersBySourceIdsReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GetPlayersBySourceIdsReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetPlayersBySourceIdsReply;
+    static deserializeBinaryFromReader(message: GetPlayersBySourceIdsReply, reader: jspb.BinaryReader): GetPlayersBySourceIdsReply;
+}
+
+export namespace GetPlayersBySourceIdsReply {
+    export type AsObject = {
+
+        playerMapMap: Array<[string, player_pb.PlayerRef.AsObject]>,
+    }
+}
+
+export class GetPlayerPingMapsRequest extends jspb.Message { 
+    clearIdsList(): void;
+    getIdsList(): Array<number>;
+    setIdsList(value: Array<number>): GetPlayerPingMapsRequest;
+    addIds(value: number, index?: number): number;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GetPlayerPingMapsRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: GetPlayerPingMapsRequest): GetPlayerPingMapsRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GetPlayerPingMapsRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetPlayerPingMapsRequest;
+    static deserializeBinaryFromReader(message: GetPlayerPingMapsRequest, reader: jspb.BinaryReader): GetPlayerPingMapsRequest;
+}
+
+export namespace GetPlayerPingMapsRequest {
+    export type AsObject = {
+        idsList: Array<number>,
+    }
+}
+
+export class GetPlayerPingMapsReply extends jspb.Message { 
+    clearPingMapsList(): void;
+    getPingMapsList(): Array<player_pb.PlayerPingMap>;
+    setPingMapsList(value: Array<player_pb.PlayerPingMap>): GetPlayerPingMapsReply;
+    addPingMaps(value?: player_pb.PlayerPingMap, index?: number): player_pb.PlayerPingMap;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GetPlayerPingMapsReply.AsObject;
+    static toObject(includeInstance: boolean, msg: GetPlayerPingMapsReply): GetPlayerPingMapsReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GetPlayerPingMapsReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetPlayerPingMapsReply;
+    static deserializeBinaryFromReader(message: GetPlayerPingMapsReply, reader: jspb.BinaryReader): GetPlayerPingMapsReply;
+}
+
+export namespace GetPlayerPingMapsReply {
+    export type AsObject = {
+        pingMapsList: Array<player_pb.PlayerPingMap.AsObject>,
     }
 }
 
@@ -254,6 +351,51 @@ export namespace ListGamesReply {
     }
 }
 
+export class GetGameRequest extends jspb.Message { 
+    getGameId(): number;
+    setGameId(value: number): GetGameRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GetGameRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: GetGameRequest): GetGameRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GetGameRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetGameRequest;
+    static deserializeBinaryFromReader(message: GetGameRequest, reader: jspb.BinaryReader): GetGameRequest;
+}
+
+export namespace GetGameRequest {
+    export type AsObject = {
+        gameId: number,
+    }
+}
+
+export class GetGameReply extends jspb.Message { 
+
+    hasGame(): boolean;
+    clearGame(): void;
+    getGame(): game_pb.Game | undefined;
+    setGame(value?: game_pb.Game): GetGameReply;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GetGameReply.AsObject;
+    static toObject(includeInstance: boolean, msg: GetGameReply): GetGameReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GetGameReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetGameReply;
+    static deserializeBinaryFromReader(message: GetGameReply, reader: jspb.BinaryReader): GetGameReply;
+}
+
+export namespace GetGameReply {
+    export type AsObject = {
+        game?: game_pb.Game.AsObject,
+    }
+}
+
 export class CreateGameRequest extends jspb.Message { 
     getPlayerId(): number;
     setPlayerId(value: number): CreateGameRequest;
@@ -315,6 +457,214 @@ export class CreateGameReply extends jspb.Message {
 export namespace CreateGameReply {
     export type AsObject = {
         game?: game_pb.Game.AsObject,
+    }
+}
+
+export class CreateGameAsBotRequest extends jspb.Message { 
+    getName(): string;
+    setName(value: string): CreateGameAsBotRequest;
+
+
+    hasMap(): boolean;
+    clearMap(): void;
+    getMap(): game_pb.Map | undefined;
+    setMap(value?: game_pb.Map): CreateGameAsBotRequest;
+
+    getIsPrivate(): boolean;
+    setIsPrivate(value: boolean): CreateGameAsBotRequest;
+
+    getIsLive(): boolean;
+    setIsLive(value: boolean): CreateGameAsBotRequest;
+
+    getNodeId(): number;
+    setNodeId(value: number): CreateGameAsBotRequest;
+
+    clearSlotsList(): void;
+    getSlotsList(): Array<CreateGameSlot>;
+    setSlotsList(value: Array<CreateGameSlot>): CreateGameAsBotRequest;
+    addSlots(value?: CreateGameSlot, index?: number): CreateGameSlot;
+
+
+    hasMaskPlayerNames(): boolean;
+    clearMaskPlayerNames(): void;
+    getMaskPlayerNames(): google_protobuf_wrappers_pb.BoolValue | undefined;
+    setMaskPlayerNames(value?: google_protobuf_wrappers_pb.BoolValue): CreateGameAsBotRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreateGameAsBotRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: CreateGameAsBotRequest): CreateGameAsBotRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreateGameAsBotRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreateGameAsBotRequest;
+    static deserializeBinaryFromReader(message: CreateGameAsBotRequest, reader: jspb.BinaryReader): CreateGameAsBotRequest;
+}
+
+export namespace CreateGameAsBotRequest {
+    export type AsObject = {
+        name: string,
+        map?: game_pb.Map.AsObject,
+        isPrivate: boolean,
+        isLive: boolean,
+        nodeId: number,
+        slotsList: Array<CreateGameSlot.AsObject>,
+        maskPlayerNames?: google_protobuf_wrappers_pb.BoolValue.AsObject,
+    }
+}
+
+export class CreateGameSlot extends jspb.Message { 
+
+    hasPlayerId(): boolean;
+    clearPlayerId(): void;
+    getPlayerId(): google_protobuf_wrappers_pb.Int32Value | undefined;
+    setPlayerId(value?: google_protobuf_wrappers_pb.Int32Value): CreateGameSlot;
+
+
+    hasSettings(): boolean;
+    clearSettings(): void;
+    getSettings(): game_pb.SlotSettings | undefined;
+    setSettings(value?: game_pb.SlotSettings): CreateGameSlot;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreateGameSlot.AsObject;
+    static toObject(includeInstance: boolean, msg: CreateGameSlot): CreateGameSlot.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreateGameSlot, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreateGameSlot;
+    static deserializeBinaryFromReader(message: CreateGameSlot, reader: jspb.BinaryReader): CreateGameSlot;
+}
+
+export namespace CreateGameSlot {
+    export type AsObject = {
+        playerId?: google_protobuf_wrappers_pb.Int32Value.AsObject,
+        settings?: game_pb.SlotSettings.AsObject,
+    }
+}
+
+export class CreateGameAsBotReply extends jspb.Message { 
+
+    hasGame(): boolean;
+    clearGame(): void;
+    getGame(): game_pb.Game | undefined;
+    setGame(value?: game_pb.Game): CreateGameAsBotReply;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreateGameAsBotReply.AsObject;
+    static toObject(includeInstance: boolean, msg: CreateGameAsBotReply): CreateGameAsBotReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreateGameAsBotReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreateGameAsBotReply;
+    static deserializeBinaryFromReader(message: CreateGameAsBotReply, reader: jspb.BinaryReader): CreateGameAsBotReply;
+}
+
+export namespace CreateGameAsBotReply {
+    export type AsObject = {
+        game?: game_pb.Game.AsObject,
+    }
+}
+
+export class StartGameAsBotRequest extends jspb.Message { 
+    getGameId(): number;
+    setGameId(value: number): StartGameAsBotRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StartGameAsBotRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: StartGameAsBotRequest): StartGameAsBotRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StartGameAsBotRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StartGameAsBotRequest;
+    static deserializeBinaryFromReader(message: StartGameAsBotRequest, reader: jspb.BinaryReader): StartGameAsBotRequest;
+}
+
+export namespace StartGameAsBotRequest {
+    export type AsObject = {
+        gameId: number,
+    }
+}
+
+export class StartGameAsBotReply extends jspb.Message { 
+    getSucceed(): boolean;
+    setSucceed(value: boolean): StartGameAsBotReply;
+
+    getErrorMessage(): string;
+    setErrorMessage(value: string): StartGameAsBotReply;
+
+
+    getPlayerAckMapMap(): jspb.Map<number, StartGamePlayerAck>;
+    clearPlayerAckMapMap(): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StartGameAsBotReply.AsObject;
+    static toObject(includeInstance: boolean, msg: StartGameAsBotReply): StartGameAsBotReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StartGameAsBotReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StartGameAsBotReply;
+    static deserializeBinaryFromReader(message: StartGameAsBotReply, reader: jspb.BinaryReader): StartGameAsBotReply;
+}
+
+export namespace StartGameAsBotReply {
+    export type AsObject = {
+        succeed: boolean,
+        errorMessage: string,
+
+        playerAckMapMap: Array<[number, StartGamePlayerAck.AsObject]>,
+    }
+}
+
+export class StartGameCountdownAsBotRequest extends jspb.Message { 
+    getGameId(): number;
+    setGameId(value: number): StartGameCountdownAsBotRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StartGameCountdownAsBotRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: StartGameCountdownAsBotRequest): StartGameCountdownAsBotRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StartGameCountdownAsBotRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StartGameCountdownAsBotRequest;
+    static deserializeBinaryFromReader(message: StartGameCountdownAsBotRequest, reader: jspb.BinaryReader): StartGameCountdownAsBotRequest;
+}
+
+export namespace StartGameCountdownAsBotRequest {
+    export type AsObject = {
+        gameId: number,
+    }
+}
+
+export class StartGamePlayerAck extends jspb.Message { 
+    getWar3Version(): string;
+    setWar3Version(value: string): StartGamePlayerAck;
+
+    getMapSha1(): Uint8Array | string;
+    getMapSha1_asU8(): Uint8Array;
+    getMapSha1_asB64(): string;
+    setMapSha1(value: Uint8Array | string): StartGamePlayerAck;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StartGamePlayerAck.AsObject;
+    static toObject(includeInstance: boolean, msg: StartGamePlayerAck): StartGamePlayerAck.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StartGamePlayerAck, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StartGamePlayerAck;
+    static deserializeBinaryFromReader(message: StartGamePlayerAck, reader: jspb.BinaryReader): StartGamePlayerAck;
+}
+
+export namespace StartGamePlayerAck {
+    export type AsObject = {
+        war3Version: string,
+        mapSha1: Uint8Array | string,
     }
 }
 
@@ -520,6 +870,27 @@ export namespace CancelGameRequest {
     }
 }
 
+export class CancelGameAsBotRequest extends jspb.Message { 
+    getGameId(): number;
+    setGameId(value: number): CancelGameAsBotRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CancelGameAsBotRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: CancelGameAsBotRequest): CancelGameAsBotRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CancelGameAsBotRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CancelGameAsBotRequest;
+    static deserializeBinaryFromReader(message: CancelGameAsBotRequest, reader: jspb.BinaryReader): CancelGameAsBotRequest;
+}
+
+export namespace CancelGameAsBotRequest {
+    export type AsObject = {
+        gameId: number,
+    }
+}
+
 export class ImportMapChecksumsRequest extends jspb.Message { 
     clearItemsList(): void;
     getItemsList(): Array<game_pb.MapChecksumImportItem>;
@@ -606,6 +977,120 @@ export class SearchMapChecksumReply extends jspb.Message {
 export namespace SearchMapChecksumReply {
     export type AsObject = {
         checksum?: google_protobuf_wrappers_pb.UInt32Value.AsObject,
+    }
+}
+
+export class ListPlayerBansRequest extends jspb.Message { 
+
+    hasQuery(): boolean;
+    clearQuery(): void;
+    getQuery(): google_protobuf_wrappers_pb.StringValue | undefined;
+    setQuery(value?: google_protobuf_wrappers_pb.StringValue): ListPlayerBansRequest;
+
+
+    hasNextId(): boolean;
+    clearNextId(): void;
+    getNextId(): google_protobuf_wrappers_pb.Int32Value | undefined;
+    setNextId(value?: google_protobuf_wrappers_pb.Int32Value): ListPlayerBansRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ListPlayerBansRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: ListPlayerBansRequest): ListPlayerBansRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ListPlayerBansRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ListPlayerBansRequest;
+    static deserializeBinaryFromReader(message: ListPlayerBansRequest, reader: jspb.BinaryReader): ListPlayerBansRequest;
+}
+
+export namespace ListPlayerBansRequest {
+    export type AsObject = {
+        query?: google_protobuf_wrappers_pb.StringValue.AsObject,
+        nextId?: google_protobuf_wrappers_pb.Int32Value.AsObject,
+    }
+}
+
+export class ListPlayerBansReply extends jspb.Message { 
+    clearPlayerBansList(): void;
+    getPlayerBansList(): Array<player_pb.PlayerBan>;
+    setPlayerBansList(value: Array<player_pb.PlayerBan>): ListPlayerBansReply;
+    addPlayerBans(value?: player_pb.PlayerBan, index?: number): player_pb.PlayerBan;
+
+
+    hasNextId(): boolean;
+    clearNextId(): void;
+    getNextId(): google_protobuf_wrappers_pb.Int32Value | undefined;
+    setNextId(value?: google_protobuf_wrappers_pb.Int32Value): ListPlayerBansReply;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ListPlayerBansReply.AsObject;
+    static toObject(includeInstance: boolean, msg: ListPlayerBansReply): ListPlayerBansReply.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ListPlayerBansReply, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ListPlayerBansReply;
+    static deserializeBinaryFromReader(message: ListPlayerBansReply, reader: jspb.BinaryReader): ListPlayerBansReply;
+}
+
+export namespace ListPlayerBansReply {
+    export type AsObject = {
+        playerBansList: Array<player_pb.PlayerBan.AsObject>,
+        nextId?: google_protobuf_wrappers_pb.Int32Value.AsObject,
+    }
+}
+
+export class CreatePlayerBanRequest extends jspb.Message { 
+    getPlayerId(): number;
+    setPlayerId(value: number): CreatePlayerBanRequest;
+
+    getBanType(): player_pb.PlayerBanType;
+    setBanType(value: player_pb.PlayerBanType): CreatePlayerBanRequest;
+
+
+    hasBanExpiresAt(): boolean;
+    clearBanExpiresAt(): void;
+    getBanExpiresAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setBanExpiresAt(value?: google_protobuf_timestamp_pb.Timestamp): CreatePlayerBanRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreatePlayerBanRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: CreatePlayerBanRequest): CreatePlayerBanRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreatePlayerBanRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreatePlayerBanRequest;
+    static deserializeBinaryFromReader(message: CreatePlayerBanRequest, reader: jspb.BinaryReader): CreatePlayerBanRequest;
+}
+
+export namespace CreatePlayerBanRequest {
+    export type AsObject = {
+        playerId: number,
+        banType: player_pb.PlayerBanType,
+        banExpiresAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    }
+}
+
+export class RemovePlayerBanRequest extends jspb.Message { 
+    getId(): number;
+    setId(value: number): RemovePlayerBanRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): RemovePlayerBanRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: RemovePlayerBanRequest): RemovePlayerBanRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: RemovePlayerBanRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): RemovePlayerBanRequest;
+    static deserializeBinaryFromReader(message: RemovePlayerBanRequest, reader: jspb.BinaryReader): RemovePlayerBanRequest;
+}
+
+export namespace RemovePlayerBanRequest {
+    export type AsObject = {
+        id: number,
     }
 }
 

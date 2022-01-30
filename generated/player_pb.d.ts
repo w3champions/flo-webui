@@ -168,7 +168,134 @@ export namespace BNetState {
     }
 }
 
+export class PlayerPingMap extends jspb.Message { 
+    getPlayerId(): number;
+    setPlayerId(value: number): PlayerPingMap;
+
+
+    getPingMapMap(): jspb.Map<number, PingStats>;
+    clearPingMapMap(): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): PlayerPingMap.AsObject;
+    static toObject(includeInstance: boolean, msg: PlayerPingMap): PlayerPingMap.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: PlayerPingMap, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): PlayerPingMap;
+    static deserializeBinaryFromReader(message: PlayerPingMap, reader: jspb.BinaryReader): PlayerPingMap;
+}
+
+export namespace PlayerPingMap {
+    export type AsObject = {
+        playerId: number,
+
+        pingMapMap: Array<[number, PingStats.AsObject]>,
+    }
+}
+
+export class PingStats extends jspb.Message { 
+
+    hasCurrent(): boolean;
+    clearCurrent(): void;
+    getCurrent(): google_protobuf_wrappers_pb.UInt32Value | undefined;
+    setCurrent(value?: google_protobuf_wrappers_pb.UInt32Value): PingStats;
+
+
+    hasAvg(): boolean;
+    clearAvg(): void;
+    getAvg(): google_protobuf_wrappers_pb.UInt32Value | undefined;
+    setAvg(value?: google_protobuf_wrappers_pb.UInt32Value): PingStats;
+
+
+    hasMin(): boolean;
+    clearMin(): void;
+    getMin(): google_protobuf_wrappers_pb.UInt32Value | undefined;
+    setMin(value?: google_protobuf_wrappers_pb.UInt32Value): PingStats;
+
+
+    hasMax(): boolean;
+    clearMax(): void;
+    getMax(): google_protobuf_wrappers_pb.UInt32Value | undefined;
+    setMax(value?: google_protobuf_wrappers_pb.UInt32Value): PingStats;
+
+    getLossRate(): number;
+    setLossRate(value: number): PingStats;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): PingStats.AsObject;
+    static toObject(includeInstance: boolean, msg: PingStats): PingStats.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: PingStats, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): PingStats;
+    static deserializeBinaryFromReader(message: PingStats, reader: jspb.BinaryReader): PingStats;
+}
+
+export namespace PingStats {
+    export type AsObject = {
+        current?: google_protobuf_wrappers_pb.UInt32Value.AsObject,
+        avg?: google_protobuf_wrappers_pb.UInt32Value.AsObject,
+        min?: google_protobuf_wrappers_pb.UInt32Value.AsObject,
+        max?: google_protobuf_wrappers_pb.UInt32Value.AsObject,
+        lossRate: number,
+    }
+}
+
+export class PlayerBan extends jspb.Message { 
+    getId(): number;
+    setId(value: number): PlayerBan;
+
+
+    hasPlayer(): boolean;
+    clearPlayer(): void;
+    getPlayer(): PlayerRef | undefined;
+    setPlayer(value?: PlayerRef): PlayerBan;
+
+    getBanType(): PlayerBanType;
+    setBanType(value: PlayerBanType): PlayerBan;
+
+
+    hasBanExpiresAt(): boolean;
+    clearBanExpiresAt(): void;
+    getBanExpiresAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setBanExpiresAt(value?: google_protobuf_timestamp_pb.Timestamp): PlayerBan;
+
+
+    hasCreatedAt(): boolean;
+    clearCreatedAt(): void;
+    getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): PlayerBan;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): PlayerBan.AsObject;
+    static toObject(includeInstance: boolean, msg: PlayerBan): PlayerBan.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: PlayerBan, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): PlayerBan;
+    static deserializeBinaryFromReader(message: PlayerBan, reader: jspb.BinaryReader): PlayerBan;
+}
+
+export namespace PlayerBan {
+    export type AsObject = {
+        id: number,
+        player?: PlayerRef.AsObject,
+        banType: PlayerBanType,
+        banExpiresAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+        createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    }
+}
+
 export enum PlayerSource {
     PLAYERSOURCETEST = 0,
     PLAYERSOURCEBNET = 1,
+    PLAYERSOURCEAPI = 2,
+}
+
+export enum PlayerBanType {
+    PLAYERBANTYPECHAT = 0,
 }

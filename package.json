@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen": "graphql-codegen --config graphql-codegen.yml"
+    "gen": "graphql-codegen --config graphql-codegen.yml",
+    "gen-grpc": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./generated --ts_out=./generated --grpc_out=grpc_js:./generated -I ../flo/deps/flo-grpc/proto ../flo/deps/flo-grpc/proto/*.proto"
   },
   "dependencies": {
     "@blueprintjs/core": "^3.30.0",
     "@blueprintjs/icons": "^3.19.0",
     "@graphql-codegen/typescript-urql": "^3.4.2",
+    "@grpc/grpc-js": "^1.5.3",
     "@hapi/joi": "^17.1.1",
     "@now/node": "^1.7.2",
     "@react-hook/debounce": "^3.0.0",
@@ -25,7 +27,6 @@
     "google-protobuf": "^4.0.0-rc.1",
     "graphql": "^16.2.0",
     "graphql-ws": "^5.5.5",
-    "grpc": "^1.24.3",
     "immer": "^9.0.7",
     "jsonwebtoken": "^8.5.1",
     "next": "12",
@@ -50,6 +51,7 @@
     "@types/node": "^14.0.22",
     "@types/react": "^16.9.42",
     "@types/react-redux": "^7.1.9",
+    "grpc-tools": "^1.11.2",
     "lodash": "^4.17.19",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.6.0",

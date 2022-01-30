@@ -68,12 +68,16 @@ export type GameSnapshot = {
   __typename?: 'GameSnapshot';
   endedAt?: Maybe<Scalars['DateTime']>;
   gameName: Scalars['String'];
+  gameVersion?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  mapChecksum: Scalars['Int'];
   mapName: Scalars['String'];
   mapPath: Scalars['String'];
+  mapSha1: Array<Scalars['Int']>;
   nodeId: Scalars['Int'];
   nodeName: Scalars['String'];
   players: Array<Player>;
+  randomSeed: Scalars['Int'];
   startedAt: Scalars['DateTime'];
 };
 
@@ -119,7 +123,19 @@ export type GameUpdateEventItem = GameSnapshotWithStats | GameUpdateEvent;
 
 export type MutationRoot = {
   __typename?: 'MutationRoot';
-  noop: Scalars['Boolean'];
+  createObserverToken: ObserverTokenPayload;
+};
+
+
+export type MutationRootCreateObserverTokenArgs = {
+  gameId: Scalars['Int'];
+};
+
+export type ObserverTokenPayload = {
+  __typename?: 'ObserverTokenPayload';
+  delaySecs?: Maybe<Scalars['Int']>;
+  game: GameSnapshot;
+  token: Scalars['String'];
 };
 
 export type Ping = {
@@ -192,6 +208,13 @@ export type GameUpdateSubSubscriptionVariables = Exact<{
 
 
 export type GameUpdateSubSubscription = { __typename?: 'SubscriptionRoot', gameUpdateEvents: { __typename: 'GameSnapshotWithStats', game: { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> }, stats: { __typename?: 'GameStatsSnapshot', ping: Array<{ __typename?: 'PingStats', time: number, data: Array<{ __typename?: 'Ping', playerId: number, min: number, max: number, avg: number, ticks: number }> }>, action: Array<{ __typename?: 'ActionStats', time: number, data: Array<{ __typename?: 'Action', playerId: number, apm: number, total: number }> }> } } | { __typename: 'GameUpdateEvent', gameId: number, data: { __typename: 'ActionStats', time: number, data: Array<{ __typename?: 'Action', playerId: number, apm: number, total: number }> } | { __typename: 'GameUpdateEventDataEnded', endedAt: any, durationMillis: number } | { __typename: 'GameUpdateEventDataPlayerLeft', time: number, playerId: number, reason: PlayerLeaveReason } | { __typename: 'GameUpdateEventDataRemoved', snapshot: { __typename?: 'GameSnapshot', id: number } } | { __typename: 'PingStats', time: number, data: Array<{ __typename?: 'Ping', playerId: number, min: number, max: number, avg: number, ticks: number }> } } };
+
+export type CreateObserverTokenMutationVariables = Exact<{
+  gameId: Scalars['Int'];
+}>;
+
+
+export type CreateObserverTokenMutation = { __typename?: 'MutationRoot', createObserverToken: { __typename?: 'ObserverTokenPayload', token: string } };
 
 export type GameSnapshotFieldsFragment = { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> };
 
@@ -347,4 +370,15 @@ ${ActionFieldsFragmentDoc}`;
 
 export function useGameUpdateSubSubscription<TData = GameUpdateSubSubscription>(options: Omit<Urql.UseSubscriptionArgs<GameUpdateSubSubscriptionVariables>, 'query'> = {}, handler?: Urql.SubscriptionHandler<GameUpdateSubSubscription, TData>) {
   return Urql.useSubscription<GameUpdateSubSubscription, TData, GameUpdateSubSubscriptionVariables>({ query: GameUpdateSubDocument, ...options }, handler);
+};
+export const CreateObserverTokenDocument = gql`
+    mutation CreateObserverToken($gameId: Int!) {
+  createObserverToken(gameId: $gameId) {
+    token
+  }
+}
+    `;
+
+export function useCreateObserverTokenMutation() {
+  return Urql.useMutation<CreateObserverTokenMutation, CreateObserverTokenMutationVariables>(CreateObserverTokenDocument);
 };
