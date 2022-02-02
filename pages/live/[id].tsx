@@ -343,7 +343,7 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
                 key={id}
                 className={`flex space-x-4 border border-gray-800 rounded px-2 py-2 items-center shadow}`}
               >
-                <div className="w-4">T{team}</div>
+                <div className="w-4">{team !== 24 ? `T${team}` : 'OB'}</div>
                 <div className="w-16">{race}</div>
                 <div className="flex-auto font-bold flo-text-info">{name}</div>
                 {leaveReason && (

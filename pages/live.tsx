@@ -34,7 +34,7 @@ function getGameMode(game: Game): GameMode {
     return GameMode.ModeNonMelee
   }
 
-  const teams = new Set(game.players.map(p => p.team))
+  const teams = new Set(game.players.filter(p => p.team !== 24).map(p => p.team))
 
   if (game.players.length === 2 && teams.size === 2) {
     return GameMode.Mode1v1
@@ -170,7 +170,7 @@ function GameTable({ games }: { mode: GameMode, games: Game[] }) {
             <ul>
               {game.players.map(p => {
                 return <li key={p.name}>
-                  T{p.team} {p.name}
+                  {p.team !== 24 ? `T${p.team}` : 'OB'} {p.name}
                 </li>
               })}
             </ul>
