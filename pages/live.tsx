@@ -206,6 +206,10 @@ export default function Live() {
             </Callout>
           }
         ></NonIdealState>}
+        {!res.fetching && <div>
+          <AnchorButton href={`https://github.com/w3champions/flo-lab`} intent={Intent.PRIMARY}>Download FloTV Client</AnchorButton>
+
+          </div>}
         {groups.length > 0 &&
           <Tabs selectedTabId={activeTab} onChange={(e) => { setActiveTab(e as GameMode) }}>
             {groups.map(g => <Tab key={g.mode} id={g.mode} title={`${g.mode} (${g.games.length})`} panel={<GameTable mode={g.mode} games={g.games} />} />)}
