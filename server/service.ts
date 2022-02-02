@@ -15,10 +15,13 @@ import {
   CreateJoinGameTokenReply,
   JoinGameByTokenRequest,
   JoinGameReply,
+  GetGameRequest,
+  GetGameReply,
 } from "../generated/controller_pb";
 import { FloError, FloErrorCode } from "../helpers/error";
 import * as player from "../generated/player_pb";
 import * as game from "../generated/game_pb";
+import { Game } from '../generated/game_pb';
 
 export { player, game };
 
@@ -112,5 +115,12 @@ export { JoinGameByTokenRequest, JoinGameReply };
 export const joinGameByToken = wrap(
   promisify<GrpcCall<JoinGameByTokenRequest, JoinGameReply>>(
     Client.joinGameByToken.bind(Client)
+  )
+);
+
+export { Game, GetGameRequest, GetGameReply };
+export const getGame = wrap(
+  promisify<GrpcCall<GetGameRequest, GetGameReply>>(
+    Client.getGame.bind(Client)
   )
 );
