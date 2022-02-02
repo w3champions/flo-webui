@@ -170,7 +170,7 @@ function GameTable({ games }: { mode: GameMode, games: Game[] }) {
             <ul>
               {game.players.map(p => {
                 return <li key={p.name}>
-                  {p.team !== 24 ? `T${p.team}` : 'OB'} {p.name}
+                  {p.team !== 24 ? `T${p.team}` : 'OB'} [{p.race}] {p.name}
                 </li>
               })}
             </ul>
