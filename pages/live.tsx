@@ -48,7 +48,7 @@ function getGameMode(game: Game): GameMode {
     return GameMode.Mode4v4
   }
 
-  if (teams.size == game.players.length) {
+  if (teams.size == game.players.length && teams.size > 2) {
     return GameMode.ModeFFA
   }
 
