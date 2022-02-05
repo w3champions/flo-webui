@@ -120,7 +120,7 @@ function groupdGames(games?: Game[]): GameGroup[] {
     GameMode.Mode1v1,
     GameMode.Mode2v2,
     GameMode.Mode4v4,
-    // GameMode.ModeFFA,
+    GameMode.ModeFFA,
     GameMode.ModeOtherMelee,
     GameMode.ModeNonMelee
   ]
