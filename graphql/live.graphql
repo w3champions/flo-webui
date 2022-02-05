@@ -90,6 +90,7 @@ fragment GameSnapshotFields on GameSnapshot {
   players {
     ...PlayerFields
   }
+  maskPlayerNames
 }
 
 fragment PlayerFields on Player {

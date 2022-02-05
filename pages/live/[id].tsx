@@ -273,6 +273,8 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
     return game.players.every(p => p.team !== 24)
   }, [game])
 
+  const delay = game.maskPlayerNames ? 15 * 60 * 1000 : 3 * 60 * 1000
+
   return (
     <div className="flex flex-col w-full space-y-4">
       <div className="flex-initial flex">
@@ -302,9 +304,9 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
                 {createObserverTokenResult.error && (
                   <Alert message={createObserverTokenResult.error.message} />
                 )}
-                {time < 180_000 ? (
+                {time < delay ? (
                   <Button intent={Intent.PRIMARY} disabled>
-                    Wait {Math.round((180_000 - time) / 1000.0)} seconds to
+                    Wait {Math.round((delay - time) / 1000.0)} seconds to
                     watch.
                   </Button>
                 ) : (
