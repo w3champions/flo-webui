@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@now/node";
-import { withErrorHandler, FloError, FloErrorCode } from "../../helpers/error";
+import { withErrorHandler } from "../../helpers/error";
 import { withAuthorized } from "../../helpers/auth";
 import { PlayerRef } from "../../types/player";
 import { CreateGameRequestBody } from "../../types/game";
@@ -7,11 +7,10 @@ import joi from "@hapi/joi";
 import { withMethod } from "../../helpers/method";
 import {
   CreateGameRequest,
-  SearchMapChecksumRequest,
 } from "../../generated/controller_pb";
 import { Map, MapPlayer, MapForce } from "../../generated/game_pb";
 import { getUint8ArrayFromHexString } from "../../helpers/bytes";
-import { searchMapChecksum, createGame } from "../../server/service";
+import { createGame } from "../../server/service";
 
 const MapPlayerSchema = joi.object({
   name: joi.string().required(),
@@ -58,24 +57,8 @@ export default withErrorHandler(
         req.body
       );
 
-      const checksumReply = await searchMapChecksum(
-        new SearchMapChecksumRequest().setSha1(payload.map.sha1)
-      );
-
-      let checksum = payload.map.checksum;
-
-      if (!checksumReply.hasChecksum() && !checksum) {
-        throw new FloError(
-          "Map checksum was not found.",
-          FloErrorCode.BadRequest
-        );
-      } else {
-        checksum = checksumReply.getChecksum().getValue();
-      }
-
       const map = new Map()
         .setSha1(getUint8ArrayFromHexString(payload.map.sha1))
-        .setChecksum(checksum)
         .setName(payload.map.name)
         .setDescription(payload.map.description)
         .setAuthor(payload.map.author)
