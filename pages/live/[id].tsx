@@ -277,7 +277,7 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
   if (game.maskPlayerNames) {
     delay = 15 * 60 * 1000;
   }
-  if (game.mapPath.includes('Legion TD')) {
+  if (game.mapName.includes('Legion TD')) {
     delay = 10 * 60 * 1000;
   }
 
