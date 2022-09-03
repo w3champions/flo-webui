@@ -273,7 +273,13 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
     return game.players.every(p => p.team !== 24)
   }, [game])
 
-  const delay = game.maskPlayerNames ? 15 * 60 * 1000 : 3 * 60 * 1000
+  let delay = 3 * 60 * 1000
+  if (game.maskPlayerNames) {
+    delay = 15 * 60 * 1000;
+  }
+  if (game.mapPath.includes('Legion TD')) {
+    delay = 10 * 60 * 1000;
+  }
 
   return (
     <div className="flex flex-col w-full space-y-4">
