@@ -129,6 +129,7 @@ export type MutationRoot = {
 
 
 export type MutationRootCreateObserverTokenArgs = {
+  delaySecs?: InputMaybe<Scalars['Int']>;
   gameId: Scalars['Int'];
 };
 
@@ -212,6 +213,7 @@ export type GameUpdateSubSubscription = { __typename?: 'SubscriptionRoot', gameU
 
 export type CreateObserverTokenMutationVariables = Exact<{
   gameId: Scalars['Int'];
+  delaySecs?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -374,8 +376,8 @@ export function useGameUpdateSubSubscription<TData = GameUpdateSubSubscription>(
   return Urql.useSubscription<GameUpdateSubSubscription, TData, GameUpdateSubSubscriptionVariables>({ query: GameUpdateSubDocument, ...options }, handler);
 };
 export const CreateObserverTokenDocument = gql`
-    mutation CreateObserverToken($gameId: Int!) {
-  createObserverToken(gameId: $gameId) {
+    mutation CreateObserverToken($gameId: Int!, $delaySecs: Int) {
+  createObserverToken(gameId: $gameId, delaySecs: $delaySecs) {
     token
   }
 }

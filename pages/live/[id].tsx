@@ -269,11 +269,14 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
       copyToClipboard(res.data.createObserverToken.token)
     }
   };
-  const streamingSupported = useMemo(() => {
-    return game.players.every(p => p.team !== 24)
-  }, [game])
 
-  const delay = game.maskPlayerNames ? 15 * 60 * 1000 : 3 * 60 * 1000
+  let delay = 3 * 60 * 1000
+  if (game.maskPlayerNames) {
+    delay = 15 * 60 * 1000;
+  }
+  if (game.mapName.includes('Legion TD')) {
+    delay = 10 * 60 * 1000;
+  }
 
   return (
     <div className="flex flex-col w-full space-y-4">
@@ -299,7 +302,6 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
                   {format(new Date(game.startedAt), "yyyy-MM-dd HH:mm")}
                 </span>
               </div>
-              {streamingSupported ?
               <div>
                 {createObserverTokenResult.error && (
                   <Alert message={createObserverTokenResult.error.message} />
@@ -319,7 +321,6 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
                   </Button>
                 )}
               </div>
-              : <p className={Classes.TEXT_MUTED}>Streaming of games with observer players is not supported at the moment.</p>}
               <div className="flex">
                 <span className="flex-initial">
                   {game.mapName}

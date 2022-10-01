@@ -72,8 +72,8 @@ subscription GameUpdateSub($id: Int!) {
   }
 }
 
-mutation CreateObserverToken($gameId: Int!) {
-  createObserverToken(gameId: $gameId) {
+mutation CreateObserverToken($gameId: Int!, $delaySecs: Int) {
+  createObserverToken(gameId: $gameId, delaySecs: $delaySecs) {
     token
   }
 }
