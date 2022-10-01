@@ -34,21 +34,22 @@ function getGameMode(game: Game): GameMode {
     return GameMode.ModeNonMelee
   }
 
+  const players = game.players.filter(p => p.team !== 24)
   const teams = new Set(game.players.filter(p => p.team !== 24).map(p => p.team))
 
-  if (game.players.length === 2 && teams.size === 2) {
+  if (players.length === 2 && teams.size === 2) {
     return GameMode.Mode1v1
   }
 
-  if (game.players.length === 4 && teams.size == 2) {
+  if (players.length === 4 && teams.size == 2) {
     return GameMode.Mode2v2
   }
 
-  if (game.players.length === 8 && teams.size == 2) {
+  if (players.length === 8 && teams.size == 2) {
     return GameMode.Mode4v4
   }
 
-  if (teams.size == game.players.length && teams.size > 2) {
+  if (teams.size == players.length && teams.size > 2) {
     return GameMode.ModeFFA
   }
 
