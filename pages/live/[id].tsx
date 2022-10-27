@@ -277,6 +277,9 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
   if (game.mapName.includes('Legion TD')) {
     delay = 10 * 60 * 1000;
   }
+  if (game.isLive) {
+    delay = 0
+  }
 
   return (
     <div className="flex flex-col w-full space-y-4">
@@ -306,7 +309,8 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
                 {createObserverTokenResult.error && (
                   <Alert message={createObserverTokenResult.error.message} />
                 )}
-                {time < delay ? (
+                {game.isPrivate ? <Button disabled>Private Game</Button> : <>
+                  {time < delay ? (
                   <Button intent={Intent.PRIMARY} disabled>
                     Wait {Math.round((delay - time) / 1000.0)} seconds to
                     watch.
@@ -317,9 +321,11 @@ function Game({ game, stats }: { game: Game; stats: Stats }) {
                     loading={createObserverTokenResult.fetching}
                     onClick={() => generateWatchToken()}
                   >
-                    Generate Token
+                    Generate Token ({delay}s delay)
                   </Button>
                 )}
+                </>}
+                
               </div>
               <div className="flex">
                 <span className="flex-initial">

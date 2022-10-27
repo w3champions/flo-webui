@@ -91,6 +91,8 @@ fragment GameSnapshotFields on GameSnapshot {
     ...PlayerFields
   }
   maskPlayerNames
+  isLive
+  isPrivate
 }
 
 fragment PlayerFields on Player {

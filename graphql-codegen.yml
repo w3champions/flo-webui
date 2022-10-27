@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:3558"
+schema: "https://stats.w3flo.com"
 documents: "graphql/**/*.graphql"
 generates:
   generated/graphql.ts:

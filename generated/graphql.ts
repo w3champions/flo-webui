@@ -13,6 +13,11 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /**
+   * Implement the DateTime<Utc> scalar
+   *
+   * The input/output is a string in RFC3339 format.
+   */
   DateTime: any;
 };
 
@@ -199,14 +204,14 @@ export type SubscriptionRootGameUpdateEventsArgs = {
 export type GameListUpdateSubSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GameListUpdateSubSubscription = { __typename?: 'SubscriptionRoot', gameListUpdateEvents: { __typename: 'GameListUpdateEventItemEvent', event: { __typename: 'GameListUpdateEventAdded', snapshot: { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> } } | { __typename: 'GameListUpdateEventEnded', gameId: number, endedAt: any } | { __typename: 'GameListUpdateEventRemoved', gameId: number } } | { __typename: 'GameListUpdateEventItemInitial', snapshots: Array<{ __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> }> } };
+export type GameListUpdateSubSubscription = { __typename?: 'SubscriptionRoot', gameListUpdateEvents: { __typename: 'GameListUpdateEventItemEvent', event: { __typename: 'GameListUpdateEventAdded', snapshot: { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, isLive: boolean, isPrivate: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> } } | { __typename: 'GameListUpdateEventEnded', gameId: number, endedAt: any } | { __typename: 'GameListUpdateEventRemoved', gameId: number } } | { __typename: 'GameListUpdateEventItemInitial', snapshots: Array<{ __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, isLive: boolean, isPrivate: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> }> } };
 
 export type GameUpdateSubSubscriptionVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GameUpdateSubSubscription = { __typename?: 'SubscriptionRoot', gameUpdateEvents: { __typename: 'GameSnapshotWithStats', game: { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> }, stats: { __typename?: 'GameStatsSnapshot', ping: Array<{ __typename?: 'PingStats', time: number, data: Array<{ __typename?: 'Ping', playerId: number, min: number, max: number, avg: number, ticks: number }> }>, action: Array<{ __typename?: 'ActionStats', time: number, data: Array<{ __typename?: 'Action', playerId: number, apm: number, total: number }> }> } } | { __typename: 'GameUpdateEvent', gameId: number, data: { __typename: 'ActionStats', time: number, data: Array<{ __typename?: 'Action', playerId: number, apm: number, total: number }> } | { __typename: 'GameUpdateEventDataEnded', endedAt: any, durationMillis: number } | { __typename: 'GameUpdateEventDataPlayerLeft', time: number, playerId: number, reason: PlayerLeaveReason } | { __typename: 'GameUpdateEventDataRemoved', snapshot: { __typename?: 'GameSnapshot', id: number } } | { __typename: 'PingStats', time: number, data: Array<{ __typename?: 'Ping', playerId: number, min: number, max: number, avg: number, ticks: number }> } } };
+export type GameUpdateSubSubscription = { __typename?: 'SubscriptionRoot', gameUpdateEvents: { __typename: 'GameSnapshotWithStats', game: { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, isLive: boolean, isPrivate: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> }, stats: { __typename?: 'GameStatsSnapshot', ping: Array<{ __typename?: 'PingStats', time: number, data: Array<{ __typename?: 'Ping', playerId: number, min: number, max: number, avg: number, ticks: number }> }>, action: Array<{ __typename?: 'ActionStats', time: number, data: Array<{ __typename?: 'Action', playerId: number, apm: number, total: number }> }> } } | { __typename: 'GameUpdateEvent', gameId: number, data: { __typename: 'ActionStats', time: number, data: Array<{ __typename?: 'Action', playerId: number, apm: number, total: number }> } | { __typename: 'GameUpdateEventDataEnded', endedAt: any, durationMillis: number } | { __typename: 'GameUpdateEventDataPlayerLeft', time: number, playerId: number, reason: PlayerLeaveReason } | { __typename: 'GameUpdateEventDataRemoved', snapshot: { __typename?: 'GameSnapshot', id: number } } | { __typename: 'PingStats', time: number, data: Array<{ __typename?: 'Ping', playerId: number, min: number, max: number, avg: number, ticks: number }> } } };
 
 export type CreateObserverTokenMutationVariables = Exact<{
   gameId: Scalars['Int'];
@@ -216,7 +221,7 @@ export type CreateObserverTokenMutationVariables = Exact<{
 
 export type CreateObserverTokenMutation = { __typename?: 'MutationRoot', createObserverToken: { __typename?: 'ObserverTokenPayload', token: string } };
 
-export type GameSnapshotFieldsFragment = { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> };
+export type GameSnapshotFieldsFragment = { __typename?: 'GameSnapshot', id: number, gameName: string, mapName: string, mapPath: string, nodeId: number, nodeName: string, startedAt: any, endedAt?: any | null | undefined, maskPlayerNames: boolean, isLive: boolean, isPrivate: boolean, players: Array<{ __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined }> };
 
 export type PlayerFieldsFragment = { __typename?: 'Player', id: number, name: string, race: Race, team: number, leftAt?: number | null | undefined, leaveReason?: PlayerLeaveReason | null | undefined };
 
@@ -250,6 +255,8 @@ export const GameSnapshotFieldsFragmentDoc = gql`
     ...PlayerFields
   }
   maskPlayerNames
+  isLive
+  isPrivate
 }
     ${PlayerFieldsFragmentDoc}`;
 export const PingFieldsFragmentDoc = gql`
