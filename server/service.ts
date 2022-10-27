@@ -1,33 +1,19 @@
 import * as grpc from '@grpc/grpc-js';
 import { promisify } from "util";
-import { FloControllerClient } from "../generated/controller_grpc_pb";
-import {
-  GetPlayerByTokenRequest,
-  UpdateAndGetPlayerRequest,
-  UpdateAndGetPlayerReply,
-  GetPlayerReply,
-  SearchMapChecksumRequest,
-  SearchMapChecksumReply,
-  CreateGameRequest,
-  CreateGameReply,
-  LeaveGameRequest,
-  CreateJoinGameTokenRequest,
-  CreateJoinGameTokenReply,
-  JoinGameByTokenRequest,
-  JoinGameReply,
-  GetGameRequest,
-  GetGameReply,
-} from "../generated/controller_pb";
+import { controller } from '../generated/controller';
+import { game } from '../generated/game';
+export {
+  controller,
+} from "../generated/controller";
 import { FloError, FloErrorCode } from "../helpers/error";
-import * as player from "../generated/player_pb";
-import * as game from "../generated/game_pb";
-import { Game } from '../generated/game_pb';
-
-export { player, game };
+export { player } from "../generated/player";
+export { game } from "../generated/game";
+export * as g_empty from '../generated/google/protobuf/empty'
+export * as g_timestamp from '../generated/google/protobuf/timestamp'
+export * as g_wrappers from '../generated/google/protobuf/wrappers'
 
 const { FLO_SERVICE, FLO_SERVICE_SECRET } = process.env;
-
-const Client = new FloControllerClient(
+const Client = new controller.FloControllerClient(
   FLO_SERVICE,
   grpc.credentials.createInsecure()
 );
@@ -67,60 +53,71 @@ function wrap<TRequest, TReply>(
   };
 }
 
-export { GetPlayerByTokenRequest, GetPlayerReply };
+type GetPlayerByTokenRequest = controller.GetPlayerByTokenRequest;
+type GetPlayerReply = controller.GetPlayerReply;
 
 export const getPlayerByToken = wrap(
   promisify<GrpcCall<GetPlayerByTokenRequest, GetPlayerReply>>(
-    Client.getPlayerByToken.bind(Client)
+    Client.GetPlayerByToken.bind(Client)
   )
 );
 
-export { UpdateAndGetPlayerRequest, UpdateAndGetPlayerReply };
+type UpdateAndGetPlayerRequest = controller.UpdateAndGetPlayerRequest;
+type UpdateAndGetPlayerReply = controller.UpdateAndGetPlayerReply;
 
 export const updateAndGetPlayer = wrap(
   promisify<GrpcCall<UpdateAndGetPlayerRequest, UpdateAndGetPlayerReply>>(
-    Client.updateAndGetPlayer.bind(Client)
+    Client.UpdateAndGetPlayer.bind(Client)
   )
 );
 
-export { SearchMapChecksumRequest, SearchMapChecksumReply };
+type SearchMapChecksumRequest = controller.SearchMapChecksumRequest;
+type SearchMapChecksumReply = controller.SearchMapChecksumReply;
 
 export const searchMapChecksum = wrap(
   promisify<GrpcCall<SearchMapChecksumRequest, SearchMapChecksumReply>>(
-    Client.searchMapChecksum.bind(Client)
+    Client.SearchMapChecksum.bind(Client)
   )
 );
 
-export { CreateGameRequest, CreateGameReply };
+type CreateGameRequest = controller.CreateGameRequest;
+type CreateGameReply = controller.CreateGameReply;
 
 export const createGame = wrap(
   promisify<GrpcCall<CreateGameRequest, CreateGameReply>>(
-    Client.createGame.bind(Client)
+    Client.CreateGame.bind(Client)
   )
 );
 
-export { LeaveGameRequest };
+type LeaveGameRequest = controller.LeaveGameRequest;
 export const leaveGame = wrap(
-  promisify<GrpcCall<LeaveGameRequest, void>>(Client.leaveGame.bind(Client))
+  promisify<GrpcCall<LeaveGameRequest, void>>(Client.LeaveGame.bind(Client))
 );
 
-export { CreateJoinGameTokenRequest, CreateJoinGameTokenReply };
+type CreateJoinGameTokenRequest = controller.CreateJoinGameTokenRequest;
+type CreateJoinGameTokenReply = controller.CreateJoinGameTokenReply;
+
 export const createJoinGameToken = wrap(
   promisify<GrpcCall<CreateJoinGameTokenRequest, CreateJoinGameTokenReply>>(
-    Client.createJoinGameToken.bind(Client)
+    Client.CreateJoinGameToken.bind(Client)
   )
 );
 
-export { JoinGameByTokenRequest, JoinGameReply };
+type JoinGameByTokenRequest = controller.JoinGameByTokenRequest;
+type JoinGameReply = controller.JoinGameReply;
+
 export const joinGameByToken = wrap(
   promisify<GrpcCall<JoinGameByTokenRequest, JoinGameReply>>(
-    Client.joinGameByToken.bind(Client)
+    Client.JoinGameByToken.bind(Client)
   )
 );
 
-export { Game, GetGameRequest, GetGameReply };
+type Game = game.Game;
+type GetGameRequest = controller.GetGameRequest;
+type GetGameReply = controller.GetGameReply;
+
 export const getGame = wrap(
   promisify<GrpcCall<GetGameRequest, GetGameReply>>(
-    Client.getGame.bind(Client)
+    Client.GetGame.bind(Client)
   )
 );

@@ -3,8 +3,8 @@
  * compiler version: 3.15.6
  * source: game.proto
  * git: https://github.com/thesayyn/protoc-gen-ts */
-import * as dependency_1 from "./google/protobuf/wrappers";
-import * as dependency_2 from "./google/protobuf/timestamp";
+import * as dependency_1 from "./google\\protobuf\\wrappers";
+import * as dependency_2 from "./google\\protobuf\\timestamp";
 import * as dependency_3 from "./player";
 import * as dependency_4 from "./node";
 import * as pb_1 from "google-protobuf";

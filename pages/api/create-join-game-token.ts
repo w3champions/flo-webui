@@ -3,8 +3,8 @@ import { withErrorHandler, FloError, FloErrorCode } from "../../helpers/error";
 import { withAuthorized } from "../../helpers/auth";
 import { withMethod } from "../../helpers/method";
 import {
-  createJoinGameToken,
-  CreateJoinGameTokenRequest,
+  controller,
+  createJoinGameToken
 } from "../../server/service";
 import { PlayerRef } from "../../types/player";
 import joi from "@hapi/joi";
@@ -26,9 +26,10 @@ export default withErrorHandler(
         req.body as CreateJoinGameTokenBody
       );
 
-      const request = new CreateJoinGameTokenRequest()
-        .setPlayerId(player.id)
-        .setGameId(game_id);
+      const request = new controller.CreateJoinGameTokenRequest({
+        player_id: player.id,
+        game_id: game_id.id,
+      })
 
       const token = await createJoinGameToken(request);
 

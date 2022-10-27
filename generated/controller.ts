@@ -3,9 +3,9 @@
  * compiler version: 3.15.6
  * source: controller.proto
  * git: https://github.com/thesayyn/protoc-gen-ts */
-import * as dependency_1 from "./google/protobuf/wrappers";
-import * as dependency_2 from "./google/protobuf/empty";
-import * as dependency_3 from "./google/protobuf/timestamp";
+import * as dependency_1 from "./google\\protobuf\\wrappers";
+import * as dependency_2 from "./google\\protobuf\\empty";
+import * as dependency_3 from "./google\\protobuf\\timestamp";
 import * as dependency_4 from "./player";
 import * as dependency_5 from "./game";
 import * as dependency_6 from "./node";

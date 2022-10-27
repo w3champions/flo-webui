@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from "@now/node";
 import { withErrorHandler, FloError, FloErrorCode } from "../../helpers/error";
 import { withAuthorized } from "../../helpers/auth";
 import { withMethod } from "../../helpers/method";
-import { LeaveGameRequest, leaveGame } from "../../server/service";
+import { controller, leaveGame } from "../../server/service";
 import { PlayerRef } from "../../types/player";
 import joi from "@hapi/joi";
 import { LeaveGameRequestBody } from "../../types/game";
@@ -23,9 +23,10 @@ export default withErrorHandler(
         req.body as LeaveGameRequestBody
       );
 
-      const request = new LeaveGameRequest()
-        .setPlayerId(player.id)
-        .setGameId(game_id);
+      const request = new controller.LeaveGameRequest({
+        player_id: player.id,
+        game_id
+      })
 
       await leaveGame(request);
 

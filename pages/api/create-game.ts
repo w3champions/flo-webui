@@ -6,9 +6,9 @@ import { CreateGameRequestBody } from "../../types/game";
 import joi from "@hapi/joi";
 import { withMethod } from "../../helpers/method";
 import {
-  CreateGameRequest,
-} from "../../generated/controller_pb";
-import { Map, MapPlayer, MapForce } from "../../generated/game_pb";
+  controller
+} from "../../generated/controller";
+import { game } from "../../generated/game";
 import { getUint8ArrayFromHexString } from "../../helpers/bytes";
 import { createGame } from "../../server/service";
 
@@ -43,6 +43,7 @@ const Schema = joi.object({
     .required(),
   is_private: joi.boolean().required(),
   is_live: joi.boolean().required(),
+  enable_ping_equalizer: joi.boolean(),
 });
 
 export default withErrorHandler(
@@ -57,42 +58,43 @@ export default withErrorHandler(
         req.body
       );
 
-      const map = new Map()
-        .setSha1(getUint8ArrayFromHexString(payload.map.sha1))
-        .setName(payload.map.name)
-        .setDescription(payload.map.description)
-        .setAuthor(payload.map.author)
-        .setPath(payload.map.path)
-        .setWidth(payload.map.width)
-        .setHeight(payload.map.height)
-        .setPlayersList(
-          payload.map.players.map((p) =>
-            new MapPlayer()
-              .setName(p.name)
-              .setType(p.type)
-              .setRace(p.race)
-              .setFlags(p.flags)
-          )
-        )
-        .setForcesList(
-          payload.map.forces.map((f) =>
-            new MapForce()
-              .setName(f.name)
-              .setFlags(f.flags)
-              .setPlayerSet(f.player_set)
-          )
-        );
+      const map = new game.Map({
+        sha1: getUint8ArrayFromHexString(payload.map.sha1),
+        checksum: payload.map.checksum,
+        name: payload.map.name,
+        description: payload.map.description,
+        author: payload.map.author,
+        path: payload.map.path,
+        width: payload.map.width,
+        height: payload.map.height,
+        players: payload.map.players.map((p) =>
+          new game.MapPlayer({
+            name: p.name,
+            type: p.type,
+            race: p.race,
+            flags: p.flags
+          })
+        ),
+        forces: payload.map.forces.map((f) =>
+          new game.MapForce({
+            name: f.name,
+            flags: f.flags,
+            player_set: f.player_set
+          })
+        ),
+      })
 
-      const createGameRequest = new CreateGameRequest()
-        .setPlayerId(player.id)
-        .setName(payload.name)
-        .setMap(map)
-        .setIsPrivate(payload.is_private)
-        .setIsLive(payload.is_live);
+      const createGameRequest = new controller.CreateGameRequest({
+        player_id: player.id,
+        name: payload.name,
+        map,
+        is_private: payload.is_private,
+        is_live: payload.is_live,
+      })
 
       const createGameReply = await createGame(createGameRequest);
 
-      res.json(createGameReply.getGame().toObject());
+      res.json(createGameReply.game);
     })
   )
 );

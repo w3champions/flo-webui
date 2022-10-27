@@ -9,13 +9,10 @@ import { URLSearchParams } from "url";
 import { Alert } from "../components/Alert";
 import { useEffect } from "react";
 import { FLO_ACCESS_TOKEN_STORAGE_KEY } from "../const";
-import * as protobuf_wrappers from "google-protobuf/google/protobuf/wrappers_pb";
 import * as service from "../server/service";
 import {
-  PlayerSource,
-  PlayerSourceState,
-  BNetState,
-} from "../generated/player_pb";
+  player
+} from "../generated/player";
 import { useAuth } from "../providers/auth";
 
 interface Props {
@@ -94,28 +91,31 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       })
       .then((res) => res.data);
 
-    const request = new service.UpdateAndGetPlayerRequest();
-    const sourceState = new PlayerSourceState();
-    sourceState.setBnet(
-      new BNetState()
-        .setAccountId(userInfo.id)
-        .setAccessToken(token.access_token)
-        .setAccessTokenExp(Math.floor(Date.now() / 1000) + token.expires_in)
+    const sourceState = new player.PlayerSourceState(
+      {
+        bnet: new player.BNetState({
+          account_id: userInfo.id,
+          access_token: token.access_token,
+          access_token_exp: Math.floor(Date.now() / 1000) + token.expires_in,
+        })
+      }
     );
-    const realm = new protobuf_wrappers.StringValue();
-    realm.setValue(region);
-    request
-      .setName(userInfo.battletag)
-      .setSource(PlayerSource.PLAYERSOURCEBNET)
-      .setSourceId(userInfo.id.toString())
-      .setSourceState(sourceState)
-      .setRealm(realm);
+    const realm = new service.g_wrappers.google.protobuf.StringValue({
+      value: region
+    });
+    const request = new service.controller.UpdateAndGetPlayerRequest({
+      name: userInfo.battletag,
+      source: player.PlayerSource.PlayerSourceBNet,
+      source_id: userInfo.id.toString(),
+      source_state: sourceState,
+      realm: realm
+    });
 
     const reply = await service.updateAndGetPlayer(request);
 
     return {
       props: {
-        token: reply.getToken(),
+        token: reply.token,
       } as Props,
     };
   } catch (error) {

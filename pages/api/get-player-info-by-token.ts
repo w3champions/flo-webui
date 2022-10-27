@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from "@now/node";
 import { withErrorHandler } from "../../helpers/error";
 import {
   getPlayerByToken,
-  GetPlayerByTokenRequest,
+  controller,
 } from "../../server/service";
 import joi from "@hapi/joi";
 import { PlayerRef } from "../../types/player";
@@ -21,14 +21,15 @@ export default withErrorHandler(async function getPlayerInfoByToken(
 ) {
   const { token } = (await Schema.validateAsync(req.body)) as Body;
 
-  const request = new GetPlayerByTokenRequest();
-  request.setToken(token);
+  const request = new controller.GetPlayerByTokenRequest({
+    token
+  });
   const reply = await getPlayerByToken(request);
-  const player = reply.getPlayer();
+  const player = reply.player;
 
   res.json({
-    id: player.getId(),
-    name: player.getName(),
-    source: player.getSource() as number,
+    id: player.id,
+    name: player.name,
+    source: player.source as number,
   } as PlayerRef);
 });

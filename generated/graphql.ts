@@ -13,11 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /**
-   * Implement the DateTime<Utc> scalar
-   *
-   * The input/output is a string in RFC3339 format.
-   */
   DateTime: any;
 };
 
@@ -70,6 +65,8 @@ export type GameSnapshot = {
   gameName: Scalars['String'];
   gameVersion?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  isLive: Scalars['Boolean'];
+  isPrivate: Scalars['Boolean'];
   mapChecksum: Scalars['Int'];
   mapName: Scalars['String'];
   mapPath: Scalars['String'];
