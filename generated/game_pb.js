@@ -262,7 +262,8 @@ proto.game.Game.toObject = function(includeInstance, msg) {
     createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     maskPlayerNames: jspb.Message.getBooleanFieldWithDefault(msg, 18, false),
-    gameVersion: (f = msg.getGameVersion()) && google_protobuf_wrappers_pb.StringValue.toObject(includeInstance, f)
+    gameVersion: (f = msg.getGameVersion()) && google_protobuf_wrappers_pb.StringValue.toObject(includeInstance, f),
+    enablePingEqualizer: jspb.Message.getBooleanFieldWithDefault(msg, 20, false)
   };
 
   if (includeInstance) {
@@ -384,6 +385,10 @@ proto.game.Game.deserializeBinaryFromReader = function(msg, reader) {
       var value = new google_protobuf_wrappers_pb.StringValue;
       reader.readMessage(value,google_protobuf_wrappers_pb.StringValue.deserializeBinaryFromReader);
       msg.setGameVersion(value);
+      break;
+    case 20:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setEnablePingEqualizer(value);
       break;
     default:
       reader.skipField();
@@ -555,6 +560,13 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
       19,
       f,
       google_protobuf_wrappers_pb.StringValue.serializeBinaryToWriter
+    );
+  }
+  f = message.getEnablePingEqualizer();
+  if (f) {
+    writer.writeBool(
+      20,
+      f
     );
   }
 };
@@ -1090,6 +1102,24 @@ proto.game.Game.prototype.clearGameVersion = function() {
  */
 proto.game.Game.prototype.hasGameVersion = function() {
   return jspb.Message.getField(this, 19) != null;
+};
+
+
+/**
+ * optional bool enable_ping_equalizer = 20;
+ * @return {boolean}
+ */
+proto.game.Game.prototype.getEnablePingEqualizer = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 20, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.game.Game} returns this
+ */
+proto.game.Game.prototype.setEnablePingEqualizer = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 20, value);
 };
 
 

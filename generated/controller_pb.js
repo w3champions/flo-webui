@@ -2626,7 +2626,8 @@ proto.controller.ListGamesRequest.toObject = function(includeInstance, msg) {
     isPrivate: (f = msg.getIsPrivate()) && google_protobuf_wrappers_pb.BoolValue.toObject(includeInstance, f),
     isLive: (f = msg.getIsLive()) && google_protobuf_wrappers_pb.BoolValue.toObject(includeInstance, f),
     take: (f = msg.getTake()) && google_protobuf_wrappers_pb.Int64Value.toObject(includeInstance, f),
-    sinceId: (f = msg.getSinceId()) && google_protobuf_wrappers_pb.Int32Value.toObject(includeInstance, f)
+    sinceId: (f = msg.getSinceId()) && google_protobuf_wrappers_pb.Int32Value.toObject(includeInstance, f),
+    playerId: (f = msg.getPlayerId()) && google_protobuf_wrappers_pb.Int32Value.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -2691,6 +2692,11 @@ proto.controller.ListGamesRequest.deserializeBinaryFromReader = function(msg, re
       var value = new google_protobuf_wrappers_pb.Int32Value;
       reader.readMessage(value,google_protobuf_wrappers_pb.Int32Value.deserializeBinaryFromReader);
       msg.setSinceId(value);
+      break;
+    case 7:
+      var value = new google_protobuf_wrappers_pb.Int32Value;
+      reader.readMessage(value,google_protobuf_wrappers_pb.Int32Value.deserializeBinaryFromReader);
+      msg.setPlayerId(value);
       break;
     default:
       reader.skipField();
@@ -2764,6 +2770,14 @@ proto.controller.ListGamesRequest.serializeBinaryToWriter = function(message, wr
   if (f != null) {
     writer.writeMessage(
       6,
+      f,
+      google_protobuf_wrappers_pb.Int32Value.serializeBinaryToWriter
+    );
+  }
+  f = message.getPlayerId();
+  if (f != null) {
+    writer.writeMessage(
+      7,
       f,
       google_protobuf_wrappers_pb.Int32Value.serializeBinaryToWriter
     );
@@ -2971,6 +2985,43 @@ proto.controller.ListGamesRequest.prototype.clearSinceId = function() {
  */
 proto.controller.ListGamesRequest.prototype.hasSinceId = function() {
   return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional google.protobuf.Int32Value player_id = 7;
+ * @return {?proto.google.protobuf.Int32Value}
+ */
+proto.controller.ListGamesRequest.prototype.getPlayerId = function() {
+  return /** @type{?proto.google.protobuf.Int32Value} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.Int32Value, 7));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Int32Value|undefined} value
+ * @return {!proto.controller.ListGamesRequest} returns this
+*/
+proto.controller.ListGamesRequest.prototype.setPlayerId = function(value) {
+  return jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.controller.ListGamesRequest} returns this
+ */
+proto.controller.ListGamesRequest.prototype.clearPlayerId = function() {
+  return this.setPlayerId(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.controller.ListGamesRequest.prototype.hasPlayerId = function() {
+  return jspb.Message.getField(this, 7) != null;
 };
 
 
@@ -3913,7 +3964,8 @@ proto.controller.CreateGameAsBotRequest.toObject = function(includeInstance, msg
     nodeId: jspb.Message.getFieldWithDefault(msg, 6, 0),
     slotsList: jspb.Message.toObjectList(msg.getSlotsList(),
     proto.controller.CreateGameSlot.toObject, includeInstance),
-    maskPlayerNames: (f = msg.getMaskPlayerNames()) && google_protobuf_wrappers_pb.BoolValue.toObject(includeInstance, f)
+    maskPlayerNames: jspb.Message.getBooleanFieldWithDefault(msg, 8, false),
+    enablePingEqualizer: jspb.Message.getBooleanFieldWithDefault(msg, 9, false)
   };
 
   if (includeInstance) {
@@ -3977,9 +4029,12 @@ proto.controller.CreateGameAsBotRequest.deserializeBinaryFromReader = function(m
       msg.addSlots(value);
       break;
     case 8:
-      var value = new google_protobuf_wrappers_pb.BoolValue;
-      reader.readMessage(value,google_protobuf_wrappers_pb.BoolValue.deserializeBinaryFromReader);
+      var value = /** @type {boolean} */ (reader.readBool());
       msg.setMaskPlayerNames(value);
+      break;
+    case 9:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setEnablePingEqualizer(value);
       break;
     default:
       reader.skipField();
@@ -4055,11 +4110,17 @@ proto.controller.CreateGameAsBotRequest.serializeBinaryToWriter = function(messa
     );
   }
   f = message.getMaskPlayerNames();
-  if (f != null) {
-    writer.writeMessage(
+  if (f) {
+    writer.writeBool(
       8,
-      f,
-      google_protobuf_wrappers_pb.BoolValue.serializeBinaryToWriter
+      f
+    );
+  }
+  f = message.getEnablePingEqualizer();
+  if (f) {
+    writer.writeBool(
+      9,
+      f
     );
   }
 };
@@ -4213,39 +4274,38 @@ proto.controller.CreateGameAsBotRequest.prototype.clearSlotsList = function() {
 
 
 /**
- * optional google.protobuf.BoolValue mask_player_names = 8;
- * @return {?proto.google.protobuf.BoolValue}
- */
-proto.controller.CreateGameAsBotRequest.prototype.getMaskPlayerNames = function() {
-  return /** @type{?proto.google.protobuf.BoolValue} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.BoolValue, 8));
-};
-
-
-/**
- * @param {?proto.google.protobuf.BoolValue|undefined} value
- * @return {!proto.controller.CreateGameAsBotRequest} returns this
-*/
-proto.controller.CreateGameAsBotRequest.prototype.setMaskPlayerNames = function(value) {
-  return jspb.Message.setWrapperField(this, 8, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- * @return {!proto.controller.CreateGameAsBotRequest} returns this
- */
-proto.controller.CreateGameAsBotRequest.prototype.clearMaskPlayerNames = function() {
-  return this.setMaskPlayerNames(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
+ * optional bool mask_player_names = 8;
  * @return {boolean}
  */
-proto.controller.CreateGameAsBotRequest.prototype.hasMaskPlayerNames = function() {
-  return jspb.Message.getField(this, 8) != null;
+proto.controller.CreateGameAsBotRequest.prototype.getMaskPlayerNames = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 8, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.controller.CreateGameAsBotRequest} returns this
+ */
+proto.controller.CreateGameAsBotRequest.prototype.setMaskPlayerNames = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 8, value);
+};
+
+
+/**
+ * optional bool enable_ping_equalizer = 9;
+ * @return {boolean}
+ */
+proto.controller.CreateGameAsBotRequest.prototype.getEnablePingEqualizer = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 9, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.controller.CreateGameAsBotRequest} returns this
+ */
+proto.controller.CreateGameAsBotRequest.prototype.setEnablePingEqualizer = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 9, value);
 };
 
 

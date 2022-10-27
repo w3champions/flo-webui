@@ -27,6 +27,7 @@ const enum GameMode {
   ModeFFA = 'FFA',
   ModeOtherMelee = 'Other Melee',
   ModeNonMelee = 'Non-melee',
+  ModeWithObservers = "With Observers"
 }
 
 function getGameMode(game: Game): GameMode {
