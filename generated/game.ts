@@ -3,8 +3,8 @@
  * compiler version: 3.15.6
  * source: game.proto
  * git: https://github.com/thesayyn/protoc-gen-ts */
-import * as dependency_1 from "./google\\protobuf\\wrappers";
-import * as dependency_2 from "./google\\protobuf\\timestamp";
+import * as dependency_1 from "./google/protobuf/wrappers";
+import * as dependency_2 from "./google/protobuf/timestamp";
 import * as dependency_3 from "./player";
 import * as dependency_4 from "./node";
 import * as pb_1 from "google-protobuf";
@@ -65,6 +65,7 @@ export namespace game {
             mask_player_names?: boolean;
             game_version?: dependency_1.google.protobuf.StringValue;
             enable_ping_equalizer?: boolean;
+            flo_tv_delay_override_secs?: dependency_1.google.protobuf.Int32Value;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [5], this.#one_of_decls);
@@ -128,6 +129,9 @@ export namespace game {
                 }
                 if ("enable_ping_equalizer" in data && data.enable_ping_equalizer != undefined) {
                     this.enable_ping_equalizer = data.enable_ping_equalizer;
+                }
+                if ("flo_tv_delay_override_secs" in data && data.flo_tv_delay_override_secs != undefined) {
+                    this.flo_tv_delay_override_secs = data.flo_tv_delay_override_secs;
                 }
             }
         }
@@ -278,6 +282,15 @@ export namespace game {
         set enable_ping_equalizer(value: boolean) {
             pb_1.Message.setField(this, 20, value);
         }
+        get flo_tv_delay_override_secs() {
+            return pb_1.Message.getWrapperField(this, dependency_1.google.protobuf.Int32Value, 21) as dependency_1.google.protobuf.Int32Value;
+        }
+        set flo_tv_delay_override_secs(value: dependency_1.google.protobuf.Int32Value) {
+            pb_1.Message.setWrapperField(this, 21, value);
+        }
+        get has_flo_tv_delay_override_secs() {
+            return pb_1.Message.getField(this, 21) != null;
+        }
         static fromObject(data: {
             id?: number;
             name?: string;
@@ -299,6 +312,7 @@ export namespace game {
             mask_player_names?: boolean;
             game_version?: ReturnType<typeof dependency_1.google.protobuf.StringValue.prototype.toObject>;
             enable_ping_equalizer?: boolean;
+            flo_tv_delay_override_secs?: ReturnType<typeof dependency_1.google.protobuf.Int32Value.prototype.toObject>;
         }): Game {
             const message = new Game({});
             if (data.id != null) {
@@ -361,6 +375,9 @@ export namespace game {
             if (data.enable_ping_equalizer != null) {
                 message.enable_ping_equalizer = data.enable_ping_equalizer;
             }
+            if (data.flo_tv_delay_override_secs != null) {
+                message.flo_tv_delay_override_secs = dependency_1.google.protobuf.Int32Value.fromObject(data.flo_tv_delay_override_secs);
+            }
             return message;
         }
         toObject() {
@@ -385,6 +402,7 @@ export namespace game {
                 mask_player_names?: boolean;
                 game_version?: ReturnType<typeof dependency_1.google.protobuf.StringValue.prototype.toObject>;
                 enable_ping_equalizer?: boolean;
+                flo_tv_delay_override_secs?: ReturnType<typeof dependency_1.google.protobuf.Int32Value.prototype.toObject>;
             } = {};
             if (this.id != null) {
                 data.id = this.id;
@@ -446,6 +464,9 @@ export namespace game {
             if (this.enable_ping_equalizer != null) {
                 data.enable_ping_equalizer = this.enable_ping_equalizer;
             }
+            if (this.flo_tv_delay_override_secs != null) {
+                data.flo_tv_delay_override_secs = this.flo_tv_delay_override_secs.toObject();
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -492,6 +513,8 @@ export namespace game {
                 writer.writeMessage(19, this.game_version, () => this.game_version.serialize(writer));
             if (this.enable_ping_equalizer != false)
                 writer.writeBool(20, this.enable_ping_equalizer);
+            if (this.has_flo_tv_delay_override_secs)
+                writer.writeMessage(21, this.flo_tv_delay_override_secs, () => this.flo_tv_delay_override_secs.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -560,6 +583,9 @@ export namespace game {
                         break;
                     case 20:
                         message.enable_ping_equalizer = reader.readBool();
+                        break;
+                    case 21:
+                        reader.readMessage(message.flo_tv_delay_override_secs, () => message.flo_tv_delay_override_secs = dependency_1.google.protobuf.Int32Value.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

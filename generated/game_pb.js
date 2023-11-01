@@ -263,7 +263,8 @@ proto.game.Game.toObject = function(includeInstance, msg) {
     updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     maskPlayerNames: jspb.Message.getBooleanFieldWithDefault(msg, 18, false),
     gameVersion: (f = msg.getGameVersion()) && google_protobuf_wrappers_pb.StringValue.toObject(includeInstance, f),
-    enablePingEqualizer: jspb.Message.getBooleanFieldWithDefault(msg, 20, false)
+    enablePingEqualizer: jspb.Message.getBooleanFieldWithDefault(msg, 20, false),
+    floTvDelayOverrideSecs: (f = msg.getFloTvDelayOverrideSecs()) && google_protobuf_wrappers_pb.Int32Value.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -389,6 +390,11 @@ proto.game.Game.deserializeBinaryFromReader = function(msg, reader) {
     case 20:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setEnablePingEqualizer(value);
+      break;
+    case 21:
+      var value = new google_protobuf_wrappers_pb.Int32Value;
+      reader.readMessage(value,google_protobuf_wrappers_pb.Int32Value.deserializeBinaryFromReader);
+      msg.setFloTvDelayOverrideSecs(value);
       break;
     default:
       reader.skipField();
@@ -567,6 +573,14 @@ proto.game.Game.serializeBinaryToWriter = function(message, writer) {
     writer.writeBool(
       20,
       f
+    );
+  }
+  f = message.getFloTvDelayOverrideSecs();
+  if (f != null) {
+    writer.writeMessage(
+      21,
+      f,
+      google_protobuf_wrappers_pb.Int32Value.serializeBinaryToWriter
     );
   }
 };
@@ -1120,6 +1134,43 @@ proto.game.Game.prototype.getEnablePingEqualizer = function() {
  */
 proto.game.Game.prototype.setEnablePingEqualizer = function(value) {
   return jspb.Message.setProto3BooleanField(this, 20, value);
+};
+
+
+/**
+ * optional google.protobuf.Int32Value flo_tv_delay_override_secs = 21;
+ * @return {?proto.google.protobuf.Int32Value}
+ */
+proto.game.Game.prototype.getFloTvDelayOverrideSecs = function() {
+  return /** @type{?proto.google.protobuf.Int32Value} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.Int32Value, 21));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Int32Value|undefined} value
+ * @return {!proto.game.Game} returns this
+*/
+proto.game.Game.prototype.setFloTvDelayOverrideSecs = function(value) {
+  return jspb.Message.setWrapperField(this, 21, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.game.Game} returns this
+ */
+proto.game.Game.prototype.clearFloTvDelayOverrideSecs = function() {
+  return this.setFloTvDelayOverrideSecs(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.game.Game.prototype.hasFloTvDelayOverrideSecs = function() {
+  return jspb.Message.getField(this, 21) != null;
 };
 
 
