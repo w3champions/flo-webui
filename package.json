@@ -58,5 +58,5 @@
     "tailwindcss": "^1.6.0",
     "typescript": "^4.3.2"
   },
-  "engines": { "node": "16.x" }
+  "engines": { "node": "18.x" }
 }

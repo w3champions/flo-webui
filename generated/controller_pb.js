@@ -3965,7 +3965,8 @@ proto.controller.CreateGameAsBotRequest.toObject = function(includeInstance, msg
     slotsList: jspb.Message.toObjectList(msg.getSlotsList(),
     proto.controller.CreateGameSlot.toObject, includeInstance),
     maskPlayerNames: jspb.Message.getBooleanFieldWithDefault(msg, 8, false),
-    enablePingEqualizer: jspb.Message.getBooleanFieldWithDefault(msg, 9, false)
+    enablePingEqualizer: jspb.Message.getBooleanFieldWithDefault(msg, 9, false),
+    floTvDelayOverrideSecs: (f = msg.getFloTvDelayOverrideSecs()) && google_protobuf_wrappers_pb.Int32Value.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -4035,6 +4036,11 @@ proto.controller.CreateGameAsBotRequest.deserializeBinaryFromReader = function(m
     case 9:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setEnablePingEqualizer(value);
+      break;
+    case 10:
+      var value = new google_protobuf_wrappers_pb.Int32Value;
+      reader.readMessage(value,google_protobuf_wrappers_pb.Int32Value.deserializeBinaryFromReader);
+      msg.setFloTvDelayOverrideSecs(value);
       break;
     default:
       reader.skipField();
@@ -4121,6 +4127,14 @@ proto.controller.CreateGameAsBotRequest.serializeBinaryToWriter = function(messa
     writer.writeBool(
       9,
       f
+    );
+  }
+  f = message.getFloTvDelayOverrideSecs();
+  if (f != null) {
+    writer.writeMessage(
+      10,
+      f,
+      google_protobuf_wrappers_pb.Int32Value.serializeBinaryToWriter
     );
   }
 };
@@ -4306,6 +4320,43 @@ proto.controller.CreateGameAsBotRequest.prototype.getEnablePingEqualizer = funct
  */
 proto.controller.CreateGameAsBotRequest.prototype.setEnablePingEqualizer = function(value) {
   return jspb.Message.setProto3BooleanField(this, 9, value);
+};
+
+
+/**
+ * optional google.protobuf.Int32Value flo_tv_delay_override_secs = 10;
+ * @return {?proto.google.protobuf.Int32Value}
+ */
+proto.controller.CreateGameAsBotRequest.prototype.getFloTvDelayOverrideSecs = function() {
+  return /** @type{?proto.google.protobuf.Int32Value} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.Int32Value, 10));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Int32Value|undefined} value
+ * @return {!proto.controller.CreateGameAsBotRequest} returns this
+*/
+proto.controller.CreateGameAsBotRequest.prototype.setFloTvDelayOverrideSecs = function(value) {
+  return jspb.Message.setWrapperField(this, 10, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.controller.CreateGameAsBotRequest} returns this
+ */
+proto.controller.CreateGameAsBotRequest.prototype.clearFloTvDelayOverrideSecs = function() {
+  return this.setFloTvDelayOverrideSecs(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.controller.CreateGameAsBotRequest.prototype.hasFloTvDelayOverrideSecs = function() {
+  return jspb.Message.getField(this, 10) != null;
 };
 
 
