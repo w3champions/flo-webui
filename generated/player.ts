@@ -3,8 +3,8 @@
  * compiler version: 3.15.6
  * source: player.proto
  * git: https://github.com/thesayyn/protoc-gen-ts */
-import * as dependency_1 from "./google/protobuf/wrappers";
-import * as dependency_2 from "./google/protobuf/timestamp";
+import * as dependency_1 from "./google\\protobuf\\wrappers";
+import * as dependency_2 from "./google\\protobuf\\timestamp";
 import * as pb_1 from "google-protobuf";
 export namespace player {
     export enum PlayerSource {
@@ -869,6 +869,7 @@ export namespace player {
             ban_type?: PlayerBanType;
             ban_expires_at?: dependency_2.google.protobuf.Timestamp;
             created_at?: dependency_2.google.protobuf.Timestamp;
+            author?: dependency_1.google.protobuf.StringValue;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -887,6 +888,9 @@ export namespace player {
                 }
                 if ("created_at" in data && data.created_at != undefined) {
                     this.created_at = data.created_at;
+                }
+                if ("author" in data && data.author != undefined) {
+                    this.author = data.author;
                 }
             }
         }
@@ -929,12 +933,22 @@ export namespace player {
         get has_created_at() {
             return pb_1.Message.getField(this, 5) != null;
         }
+        get author() {
+            return pb_1.Message.getWrapperField(this, dependency_1.google.protobuf.StringValue, 6) as dependency_1.google.protobuf.StringValue;
+        }
+        set author(value: dependency_1.google.protobuf.StringValue) {
+            pb_1.Message.setWrapperField(this, 6, value);
+        }
+        get has_author() {
+            return pb_1.Message.getField(this, 6) != null;
+        }
         static fromObject(data: {
             id?: number;
             player?: ReturnType<typeof PlayerRef.prototype.toObject>;
             ban_type?: PlayerBanType;
             ban_expires_at?: ReturnType<typeof dependency_2.google.protobuf.Timestamp.prototype.toObject>;
             created_at?: ReturnType<typeof dependency_2.google.protobuf.Timestamp.prototype.toObject>;
+            author?: ReturnType<typeof dependency_1.google.protobuf.StringValue.prototype.toObject>;
         }): PlayerBan {
             const message = new PlayerBan({});
             if (data.id != null) {
@@ -952,6 +966,9 @@ export namespace player {
             if (data.created_at != null) {
                 message.created_at = dependency_2.google.protobuf.Timestamp.fromObject(data.created_at);
             }
+            if (data.author != null) {
+                message.author = dependency_1.google.protobuf.StringValue.fromObject(data.author);
+            }
             return message;
         }
         toObject() {
@@ -961,6 +978,7 @@ export namespace player {
                 ban_type?: PlayerBanType;
                 ban_expires_at?: ReturnType<typeof dependency_2.google.protobuf.Timestamp.prototype.toObject>;
                 created_at?: ReturnType<typeof dependency_2.google.protobuf.Timestamp.prototype.toObject>;
+                author?: ReturnType<typeof dependency_1.google.protobuf.StringValue.prototype.toObject>;
             } = {};
             if (this.id != null) {
                 data.id = this.id;
@@ -976,6 +994,9 @@ export namespace player {
             }
             if (this.created_at != null) {
                 data.created_at = this.created_at.toObject();
+            }
+            if (this.author != null) {
+                data.author = this.author.toObject();
             }
             return data;
         }
@@ -993,6 +1014,8 @@ export namespace player {
                 writer.writeMessage(4, this.ban_expires_at, () => this.ban_expires_at.serialize(writer));
             if (this.has_created_at)
                 writer.writeMessage(5, this.created_at, () => this.created_at.serialize(writer));
+            if (this.has_author)
+                writer.writeMessage(6, this.author, () => this.author.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1016,6 +1039,9 @@ export namespace player {
                         break;
                     case 5:
                         reader.readMessage(message.created_at, () => message.created_at = dependency_2.google.protobuf.Timestamp.deserialize(reader));
+                        break;
+                    case 6:
+                        reader.readMessage(message.author, () => message.author = dependency_1.google.protobuf.StringValue.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

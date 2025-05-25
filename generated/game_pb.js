@@ -2382,7 +2382,8 @@ proto.game.Map.toObject = function(includeInstance, msg) {
     playersList: jspb.Message.toObjectList(msg.getPlayersList(),
     proto.game.MapPlayer.toObject, includeInstance),
     forcesList: jspb.Message.toObjectList(msg.getForcesList(),
-    proto.game.MapForce.toObject, includeInstance)
+    proto.game.MapForce.toObject, includeInstance),
+    twelveP: jspb.Message.getBooleanFieldWithDefault(msg, 11, false)
   };
 
   if (includeInstance) {
@@ -2460,6 +2461,10 @@ proto.game.Map.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.game.MapForce;
       reader.readMessage(value,proto.game.MapForce.deserializeBinaryFromReader);
       msg.addForces(value);
+      break;
+    case 11:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setTwelveP(value);
       break;
     default:
       reader.skipField();
@@ -2560,6 +2565,13 @@ proto.game.Map.serializeBinaryToWriter = function(message, writer) {
       10,
       f,
       proto.game.MapForce.serializeBinaryToWriter
+    );
+  }
+  f = message.getTwelveP();
+  if (f) {
+    writer.writeBool(
+      11,
+      f
     );
   }
 };
@@ -2806,6 +2818,24 @@ proto.game.Map.prototype.addForces = function(opt_value, opt_index) {
  */
 proto.game.Map.prototype.clearForcesList = function() {
   return this.setForcesList([]);
+};
+
+
+/**
+ * optional bool twelve_p = 11;
+ * @return {boolean}
+ */
+proto.game.Map.prototype.getTwelveP = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 11, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.game.Map} returns this
+ */
+proto.game.Map.prototype.setTwelveP = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 11, value);
 };
 
 

@@ -1740,7 +1740,8 @@ proto.player.PlayerBan.toObject = function(includeInstance, msg) {
     player: (f = msg.getPlayer()) && proto.player.PlayerRef.toObject(includeInstance, f),
     banType: jspb.Message.getFieldWithDefault(msg, 3, 0),
     banExpiresAt: (f = msg.getBanExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
-    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    author: (f = msg.getAuthor()) && google_protobuf_wrappers_pb.StringValue.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1799,6 +1800,11 @@ proto.player.PlayerBan.deserializeBinaryFromReader = function(msg, reader) {
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setCreatedAt(value);
+      break;
+    case 6:
+      var value = new google_protobuf_wrappers_pb.StringValue;
+      reader.readMessage(value,google_protobuf_wrappers_pb.StringValue.deserializeBinaryFromReader);
+      msg.setAuthor(value);
       break;
     default:
       reader.skipField();
@@ -1865,6 +1871,14 @@ proto.player.PlayerBan.serializeBinaryToWriter = function(message, writer) {
       5,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getAuthor();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      google_protobuf_wrappers_pb.StringValue.serializeBinaryToWriter
     );
   }
 };
@@ -2014,6 +2028,43 @@ proto.player.PlayerBan.prototype.clearCreatedAt = function() {
  */
 proto.player.PlayerBan.prototype.hasCreatedAt = function() {
   return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional google.protobuf.StringValue author = 6;
+ * @return {?proto.google.protobuf.StringValue}
+ */
+proto.player.PlayerBan.prototype.getAuthor = function() {
+  return /** @type{?proto.google.protobuf.StringValue} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.StringValue, 6));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.StringValue|undefined} value
+ * @return {!proto.player.PlayerBan} returns this
+*/
+proto.player.PlayerBan.prototype.setAuthor = function(value) {
+  return jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.player.PlayerBan} returns this
+ */
+proto.player.PlayerBan.prototype.clearAuthor = function() {
+  return this.setAuthor(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.player.PlayerBan.prototype.hasAuthor = function() {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 

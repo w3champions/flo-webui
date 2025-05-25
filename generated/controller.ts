@@ -3,9 +3,9 @@
  * compiler version: 3.15.6
  * source: controller.proto
  * git: https://github.com/thesayyn/protoc-gen-ts */
-import * as dependency_1 from "./google/protobuf/wrappers";
-import * as dependency_2 from "./google/protobuf/empty";
-import * as dependency_3 from "./google/protobuf/timestamp";
+import * as dependency_1 from "./google\\protobuf\\wrappers";
+import * as dependency_2 from "./google\\protobuf\\empty";
+import * as dependency_3 from "./google\\protobuf\\timestamp";
 import * as dependency_4 from "./player";
 import * as dependency_5 from "./game";
 import * as dependency_6 from "./node";
@@ -3544,6 +3544,7 @@ export namespace controller {
             player_id?: number;
             ban_type?: dependency_4.player.PlayerBanType;
             ban_expires_at?: dependency_3.google.protobuf.Timestamp;
+            author?: dependency_1.google.protobuf.StringValue;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -3556,6 +3557,9 @@ export namespace controller {
                 }
                 if ("ban_expires_at" in data && data.ban_expires_at != undefined) {
                     this.ban_expires_at = data.ban_expires_at;
+                }
+                if ("author" in data && data.author != undefined) {
+                    this.author = data.author;
                 }
             }
         }
@@ -3580,10 +3584,20 @@ export namespace controller {
         get has_ban_expires_at() {
             return pb_1.Message.getField(this, 4) != null;
         }
+        get author() {
+            return pb_1.Message.getWrapperField(this, dependency_1.google.protobuf.StringValue, 5) as dependency_1.google.protobuf.StringValue;
+        }
+        set author(value: dependency_1.google.protobuf.StringValue) {
+            pb_1.Message.setWrapperField(this, 5, value);
+        }
+        get has_author() {
+            return pb_1.Message.getField(this, 5) != null;
+        }
         static fromObject(data: {
             player_id?: number;
             ban_type?: dependency_4.player.PlayerBanType;
             ban_expires_at?: ReturnType<typeof dependency_3.google.protobuf.Timestamp.prototype.toObject>;
+            author?: ReturnType<typeof dependency_1.google.protobuf.StringValue.prototype.toObject>;
         }): CreatePlayerBanRequest {
             const message = new CreatePlayerBanRequest({});
             if (data.player_id != null) {
@@ -3595,6 +3609,9 @@ export namespace controller {
             if (data.ban_expires_at != null) {
                 message.ban_expires_at = dependency_3.google.protobuf.Timestamp.fromObject(data.ban_expires_at);
             }
+            if (data.author != null) {
+                message.author = dependency_1.google.protobuf.StringValue.fromObject(data.author);
+            }
             return message;
         }
         toObject() {
@@ -3602,6 +3619,7 @@ export namespace controller {
                 player_id?: number;
                 ban_type?: dependency_4.player.PlayerBanType;
                 ban_expires_at?: ReturnType<typeof dependency_3.google.protobuf.Timestamp.prototype.toObject>;
+                author?: ReturnType<typeof dependency_1.google.protobuf.StringValue.prototype.toObject>;
             } = {};
             if (this.player_id != null) {
                 data.player_id = this.player_id;
@@ -3611,6 +3629,9 @@ export namespace controller {
             }
             if (this.ban_expires_at != null) {
                 data.ban_expires_at = this.ban_expires_at.toObject();
+            }
+            if (this.author != null) {
+                data.author = this.author.toObject();
             }
             return data;
         }
@@ -3624,6 +3645,8 @@ export namespace controller {
                 writer.writeEnum(3, this.ban_type);
             if (this.has_ban_expires_at)
                 writer.writeMessage(4, this.ban_expires_at, () => this.ban_expires_at.serialize(writer));
+            if (this.has_author)
+                writer.writeMessage(5, this.author, () => this.author.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -3641,6 +3664,9 @@ export namespace controller {
                         break;
                     case 4:
                         reader.readMessage(message.ban_expires_at, () => message.ban_expires_at = dependency_3.google.protobuf.Timestamp.deserialize(reader));
+                        break;
+                    case 5:
+                        reader.readMessage(message.author, () => message.author = dependency_1.google.protobuf.StringValue.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

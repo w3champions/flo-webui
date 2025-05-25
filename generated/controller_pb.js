@@ -7790,7 +7790,8 @@ proto.controller.CreatePlayerBanRequest.toObject = function(includeInstance, msg
   var f, obj = {
     playerId: jspb.Message.getFieldWithDefault(msg, 1, 0),
     banType: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    banExpiresAt: (f = msg.getBanExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    banExpiresAt: (f = msg.getBanExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    author: (f = msg.getAuthor()) && google_protobuf_wrappers_pb.StringValue.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -7839,6 +7840,11 @@ proto.controller.CreatePlayerBanRequest.deserializeBinaryFromReader = function(m
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setBanExpiresAt(value);
+      break;
+    case 5:
+      var value = new google_protobuf_wrappers_pb.StringValue;
+      reader.readMessage(value,google_protobuf_wrappers_pb.StringValue.deserializeBinaryFromReader);
+      msg.setAuthor(value);
       break;
     default:
       reader.skipField();
@@ -7889,6 +7895,14 @@ proto.controller.CreatePlayerBanRequest.serializeBinaryToWriter = function(messa
       4,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getAuthor();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      google_protobuf_wrappers_pb.StringValue.serializeBinaryToWriter
     );
   }
 };
@@ -7964,6 +7978,43 @@ proto.controller.CreatePlayerBanRequest.prototype.clearBanExpiresAt = function()
  */
 proto.controller.CreatePlayerBanRequest.prototype.hasBanExpiresAt = function() {
   return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional google.protobuf.StringValue author = 5;
+ * @return {?proto.google.protobuf.StringValue}
+ */
+proto.controller.CreatePlayerBanRequest.prototype.getAuthor = function() {
+  return /** @type{?proto.google.protobuf.StringValue} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.StringValue, 5));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.StringValue|undefined} value
+ * @return {!proto.controller.CreatePlayerBanRequest} returns this
+*/
+proto.controller.CreatePlayerBanRequest.prototype.setAuthor = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.controller.CreatePlayerBanRequest} returns this
+ */
+proto.controller.CreatePlayerBanRequest.prototype.clearAuthor = function() {
+  return this.setAuthor(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.controller.CreatePlayerBanRequest.prototype.hasAuthor = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 

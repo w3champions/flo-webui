@@ -3,8 +3,8 @@
  * compiler version: 3.15.6
  * source: game.proto
  * git: https://github.com/thesayyn/protoc-gen-ts */
-import * as dependency_1 from "./google/protobuf/wrappers";
-import * as dependency_2 from "./google/protobuf/timestamp";
+import * as dependency_1 from "./google\\protobuf\\wrappers";
+import * as dependency_2 from "./google\\protobuf\\timestamp";
 import * as dependency_3 from "./player";
 import * as dependency_4 from "./node";
 import * as pb_1 from "google-protobuf";
@@ -1297,6 +1297,7 @@ export namespace game {
             height?: number;
             players?: MapPlayer[];
             forces?: MapForce[];
+            twelve_p?: boolean;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [9, 10], this.#one_of_decls);
@@ -1330,6 +1331,9 @@ export namespace game {
                 }
                 if ("forces" in data && data.forces != undefined) {
                     this.forces = data.forces;
+                }
+                if ("twelve_p" in data && data.twelve_p != undefined) {
+                    this.twelve_p = data.twelve_p;
                 }
             }
         }
@@ -1393,6 +1397,12 @@ export namespace game {
         set forces(value: MapForce[]) {
             pb_1.Message.setRepeatedWrapperField(this, 10, value);
         }
+        get twelve_p() {
+            return pb_1.Message.getFieldWithDefault(this, 11, false) as boolean;
+        }
+        set twelve_p(value: boolean) {
+            pb_1.Message.setField(this, 11, value);
+        }
         static fromObject(data: {
             sha1?: Uint8Array;
             checksum?: number;
@@ -1404,6 +1414,7 @@ export namespace game {
             height?: number;
             players?: ReturnType<typeof MapPlayer.prototype.toObject>[];
             forces?: ReturnType<typeof MapForce.prototype.toObject>[];
+            twelve_p?: boolean;
         }): Map {
             const message = new Map({});
             if (data.sha1 != null) {
@@ -1436,6 +1447,9 @@ export namespace game {
             if (data.forces != null) {
                 message.forces = data.forces.map(item => MapForce.fromObject(item));
             }
+            if (data.twelve_p != null) {
+                message.twelve_p = data.twelve_p;
+            }
             return message;
         }
         toObject() {
@@ -1450,6 +1464,7 @@ export namespace game {
                 height?: number;
                 players?: ReturnType<typeof MapPlayer.prototype.toObject>[];
                 forces?: ReturnType<typeof MapForce.prototype.toObject>[];
+                twelve_p?: boolean;
             } = {};
             if (this.sha1 != null) {
                 data.sha1 = this.sha1;
@@ -1481,6 +1496,9 @@ export namespace game {
             if (this.forces != null) {
                 data.forces = this.forces.map((item: MapForce) => item.toObject());
             }
+            if (this.twelve_p != null) {
+                data.twelve_p = this.twelve_p;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -1507,6 +1525,8 @@ export namespace game {
                 writer.writeRepeatedMessage(9, this.players, (item: MapPlayer) => item.serialize(writer));
             if (this.forces.length)
                 writer.writeRepeatedMessage(10, this.forces, (item: MapForce) => item.serialize(writer));
+            if (this.twelve_p != false)
+                writer.writeBool(11, this.twelve_p);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1545,6 +1565,9 @@ export namespace game {
                         break;
                     case 10:
                         reader.readMessage(message.forces, () => pb_1.Message.addToRepeatedWrapperField(message, 10, MapForce.deserialize(reader), MapForce));
+                        break;
+                    case 11:
+                        message.twelve_p = reader.readBool();
                         break;
                     default: reader.skipField();
                 }
