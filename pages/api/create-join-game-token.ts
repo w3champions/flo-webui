@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@now/node";
-import { withErrorHandler, FloError, FloErrorCode } from "../../helpers/error";
+import { withErrorHandler } from "../../helpers/error";
 import { withAuthorized } from "../../helpers/auth";
 import { withMethod } from "../../helpers/method";
 import {
@@ -28,7 +28,7 @@ export default withErrorHandler(
 
       const request = new controller.CreateJoinGameTokenRequest({
         player_id: player.id,
-        game_id: game_id.id,
+        game_id,
       })
 
       const token = await createJoinGameToken(request);
