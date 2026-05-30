@@ -39,7 +39,7 @@ function wrap<TRequest, TReply>(
         for (const [k, v] of Object.entries(AuthMetadata.getMap())) {
           merge.add(k, v);
         }
-        return await f(req, meta);
+        return await f(req, merge);
       } else {
         return await f(req, AuthMetadata);
       }
